@@ -1,0 +1,197 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+/* Establecemos estilos básicos */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+  }
+
+body {
+
+    overflow: hidden;
+}
+
+/* Estilos del encabezado */
+header {
+    position: relative; /* Para que los elementos internos respeten esta posición */
+    
+}
+
+/* Cuadro azul */
+.blue-box {
+    background-color: #004a98;
+    height: 100px; /* Altura del cuadro azul */
+    display: flex; /* Usamos flexbox para alinear la imagen y el contenido */
+    align-items: center; /* Centramos verticalmente los elementos */
+    padding-left: 20px; /* Espacio izquierdo para la imagen */
+}
+
+/* Imagen dentro del cuadro azul */
+.blue-box img {
+    height: 80px !important;
+    padding: 10px 15px;
+}
+.white-bar {
+    background-color: white; /* Color blanco para la barra */
+    width: 2px; /* Ancho de la barra */
+    height: 75px; /* Altura de la barra, debe coincidir con la altura de las imágenes */
+}
+
+.user-info {
+
+  color: white;
+  width: 100%; /* Ancho del 100% para abarcar toda la pantalla */
+  margin-left: 55%; /* Empuja el div interno hacia la derecha */
+}
+
+
+/* Texto en negrita blanco a la derecha */
+.text {
+    width: 100%;
+    flex-grow: 1; /* Permite que el texto ocupe todo el espacio disponible */
+}
+
+.container-text{
+    text-align: right; /* Alinea el contenido del div interno a la derecha */
+  margin-left: auto; /* Empuja el div interno hacia la derecha */
+  max-width: 40%; /* Limita el ancho del div interno si es necesario */
+}
+p{
+    text-align: left;
+}
+
+.bold-text {
+    margin: 1px;
+    font-weight: bold;
+    color: white; /* Color blanco para el texto */
+    font-size: 25px;
+}
+/* Franja de color debajo del cuadro azul */
+.color-stripe {
+    background-color: #00b2e3;
+    height: 10px; /* Altura de la franja de color*/
+}
+
+
+.container{
+    max-width: 440px;
+    padding: 0 20px;
+    margin: 60px auto;
+  }
+  .wrapper{
+    width: 100%;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+  }
+  .wrapper .title{
+    height: 80px;
+    background: #337ab7;
+    border-radius: 5px 5px 0 0;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wrapper form{
+    padding: 10px 25px 1px 25px;
+  }
+
+
+  .wrapper form .row{
+    height: 45px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .wrapper form .row input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  form .row input:focus{
+    border-color: #337ab7;
+   
+  }
+  form .row input::placeholder{
+    color: #999;
+  }
+  .wrapper form .row i{
+    position: absolute;
+    width: 47px;
+    height: 100%;
+    color: #fff;
+    font-size: 18px;
+    background: #337ab7;
+    border: 1px solid #337ab7;
+    border-radius: 5px 0 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wrapper form .pass{
+    margin: -8px 0 20px 0;
+  }
+  .wrapper form .pass a{
+    color: #337ab7;
+    font-size: 17px;
+    text-decoration: none;
+  }
+
+  .wrapper p{
+    padding-left: 0px;
+    margin: 5px;
+    color: black;
+  }
+  .wrapper form .pass a:hover{
+    text-decoration: underline;
+  }
+  
+  .wrapper form .button{
+   margin-top: 70px;
+  }
+
+  .wrapper form .button input{
+    color: #fff;
+    
+    text-align: center;
+    width: 50%;
+    font-size: 20px;
+    font-weight: 500;
+    padding-left: 0px;
+    background: #337ab7;
+    cursor: pointer;
+  }
+  .button input[type="submit"] {
+    display: block; 
+    margin: 0 auto; 
+}
+
+  form .button input:hover{
+    background: #004a98;
+  }
+
+  .navbar {
+    background-color: white;
+}
+
+.nav-link, .dropdown-item {
+    color: #004a98 !important;
+}
+
+.nav-item:hover, .dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.no-access {
+    color: lightgrey;
+}
