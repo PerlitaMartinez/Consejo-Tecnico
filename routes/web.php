@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DemoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,14 +18,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/hctc/alumnos', function(){
+    $rol = "ESTUDIANTES";
+    $clave = "Clave única";
+    return view('login', ['rol' => $rol, 'clave' => $clave]);
+})->name('loginAlumnos');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/hctc/academicos', function(){
+    $rol = "ACADÉMICOS";
+    $clave = "RPE";
+    return view('login', ['rol' => $rol, 'clave' => $clave]);
+})->name('loginAcademicos');
 
-require __DIR__.'/auth.php';
+
+Route::get('/hctc/inicio', function(){
+    return view('inicio');
+})->name('inicio');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get('/generar-pdf', [DemoController::class, 'AddtoPdf']);
