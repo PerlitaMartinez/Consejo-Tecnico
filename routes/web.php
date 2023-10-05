@@ -44,6 +44,14 @@ Route::get('/hctc/materia_unica', function(){
     return view('materiaUnica');
 })->name('materiaUnica');
 
+Route::get('/hctc/formato_opcion_titulacion', function(){
+    return view('formato_opcion_titulacion');
+})->name('formato_opcion_titulacion');
+
+Route::get('/hctc/formato_registro_tema', function(){
+    return view('formato_registro_tema');
+})->name('formato_registro_tema');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
@@ -53,8 +61,16 @@ Route::get('/cargaMaxima', [TramitesController::class, 'showFormCargaMaxima'])->
 
 Route::post('/guarda-datos', [PdfGeneratorController::class, 'guardarDatos'])->name('saveCargaMaxima.create');
 
-Route::get('/generar-pdf', [PdfGeneratorController::class, 'materiaUnicaGenerate'])->name('materiaUnicaPdf.show');
+Route::get('/generar-pdf2', [PdfGeneratorController::class, 'materiaUnicaGenerate'])->name('materiaUnicaPdf.show');
 
 Route::get('/materiaUnica', [TramitesController::class, 'showFormMateriaUnica'])->name('materiaUnica.show');
 
 //Route::post('/guarda-datos', [PdfGeneratorControllerCM::class, 'guardarDatos'])->name('savemateriaUnica.create');
+
+Route::get('/generar-pdf3', [PdfGeneratorController::class, 'opcionTitulacionGenerate'])->name('opcionTitulacionPdf.show');
+
+Route::get('/opcionTitulacion', [TramitesController::class, 'showFormopcionTitulacion'])->name('opcionTitulacion.show');
+
+Route::get('/generar-pdf4', [PdfGeneratorController::class, 'registroTemaGenerate'])->name('registroTemaPdf.show');
+
+Route::get('/registroTema', [TramitesController::class, 'showFormregistroTema'])->name('registroTema.show');
