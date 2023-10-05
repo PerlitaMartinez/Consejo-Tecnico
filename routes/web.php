@@ -40,6 +40,10 @@ Route::get('/hctc/solicitudes/titulacion', function(){
     return view('inicio_alumno_opciones_titulacion');
 })->name('inicio_alumno_opciones_titulacion');
 
+Route::get('/hctc/materia_unica', function(){
+    return view('materiaUnica');
+})->name('materiaUnica');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
@@ -48,3 +52,9 @@ Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'
 Route::get('/cargaMaxima', [TramitesController::class, 'showFormCargaMaxima'])->name('cargaMaxima.show');
 
 Route::post('/guarda-datos', [PdfGeneratorController::class, 'guardarDatos'])->name('saveCargaMaxima.create');
+
+Route::get('/generar-pdf', [PdfGeneratorController::class, 'materiaUnicaGenerate'])->name('materiaUnicaPdf.show');
+
+Route::get('/materiaUnica', [TramitesController::class, 'showFormMateriaUnica'])->name('materiaUnica.show');
+
+//Route::post('/guarda-datos', [PdfGeneratorControllerCM::class, 'guardarDatos'])->name('savemateriaUnica.create');

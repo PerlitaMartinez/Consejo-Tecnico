@@ -65,11 +65,70 @@ class PdfGeneratorController extends Controller
     
       $pdf->Output('F',"/new/yourfoldername/Demotest.pdf");
 
-      
+        
 
  
  
    }
+
+   public function materiaUnicaGenerate() {
+
+    $pdf = new Fpdi('P', 'mm', 'A4');
+
+
+    // add a page
+    $pdf->AddPage('P', 'A4');
+    $pdf->SetFont('Arial','B',10);
+
+    // set the source file
+    $path = public_path("SolicitudMateriaUnica.pdf");
+
+    $pdf->setSourceFile($path);
+
+    // import page 1
+    $tplId = $pdf->importPage(1);
+     
+    
+
+    // use the imported page and place it at point 10,10 with a width of 100 mm
+    $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+    $pdf->SetXY(140, 55);
+    $pdf->Write(0.1,"05");
+    $pdf->SetXY(147.5, 55);
+    $pdf->Write(0.1,"/");
+    $pdf->SetXY(155, 55);
+    $pdf->Write(0.1,"10");
+    $pdf->SetXY(162.5, 55);
+    $pdf->Write(0.1,"/");
+    $pdf->SetXY(170, 55);
+    $pdf->Write(0.1,"2023");
+    $pdf->SetXY(90, 112);
+    $pdf->Write(0.1,"2024-2025/I");
+    $pdf->SetXY(90, 130);
+    $pdf->Write(0.1,"Fundamentos de compiladores");
+    $pdf->SetXY(60, 183);
+    $pdf->SetFont('Arial','B',10);
+    $pdf->Write(0.1,"IVAN MARTINEZ LOPEZ");
+    $pdf->SetXY(75, 193);
+    $pdf->Write(0.1,"295969");
+    $pdf->SetXY(60, 203);
+    $pdf->Write(0.1,"ING. EN COMPUTACION");
+    //$pdf->SetXY(60, 213);
+    //$pdf->Write(0.1,"2023-2024/I");
+// Preview PDF
+    $pdf->Output('I',"Demotest.pdf");
+
+    // Download PDF
+//Download use D $pdf->Output(‘D’,”Demotest.pdf");
+
+// Save PDF to Particular path or project path
+
+  $pdf->Output('F',"/new/yourfoldername/Demotest.pdf");
+
+   }
+
+
 
    public function guardarDatos(Request $request)
    {

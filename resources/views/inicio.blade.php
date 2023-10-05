@@ -80,7 +80,7 @@
     
     <!-- Botones grandes en línea -->
     <div class="btn-large-container">
-        <a class="btn btn-large btn-primary" href="#">Materia Única</a>
+        <a class="btn btn-large btn-primary" href="/hctc/materia_unica">Materia Única</a>
         <a class="btn btn-large btn-primary" href="{{ route('cargaMaxima.show')}}">Carga Máxima</a>
         <a class="btn btn-large btn-primary" href="/hctc/solicitudes/titulacion">Opciones de Titulación</a>
     </div>
