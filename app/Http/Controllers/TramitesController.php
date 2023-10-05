@@ -18,5 +18,16 @@ class TramitesController extends Controller
         return view('materiaUnica');
     }
 
+    public function showFormregistroTema()
+    {
+        return view('registroTema');
+    }
+
+    public function showFormopcionTitulacion()
+    {
+        return view('opcionTitulacion');
+    }
+    
+
    
 }

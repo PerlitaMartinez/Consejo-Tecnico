@@ -87,8 +87,8 @@
     <div class="scrollable-content">
         <!-- Botones grandes en línea -->
         <div class="btn-large-container">
-            <a class="btn btn-large btn-primary" href="#">Solicitud de Opción de Titulación</a>
-            <a class="btn btn-large btn-primary" href="#">Registro de Tema</a>
+            <a class="btn btn-large btn-primary" href="/hctc/formato_opcion_titulacion">Solicitud de Opción de Titulación</a>
+            <a class="btn btn-large btn-primary" href="/hctc/formato_registro_tema">Registro de Tema</a>
             <a class="btn btn-large btn-primary" href="#">Registro de Tema y Temario Memorias de Actividad Profesional</a>
             <a class="btn btn-large btn-primary" href="#">Solicitud de Autorización de Temario</a>
             <a class="btn btn-large btn-primary" href="#">Terminación de Trabajo Recepcional, Tesis o Memorias de Actividad Profesional</a>
