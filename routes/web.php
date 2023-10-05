@@ -39,6 +39,10 @@ Route::get('/hctc/solicitudes/titulacion', function(){
     return view('inicio_alumno_opciones_titulacion');
 })->name('inicio_alumno_opciones_titulacion');
 
+Route::get('/hctc/registro_tema', function(){
+    return view('registro_tema');
+})->name('registro_tema');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
