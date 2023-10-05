@@ -43,6 +43,10 @@ Route::get('/hctc/registro_tema', function(){
     return view('registro_tema');
 })->name('registro_tema');
 
+Route::get('/hctc/opcion_titulacion', function(){
+    return view('opcion_titulacion');
+})->name('opcion_titulacion');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
