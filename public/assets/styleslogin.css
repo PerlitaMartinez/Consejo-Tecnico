@@ -9,14 +9,12 @@
   }
 
 body {
-
-    overflow: hidden;
+    overflow:scroll;
 }
 
 /* Estilos del encabezado */
 header {
     position: relative; /* Para que los elementos internos respeten esta posición */
-    
 }
 
 /* Cuadro azul */

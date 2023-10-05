@@ -26,6 +26,7 @@
   </header>
   <div class="color-stripe"></div>
    @yield('content')
+
 </body>
 </html>
 
