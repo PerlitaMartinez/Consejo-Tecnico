@@ -13,7 +13,7 @@ class DemoController extends Controller
 {
     //
 
-    public function Addtopdf() {
+    public function cargaMaximaGenerate() {
 
         $pdf = new Fpdi('P', 'cm', 'A4');
    
@@ -62,7 +62,7 @@ class DemoController extends Controller
    
    // Save PDF to Particular path or project path
    
-     $pdf->Output('F',"/new/yourfoldername/Demotest.pdf");
+    
    
    }
 }

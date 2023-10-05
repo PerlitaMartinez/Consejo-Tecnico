@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\DemoController;
+use App\Http\Controllers\PdfGeneratorController;
+use App\Http\Controllers\TramitesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,4 +43,8 @@ Route::get('/hctc/solicitudes/titulacion', function(){
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/generar-pdf', [DemoController::class, 'AddtoPdf']);
+Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
+
+Route::get('/cargaMaxima', [TramitesController::class, 'showFormCargaMaxima'])->name('cargaMaxima.show');
+
+Route::post('/guarda-datos', [PdfGeneratorController::class, 'guardarDatos'])->name('saveCargaMaxima.create');

@@ -11,6 +11,7 @@
 @endsection
 
 @section('content')
+    <link rel="stylesheet" href="{{asset('assets/stylesForms.css')}}">
     <nav class="navbar navbar-expand-lg navbar-light">
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -58,11 +59,11 @@
             color: white !important;
         }
 
-        /* Estilo para los botones grandes en línea */
+       
         .btn-large-container {
             display: flex;
             justify-content: center;
-            margin-top: 40px; /* Ajusta este valor según tus preferencias de separación */
+            margin-top: 40px; 
         }
 
         .btn-large {
@@ -80,7 +81,7 @@
     <!-- Botones grandes en línea -->
     <div class="btn-large-container">
         <a class="btn btn-large btn-primary" href="#">Materia Única</a>
-        <a class="btn btn-large btn-primary" href="#">Carga Máxima</a>
+        <a class="btn btn-large btn-primary" href="{{ route('cargaMaxima.show')}}">Carga Máxima</a>
         <a class="btn btn-large btn-primary" href="/hctc/solicitudes/titulacion">Opciones de Titulación</a>
     </div>
 @endsection
