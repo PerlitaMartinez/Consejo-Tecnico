@@ -34,7 +34,7 @@
 <style>
 /* Tu código CSS aquí */
 .container {
-   max-height: 70%; /* Ajusta la altura máxima según tus necesidades */
+   max-height: 75%; /* Ajusta la altura máxima según tus necesidades */
    overflow-y: auto; /* Esto habilita la barra de desplazamiento vertical cuando el contenido excede la altura máxima */
 }
 </style>
@@ -48,7 +48,7 @@
             </div>
 </div>
 
-<div class="container">
+<div class="container" style="margin-top: 10px;">
     <div class="row" style="margin: 20px;">
         <div class="col-14">
             <div class="card">
@@ -56,12 +56,9 @@
                     <h2 class="text-center">Solicitud de Opcion de Titulación</h2>
                 </div>
                 <div class="card-body">
-                    <a href="/hctc/inicio" class="btn btn-secondary" tabindex="5">Cancelar</a>
-                    <button id="submit-button" type="submit" class="btn btn-primary" tabindex="4">Imprimir</button>
+                    <label for="" class="form-label">De la manera más atenta me dirijo a ese H. Cuerpo Colegiado para solicitar autorización para titularme de Ingeniero(a) de la carrera</label>
+                    <input class="form-control form-control-sm" type="text" disabled value="Ingeniería en computacion">
                     <br />
-                    <br />
-                    <label for="" class="form-label">De la manera más atenta me dirijo a ese H. Cuerpo Colegiado para solicitar autorización para titularme de Ingeniero</label>
-                    <input class="form-control form-control-sm" type="text" disabled value="en computacion">
                     <label for="" class="form-label">mediante la opción:</label>
                 </div>
                 <div class="card-body">
@@ -112,43 +109,34 @@
             </div>
             <!-- Repite el mismo patrón para los otros elementos form-check -->
         </div>
-                        
-                       <!-- <div class="form-group">
-                            <label for="">Materia</label>
-                            <select name="categoria_id" id="InputCategoria_id" class="form-control">
-                                <option value="">--Seleccione la materia--</option>
-                                <option value="">Fundamentos de compiladores</option>
-                            </select>
-                        </div>
+        <br />
 
-                        <div class="form-group">
-                            <label for="">Semestre</label>
-                            <select name="categoria_id" id="InputCategoria_id" class="form-control">
-                                <option value="">--Seleccione el semestre--</option>
-                                <option value="">2024-2025/I</option>
-                            </select>
-                        </div>-->
-
-
-                        <label for="inputPassword5" class="form-label">NOMBRE:</label>
+                        <label for="inputPassword5" style="margin-top: 10px; margin-bottom: 1px;" class="form-label">NOMBRE:</label>
                         <input class="form-control form-control-sm" type="text" disabled value="IVAN MARTINEZ LOPEZ">
 
-                        <label for="inputPassword5" class="form-label">CLAVE:</label>
+                        <label for="inputPassword5" style="margin-top: 10px;margin-bottom: 1px;"class="form-label">CLAVE:</label>
                         <input class="form-control form-control-sm" type="text" disabled value="295969">
 
-                        <label for="inputPassword5" class="form-label">FECHA DEL EXAMEN EN QUE APROBO SU ULTIMA MATERIA</label>
+                        <label for="inputPassword5" style="margin-top: 10px;margin-bottom: 1px;"class="form-label">FECHA DEL EXAMEN EN QUE APROBO SU ULTIMA MATERIA</label>
                         <input class="form-control form-control-sm" type="text" disabled value="03/12/2022">
 
-                        <label for="inputPassword5" class="form-label">PROMEDIO GENERAL APROBATORIO:</label>
+                        <label for="inputPassword5" style="margin-top: 10px;margin-bottom: 1px;"class="form-label">PROMEDIO GENERAL APROBATORIO:</label>
                         <input class="form-control form-control-sm" type="text" disabled value="75.5">
 
-                        <label for="inputPassword5" class="form-label">AÑO EN QUE INGRESO A LA LICENCIATURA:</label>
+                        <label for="inputPassword5" style="margin-top: 10px;margin-bottom: 1px;"class="form-label">AÑO EN QUE INGRESO A LA LICENCIATURA:</label>
                         <input class="form-control form-control-sm" type="text" disabled value="2015">
                     </form>
+                    <br />
+                    <a href="/hctc/inicio" class="btn btn-secondary" tabindex="5">Cancelar</a>
+                    <button id="submit-button" type="submit" class="btn btn-primary" tabindex="4">Imprimir</button>
                 </div>
+                
             </div>
+            
         </div>
+        
     </div>
+    
 </div>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
