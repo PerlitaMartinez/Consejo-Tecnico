@@ -31,6 +31,8 @@
                     </div>
                 </div>
 
+                <br>
+
                 <div class="form-group">
                     <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
                     <button class="btn btn-success" id="descargar-formato">Descargar Formato</button>

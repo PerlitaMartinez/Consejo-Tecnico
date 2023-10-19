@@ -1,46 +1,144 @@
 @extends('layouts.header')
 
-@section('description')
-<div class="text">
-    <div class="container-text">
-        <p class="bold-text">SISTEMA</p>
-        <p class="bold-text">HCTC - ALUMNO</p>
-    </div>
-</div>
-<!--<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="nav-link active" aria-current="page" href="/encabezado">Inicio</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/users_tipo">Alumno</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>-->
-<!-- FontAwesome (para el ícono del botón) -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<!-- Bootstrap JS (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-@endsection
 
-<style>
+
+
+<!-- <style>
 /* Tu código CSS aquí */
 .container {
    max-height: 75%; /* Ajusta la altura máxima según tus necesidades */
    overflow-y: auto; /* Esto habilita la barra de desplazamiento vertical cuando el contenido excede la altura máxima */
 }
-</style>
+</style> -->
 
 @section('content')
-<div id="confirm-modal" class="modal">
+
+@include('usuario_cinta')
+
+<div class="container">
+    <form id="formulario" method="GET" action="{{ route('materiaUnicaPdf.show') }}" target="_blank">
+        <h1>Opciones de Titulación</h1>
+        <p>Seleccionar la opción de titulación, de acuerdo a la opción seleccionada, el sistema solicitará la captura de los datos necesarios para realizar el trámite</p>
+
+        <div class="row">
+                <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox1" checked>
+                <label>Trabajo Recepcional</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Tesis</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Examen Colectivo</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Exención de Examen por Promedio</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Mediante un semestre o dos cuatrimestres en Estudios de Especialidad o Posgrado</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Mediante dos semestres o tres cuatrimestres en Estudios de Especialidad o Posgrado</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Examen de Conocimientos con Duración de 8 horas</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Memorias de Actividad Profesional</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Opción a No trabajo Recepcional</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
+                <label>Examen General de Egreso de la Licenciatura</label>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group d-flex">
+                            <label for="semestre" class="mr-2" >Fecha del examen en que aprobó su ultima materia </label>
+                            <input type="text" id="fecha_examen_aprobado" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group d-flex">
+                            <label for="semestre" class="mr-2" style="margin-left:175px;">Promedio general aprobatorio </label>
+                            <input type="text" id="promedio" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+    <div class="col-md-10">
+        <div class="form-group d-flex">
+            <label for="ano_ingreso" class="mr-2" style="margin-left:165px;">Año de ingreso a la licenciatura</label>
+            <input type="text" id="ano_ingreso" class="form-control" readonly>
+        </div>
+    </div>
+</div>
+        <br>
+
+        <div class="form-group">
+                    <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
+                    <button class="btn btn-success" id="descargar-formato">Descargar Formato</button>
+        </div>
+    </form>
+</div>
+
+
+<style>
+
+    .container {
+        margin-top: 35px;
+        max-width: 60%;
+        
+    }
+
+    .form-group {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .form-group label {
+        white-space: nowrap;
+    }
+
+</style>
+
+
+<!-- <div id="confirm-modal" class="modal">
             <div class="modal-content">
                 <p>¿Estás seguro de que la información ingresada es correcta?</p>
                 <button id="confirm-yes">Sí</button>
@@ -73,7 +171,7 @@
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="opcionTitulacion" value="examenConocimientos" id="examenConocimientos">
-                <label class="form-check-label" for="examenConocimientos">Examen de Conocimientos con Duración de 8 horas</label>
+                <label class="form-check-label" for="examenConocimientos"></label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="opcionTitulacion" value="examenConocimientos" id="examenConocimientos">
@@ -107,7 +205,7 @@
                 <input class="form-check-input" type="radio" name="opcionTitulacion" value="examenConocimientos" id="examenConocimientos">
                 <label class="form-check-label" for="examenConocimientos">Mediante dos semestres o tres cuatrimestres en Estudios de Especialidad o Posgrado</label>
             </div>
-            <!-- Repite el mismo patrón para los otros elementos form-check -->
+             Repite el mismo patrón para los otros elementos form-check
         </div>
         <br />
 
@@ -143,8 +241,8 @@
     crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"></script>
-    <script>
+    crossorigin="anonymous"></script> -->
+    <!-- <script>
             // Función para mostrar la ventana emergente
             function showConfirmationModal() {
                 var modal = document.getElementById('confirm-modal');
@@ -172,6 +270,6 @@
             document.getElementById('confirm-no').addEventListener('click', function() {
                 hideConfirmationModal();
             });
-        </script>
+        </script> -->
 
 @endsection

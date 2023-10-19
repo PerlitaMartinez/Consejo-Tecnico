@@ -36,16 +36,16 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item mr-5">
-                    <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-home-alt" id="icono_casa"></i> Inicio</a>
+                    <a class="nav-link btn btn-primary rounded" href="/hctc/inicio"> <i class="fas fa-home-alt" id="icono_casa"></i> Inicio</a>
                 </li> 
                 <li class="nav-item mr-5">
                     <a class="nav-link btn btn-primary rounded" href="/hctc/materia_unica">Materia Única</a>
                 </li> 
                 <li class="nav-item mr-5">
-                    <a class="nav-link btn btn-primary rounded" href="#">Carga Máxima</a>
+                    <a class="nav-link btn btn-primary rounded" href="/hctc/carga_maxima">Carga Máxima</a>
                 </li> 
                 <li class="nav-item mr-5">
-                    <a class="nav-link btn btn-primary rounded" href="/hctc/solicitudes/titulacion">Opciones de titulación</a>
+                    <a class="nav-link btn btn-primary rounded" href="/hctc/formato_opcion_titulacion">Titulación</a>
                 </li> 
                 <li class="nav-item mr-5">
                     <a class="nav-link btn btn-primary rounded" href="#">Seguimiento de Solicitudes</a>

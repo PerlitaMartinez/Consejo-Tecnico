@@ -36,13 +36,13 @@ Route::get('/hctc/inicio', function(){
     return view('inicio');
 })->name('inicio');
 
-Route::get('/hctc/solicitudes/titulacion', function(){
-    return view('inicio_alumno_opciones_titulacion');
-})->name('inicio_alumno_opciones_titulacion');
-
 Route::get('/hctc/materia_unica', function(){
     return view('materiaUnica');
 })->name('materiaUnica');
+
+Route::get('/hctc/carga_maxima', function(){
+    return view('cargaMaxima');
+})->name('cargaMaxima');
 
 Route::get('/hctc/formato_opcion_titulacion', function(){
     return view('formato_opcion_titulacion');
