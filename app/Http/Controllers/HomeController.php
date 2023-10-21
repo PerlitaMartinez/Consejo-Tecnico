@@ -6,23 +6,25 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    //***************IMPORTANTE CREAR EL MIDDLEWARE PARA VERIFICAR QUE EL ALUMNO ESTÉ VERIFICADO*******/
+    // /**
+    //  * Create a new controller instance.
+    //  *
+    //  * @return void
+    //  */
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    // /**
+    //  * Show the application dashboard.
+    //  *
+    //  * @return \Illuminate\Contracts\Support\Renderable
+    //  */
+    public function index(Request $request)
     {
-        return view('home');
+        $dataSet = $request->input('dataSet');        
+        return view('inicio', ['dataSet' => $dataSet]);
     }
 }

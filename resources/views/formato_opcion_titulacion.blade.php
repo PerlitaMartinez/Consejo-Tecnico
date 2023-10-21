@@ -1,22 +1,12 @@
 @extends('layouts.header')
 
-
-
-
-<!-- <style>
-/* Tu código CSS aquí */
-.container {
-   max-height: 75%; /* Ajusta la altura máxima según tus necesidades */
-   overflow-y: auto; /* Esto habilita la barra de desplazamiento vertical cuando el contenido excede la altura máxima */
-}
-</style> -->
-
 @section('content')
 
 @include('usuario_cinta')
 
 <div class="container">
-    <form id="formulario" method="GET" action="{{ route('materiaUnicaPdf.show') }}" target="_blank">
+    <form id="formulario" method="POST" action="{{ route('opcionTitulacionPdf.show') }}" target="_blank">
+        @csrf
         <h1>Opciones de Titulación</h1>
         <p>Seleccionar la opción de titulación, de acuerdo a la opción seleccionada, el sistema solicitará la captura de los datos necesarios para realizar el trámite</p>
 

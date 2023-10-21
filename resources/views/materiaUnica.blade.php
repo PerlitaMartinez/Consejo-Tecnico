@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('usuario_cinta')
+    @include('usuario_cinta',  ['dataSet' => $dataSet])
 
     <div class="container">
         <form id="formulario" method="GET" action="{{ route('materiaUnicaPdf.show') }}" target="_blank">
