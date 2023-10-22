@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('usuario_cinta')
+{{-- @include('usuario_cinta') --}}
 
 <div class="container">
         <h1>Registro de Tema y Temario Memorias de Actividad Profesional</h1>

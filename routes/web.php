@@ -56,7 +56,6 @@ Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
 })->name('registro_tema_temario_memorias');
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');

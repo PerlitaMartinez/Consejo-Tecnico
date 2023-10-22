@@ -30,7 +30,6 @@ class MateriaUnicaController extends Controller
 
     ];
 
-    protected $relizada = false;
     protected $registroExistente;
     public function showMateriaUnicaForm(Request $request)
     {

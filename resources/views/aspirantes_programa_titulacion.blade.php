@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('usuario_cinta')
+{{-- @include('usuario_cinta') --}}
 
 <div class="container">
         <h1>Registro para Aspirantes al Programa de Titulacion</h1>
