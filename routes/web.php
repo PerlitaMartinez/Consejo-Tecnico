@@ -43,6 +43,19 @@ Route::get('/hctc/formato_registro_tema', function () {
     return view('formato_registro_tema');
 })->name('formato_registro_tema');
 
+Route::get('/hctc/TerminacionTrabajoRecepcionalTesisMemorias', function(){
+    return view('terminacion_trabajo_recepcional_tesis_memorias');
+})->name('terminacion_trabajo_recepcional_tesis_memorias');
+
+Route::get('/hctc/ProgramaTitulacion', function(){
+    return view('aspirantes_programa_titulacion');
+})->name('aspirantes_programa_titulacion');
+
+Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
+    return view('registro_tema_temario_memorias');
+})->name('registro_tema_temario_memorias');
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
