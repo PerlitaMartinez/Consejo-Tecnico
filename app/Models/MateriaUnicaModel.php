@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MateriaUnicaModel extends Model
 {
     use HasFactory;
-
+    public $timestamps = false;
     protected $table = 'solicitud_materia_unica';
     protected $primaryKey = 'id_solicitud_mu';
     public function sesion(){

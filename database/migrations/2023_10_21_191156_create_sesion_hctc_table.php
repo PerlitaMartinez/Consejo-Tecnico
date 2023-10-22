@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sesion_hctc', function (Blueprint $table) {
             $table->bigInteger('id_sesion_hctc', true);
-            $table->dateTime('fecha_sesion')->nullable();
+            $table->date('fecha_sesion')->nullable();
             $table->string('tipo_sesion', 15)->nullable();
         });
     }

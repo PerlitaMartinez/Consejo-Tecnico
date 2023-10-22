@@ -12,7 +12,7 @@
 @section('content')
 <div class="container">
     <div class="wrapper">
-      <div class="title"><span>{{$clave}}</span></div>
+      <div class="title"><span>{{$rol}}</span></div>
       <form method="POST"  action="{{route('login.sumbit')}}">
         @csrf
         <div class="row">

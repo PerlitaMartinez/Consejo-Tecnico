@@ -12,4 +12,6 @@ class CargaMaximaController extends Controller
         //dd($dataSet);
         return view('cargaMaxima', ['dataSet' => $dataSet]);
     }
+
+    
 }

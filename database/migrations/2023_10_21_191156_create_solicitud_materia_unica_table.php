@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('solicitud_materia_unica', function (Blueprint $table) {
             $table->bigInteger('id_solicitud_mu', true);
-            $table->dateTime('fecha_solicitud')->nullable();
+            $table->date('fecha_solicitud')->nullable();
             $table->string('semestre', 15)->nullable();
             $table->dateTime('fecha_impresion')->nullable();
             $table->dateTime('fecha_hora_tutor')->nullable();
-            $table->string('estado_solicitud', 15)->nullable();
+            $table->string('estado_solicitud', 15)->nullable()->default('ALTA');;
             $table->bigInteger('clave_unica')->nullable();
             $table->bigInteger('rpe_tutor')->nullable();
             $table->bigInteger('rpe_staff')->nullable();

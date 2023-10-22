@@ -32,6 +32,8 @@ Route::post('post-login', [AuthController::class, 'login'])->name('login.sumbit'
 Route::get('inicio', [HomeController::class, 'index'])->name('inicio.index');
 
 Route::get('materiaUnica', [MateriaUnicaController::class, 'showMateriaUnicaForm'])->name('materiaUnica.show');
+Route::post('materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnica'])->name('materiaUnica.store');
+
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
 
