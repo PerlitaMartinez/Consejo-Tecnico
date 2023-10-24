@@ -7,7 +7,11 @@ use App\Http\Controllers\MateriaUnicaController;
 use App\Http\Controllers\OpcionTitulacionController;
 use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\TramitesController;
+use App\Http\Middleware\CheckFormCargaMaximaCompletion;
+use App\Http\Middleware\CheckFormMateriaUnicaCompletion;
+use App\Http\Middleware\CheckFormOpTitulacionCompletion;
 use App\Models\MateriaUnicaModel;
+use Doctrine\DBAL\Logging\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,12 +38,19 @@ Route::get('inicio', [HomeController::class, 'index'])->name('inicio.index');
 
 Route::get('materiaUnica', [MateriaUnicaController::class, 'showMateriaUnicaForm'])->name('materiaUnica.show');
 Route::post('materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnica'])->name('materiaUnica.store');
-Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFshow'])->name('materiaUnicaPDF.show');
+Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFshow'])->name('materiaUnicaPDF.show')->middleware(CheckFormMateriaUnicaCompletion::class);
 
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
+Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
+Route::get('cargaMaximaPDF', [CargaMaximaController::class,'cargaMaximaPDFshow'])->name('cargaMaximaPDF.show')->Middleware(CheckFormCargaMaximaCompletion::class);
+
+
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
+Route::post('cargaMaxima-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
+Route::get('opTitulacionPDF', [OpcionTitulacionController::class,'opTitulacionPDFshow'])->name('opTitulacionPDF.show')->Middleware(CheckFormOpTitulacionCompletion::class);
+
 
 Route::get('/hctc/formato_registro_tema', function () {
     return view('formato_registro_tema');
