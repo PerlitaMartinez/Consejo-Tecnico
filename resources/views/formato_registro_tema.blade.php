@@ -63,6 +63,13 @@
 
                 <br>
 
+                <div class="form-group">
+                    <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
+                    <form id="formulario" method="GET" action="{{ route('materiaUnicaPdf.show') }}" target="_blank">
+                    <button class="btn btn-success" id="descargar-formato">Descargar Formato</button>
+                    </form>
+                </div>
+            
        
 
     </div>

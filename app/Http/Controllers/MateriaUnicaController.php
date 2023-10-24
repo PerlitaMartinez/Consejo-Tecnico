@@ -36,15 +36,15 @@ class MateriaUnicaController extends Controller
     public function showMateriaUnicaForm(Request $request)
     {
         //----------implementar la lógica llamando al servicio web método "materia_unica"-----------
-
-        $registroExistente = MateriaUnicaModel::where('clave_unica', $this->materias[0]['clave_unica']) //<--- Cambiar por datos del servicio web
+        $dataSet = $request->input('dataSet');
+        $registroExistente = MateriaUnicaModel::where('clave_unica',  $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
             ->where(function ($query) {
                 $query->where('estado_solicitud', 'ALTA')
                     ->orWhere('estado_solicitud', 'AUTORIZADA');
             })
             ->first();
 
-        $dataSet = $request->input('dataSet');
+        
         if ($registroExistente) {//ya hay un registro guardado en la base de datos
             $nombreMateriaEncontrado = null;
             foreach ($this->materias as $materia) {
@@ -55,7 +55,7 @@ class MateriaUnicaController extends Controller
                 }
             }
 
-            //Creamos el arreglo
+            //Creamos el arreglo con la materia ya registrada
             $register = [
                 [
                     'nombre_materia' =>   $nombreMateriaEncontrado,
@@ -63,7 +63,7 @@ class MateriaUnicaController extends Controller
                 ],
 
             ];
-            return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' => $this->materias, 'registrado' =>  $register]);
+            return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' => $this->materias, 'registrado' =>  $register]); //Ya hay una materia registrada en trámite
         }
 
 
@@ -87,16 +87,16 @@ class MateriaUnicaController extends Controller
             }
         }
         ;
-        //verificamos que no esté guardado en la base de datos
-        $resultado = MateriaUnicaModel::where('clave_unica', $this->materias[0]['clave_unica']) //<--- Cambiar por datos del servicio web
+        //verificamos que no haya una solicitud activa en la base de datos
+        $resultado = MateriaUnicaModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
             ->where(function ($query) {
                 $query->where('estado_solicitud', 'ALTA')
                     ->orWhere('estado_solicitud', 'AUTORIZADA');
             })
-            ->get();
+            ->first();
         //dd($resultado->count());
 
-        if ($resultado->count() > 0) {
+        if ($resultado != null && $resultado->count() > 0) {
             return back()->with('error', 'No tienes permitido hacer esta solicitud');
         }
 
@@ -109,10 +109,9 @@ class MateriaUnicaController extends Controller
         $materiaUnica->clave_materia = $fila[0]['cve_materia'];
 
         $materiaUnica->save();
+        session(['formularioMU_completado' => true]);
 
-
-        //dd($register);
-        $mensaje = "Solicitud registrada con éxito.\nSi necesita realizar modificaciones, puede cancelar esta solicitud y registrar una nueva.";
+        $mensaje =  "Solicitud registrada con éxito.\nSi necesita realizar modificaciones, cancele esta solicitud y registre una nueva."; 
         return redirect()->route('materiaUnica.show', ['dataSet' =>  $dataSet, 'materias' => $this->materias])->with('success', $mensaje);
     }
 
@@ -125,7 +124,7 @@ class MateriaUnicaController extends Controller
             ->orWhere('estado_solicitud', 'AUTORIZADA')
             ->first();
         if (!$tupla) {
-            return back()->with('error', 'Primero registre una solicitud');
+            return back()->with('error', 'Solicitud no registrada.');
         }
 
         //buscamos el  nombre de la materia
@@ -139,8 +138,10 @@ class MateriaUnicaController extends Controller
         }
 
 
-        $dataSet = $dataSet = json_decode($request->input('dataSet'), true);
-        //dd($dataSet);
+        $dataSet = json_decode($request->input('dataSet'), true);
+        //registramos la fecha de impresión
+        $tupla->fecha_impresion = now();
+        $tupla->save();
 
         //Generación del PDF
         $pdf = new Fpdi('P', 'mm', 'A4');
@@ -177,6 +178,7 @@ class MateriaUnicaController extends Controller
         //$pdf->SetXY(60, 213);
         //$pdf->Write(0.1,"2023-2024/I");
         // Preview PDF
+        session(['formularioMU_completado' => true]);
         $pdf->Output('I', "Demotest.pdf");
 
         // Download PDF

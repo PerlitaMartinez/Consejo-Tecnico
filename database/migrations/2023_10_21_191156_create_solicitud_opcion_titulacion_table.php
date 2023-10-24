@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('fecha_solicitud')->nullable();
             $table->string('semestre', 15)->nullable();
             $table->dateTime('fecha_hora_coordinador')->nullable();
+            $table->dateTime('fecha_impresion')->nullable();
             $table->string('estado_solicitud', 15)->nullable();
             $table->bigInteger('clave_unica')->nullable();
             $table->bigInteger('rpe_staff')->nullable();

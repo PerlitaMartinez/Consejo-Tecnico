@@ -110,6 +110,7 @@
             }
         });
 
+        
         $(document).ready(function() {
             $('#materia ').on('change', function() {
                 var materias = @json($materias);

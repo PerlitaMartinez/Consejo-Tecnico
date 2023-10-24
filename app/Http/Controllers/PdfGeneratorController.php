@@ -17,54 +17,7 @@ class PdfGeneratorController extends Controller
     public function cargaMaximaGenerate()
     {
 
-        $pdf = new Fpdi('P', 'mm', 'A4');
-
-
-        // add a page
-        $pdf->AddPage('P', 'A4');
-        $pdf->SetFont('Arial', 'B', 10);
-
-        // set the source file
-        $path = public_path("FormaSGCM01.pdf");
-
-        $pdf->setSourceFile($path);
-
-        // import page 1
-        $tplId = $pdf->importPage(1);
-
-
-
-        // use the imported page and place it at point 10,10 with a width of 100 mm
-        $pdf->useTemplate($tplId, 0, 0, null, null, true);
-
-        $pdf->SetXY(169, 52);
-        $pdf->Write(0.1, "05");
-        $pdf->SetXY(183, 52);
-        $pdf->Write(0.1, "10");
-        $pdf->SetXY(196, 52);
-        $pdf->Write(0.1, "2023");
-        $pdf->SetXY(146, 112);
-        $pdf->Write(0.1, "X");
-        $pdf->SetXY(146, 116.5);
-        $pdf->Write(0.1, "X");
-        $pdf->SetXY(47, 201);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1, "IVAN MARTINEZ LOPEZ");
-        $pdf->SetXY(47, 206);
-        $pdf->Write(0.1, "295969");
-        $pdf->SetXY(47, 210);
-        $pdf->Write(0.1, "ING. EN COMPUTACION");
-        $pdf->SetXY(62, 214.55);
-        $pdf->Write(0.1, "2023-2024/I");
-        // Preview PDF
-        $pdf->Output('I', "Demotest.pdf");
-
-        // Download PDF
-        //Download use D $pdf->Output(‘D’,”Demotest.pdf");
-
-        // Save PDF to Particular path or project path
-
-        $pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
+        
     }
 
     public function materiaUnicaGenerate()
@@ -84,8 +37,6 @@ class PdfGeneratorController extends Controller
 
         // import page 1
         $tplId = $pdf->importPage(1);
-
-
 
         // use the imported page and place it at point 10,10 with a width of 100 mm
         $pdf->useTemplate($tplId, 0, 0, null, null, true);

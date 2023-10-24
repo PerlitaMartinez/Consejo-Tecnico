@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('cat_opcion_titulacion', function (Blueprint $table) {
             $table->bigInteger('id_opcion_titulacion', true);
-            $table->string('opcion_titulacion', 45)->nullable();
+            $table->string('opcion_titulacion', 100)->nullable();
         });
     }
 

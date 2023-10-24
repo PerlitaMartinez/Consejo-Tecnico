@@ -10,6 +10,7 @@ class CargaMaximaModel extends Model
     use HasFactory;
 
     protected $table = 'solicitud_carga_maxima';
+    public $timestamps = false;
 
     protected $primaryKey = 'id_solicitud_cm';
     public function sesion(){
