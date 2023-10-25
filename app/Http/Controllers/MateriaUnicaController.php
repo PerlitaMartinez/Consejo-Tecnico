@@ -105,7 +105,7 @@ class MateriaUnicaController extends Controller
         $materiaUnica->fecha_solicitud = now()->format('Y-m-d');
 
         $materiaUnica->semestre = $fila[0]['semestre'];
-        $materiaUnica->clave_unica = $fila[0]['clave_unica'];
+        $materiaUnica->clave_unica = $dataSet[0]['clave_unica'];
         $materiaUnica->clave_materia = $fila[0]['cve_materia'];
 
         $materiaUnica->save();

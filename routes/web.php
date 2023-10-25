@@ -48,7 +48,7 @@ Route::get('cargaMaximaPDF', [CargaMaximaController::class,'cargaMaximaPDFshow']
 
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
-Route::post('cargaMaxima-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
+Route::post('opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
 Route::get('opTitulacionPDF', [OpcionTitulacionController::class,'opTitulacionPDFshow'])->name('opTitulacionPDF.show')->Middleware(CheckFormOpTitulacionCompletion::class);
 
 
@@ -82,7 +82,7 @@ Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
 
 //Route::post('/guarda-datos', [PdfGeneratorControllerCM::class, 'guardarDatos'])->name('savemateriaUnica.create');
 
-Route::get('/generar-pdf3', [PdfGeneratorController::class, 'opcionTitulacionGenerate'])->name('opcionTitulacionPdf.show');
+//Route::get('/generar-pdf3', [PdfGeneratorController::class, 'opcionTitulacionGenerate'])->name('opcionTitulacionPdf.show');
 
 //Route::get('/opcionTitulacion', [TramitesController::class, 'showFormopcionTitulacion'])->name('opcionTitulacion.show');
 

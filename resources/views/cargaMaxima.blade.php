@@ -14,7 +14,7 @@
                 {{ session('error') }}
             </div>
         @endif
-        <form id="formulario" method="POST" action="{{ route('cargaMaxima.store', ['dataSet' => $dataSet]) }}">
+        <form id="formulario" method="POST" action={{route('cargaMaxima.store',['dataSet' => $dataSet]) }}>
             @csrf
             <h1>Carga Máxima</h1>
             <p>El sistema seleccionará el motivo inicial de la carga máxima</p>

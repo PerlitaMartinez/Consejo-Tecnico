@@ -86,9 +86,14 @@ class OpcionTitulacionController extends Controller
 
 
 
+        $dataSet = json_decode($request->input('dataSet'), true);
         //Se obtiene la información de la base de datos.
-        $registro = OpcionTitulacionModel::where('estado_solicitud', 'ALTA')
-            ->orWhere('estado_solicitud', 'AUTORIZADA')
+
+        $registro = OpcionTitulacionModel::where('clave_unica', $dataSet[0]['clave_unica'])
+            ->where(function ($query) {
+                $query->where('estado_solicitud', 'ALTA')
+                    ->orWhere('estado_solicitud', 'AUTORIZADA');
+            })
             ->first();
 
         //verificamos que exista el registro
@@ -96,7 +101,7 @@ class OpcionTitulacionController extends Controller
             return back()->with('error', 'Solicitud no registrada.');
         }
 
-        $dataSet = json_decode($request->input('dataSet'), true);
+        
 
         //Procesamos la fecha para colocarla en el pdf
         $fechaSolicitud =  $registro->fecha_solicitud;
@@ -134,7 +139,7 @@ class OpcionTitulacionController extends Controller
         $pdf->SetXY(189, 55);
         $pdf->Write(0.1, $carbonFecha->year);
         $pdf->SetXY(90, 96);
-        $pdf->Write(0.1, "EN COMPUTACION");//<--Cambiar cuandoi tenga el servicio web
+        $pdf->Write(0.1, "EN COMPUTACION"); //<--Cambiar cuandoi tenga el servicio web
 
         //Dependiendo de la opción seleccionada se coloca la selección dentro del formato
         switch ($registro->id_opcion_titulacion) {

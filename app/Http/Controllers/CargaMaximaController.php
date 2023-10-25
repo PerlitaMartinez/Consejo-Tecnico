@@ -83,10 +83,14 @@ class CargaMaximaController extends Controller
     public function cargaMaximaPDFshow(Request $request)
     {
 
+        $dataSet = json_decode($request->input('dataSet'), true);
 
         //Se obtiene la información de la base de datos.
-        $registro = CargaMaximaModel::where('estado_solicitud', 'ALTA')
-            ->orWhere('estado_solicitud', 'AUTORIZADA')
+        $registro = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
+            ->where(function ($query) {
+                $query->where('estado_solicitud', 'ALTA')
+                    ->orWhere('estado_solicitud', 'AUTORIZADA');
+            })
             ->first();
 
         //verificamos que exista el registro
@@ -94,7 +98,7 @@ class CargaMaximaController extends Controller
             return back()->with('error', 'Solicitud no registrada.');
         }
 
-        $dataSet = json_decode($request->input('dataSet'), true);
+       
 
         //Procesamos la fecha para colocarla en el pdf
         $fechaSolicitud =  $registro->fecha_solicitud;
