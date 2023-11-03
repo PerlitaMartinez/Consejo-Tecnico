@@ -50,22 +50,26 @@
 
             <!-- Opciones Tutor -->
             <li class="nav-item tutor-option mr-5" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#">Solicitudes en proceso</a>
+                <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesEnProcesoCard()">Solicitudes en proceso</a>
             </li>
             <li class="nav-item tutor-option mr-5" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#">Solicitudes entrantes</a>
+                <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesCard()">Solicitudes entrantes</a>
             </li>
             <li class="nav-item tutor-option mr-5" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#">Tutorados</a>
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarTutorados()">Tutorados</a>
             </li>
             <!-- Fin de opciones Tutor -->
 
             <!-- Opciones Jefe de área -->
             <li class="nav-item jefeArea-option mr-5" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#">Solicitudes en proceso</a>
+                <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesEnProcesoCard()">Solicitudes en proceso</a>
             </li>
             <li class="nav-item jefeArea-option mr-5" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#">Solicitudes entrantes</a>
+                <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesCard()">Solicitudes entrantes</a>
             </li>
             <!-- Fin de opciones Jefe de área -->
 
@@ -95,6 +99,155 @@
         </ul>
     </div>
 </nav>
+
+
+<!-- ALEXHD - card para que se muestre la lista de solicitudes entrantes, se tendría que enviar el id del tutor 
+o jefe de área para que se entre a la base de datos y muestre las solicitudes específicas de el usuario --> 
+<div id="solicitudesCard" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes Entrantes</h2></center><br><br>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID solicitud</th>
+          <th scope="col">Nombre solicitud</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Solicitante</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+          <td>Mark</td>
+          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+          <td>Thornton</td>
+          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+          <td>Thornton</td>
+          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- ALEX HD - card para que se muestre la lista de solicitudes entrantes, se tendría que enviar el id del tutor 
+o jefe de área para que se entre a la base de datos y muestre las solicitudes específicas de el usuario -->
+<div id="solicitudesEnProcesoCard" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes En Proceso</h2></center><br><br>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID solicitud</th>
+          <th scope="col">Nombre solicitud</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Solicitante</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+          <td>Mark</td>
+          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+          <td>Thornton</td>
+          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+          <td>Thornton</td>
+          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- ALEX HD - card para que se muestre la lista de los tutorados, se tendría que enviar el id del tutor 
+para que se entre a la base de datos y muestre sus tutorados -->
+<div id="tutorados" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Tutorados</h2></center><br><br>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Clave Única</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Generación</th>
+          <th scope="col">Solicitudes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">12345</th>
+          <td>Mark</td>
+          <td>2020</td>
+          <td>
+            <!-- aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario -->
+            lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+            lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">23456</th>
+          <td>Jacob</td>
+          <td>2019</td>
+          <td>
+            <!-- aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario -->
+            lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+            lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+          </td>        
+        <tr>
+          <th scope="row">34567</th>
+          <td>Larry</td>
+          <td>2022</td>
+          <td>
+            <!-- aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario -->
+            lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+            lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+          </td>  
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+
 
 <!-- FontAwesome (para el ícono del botón) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
@@ -177,4 +330,33 @@
             });
         });
     });
+
+
+
+    // ALEX HD - funciones para mostrar los cards correspondientes a lo seleccionado
+    // me parece que aquí habría que enviar el id del usuario para sacar la info necesaria, hay que checarlo bien bien  
+    function mostrarSolicitudesCard() {
+        // Mostrar la card al hacer clic en "Solicitudes entrantes"
+        document.getElementById('solicitudesCard').style.display = 'block';
+        // Ocultar otros elementos
+        document.getElementById('solicitudesEnProcesoCard').style.display = 'none';
+        document.getElementById('tutorados').style.display = 'none';
+    }
+
+    function mostrarSolicitudesEnProcesoCard() {
+        // Mostrar la card al hacer clic en "Solicitudes en proceso"
+        document.getElementById('solicitudesEnProcesoCard').style.display = 'block';
+        // Ocultar otros elementos
+        document.getElementById('solicitudesCard').style.display = 'none';
+        document.getElementById('tutorados').style.display = 'none';
+    }
+
+    function mostrarTutorados() {
+        // Mostrar la card al hacer clic en "tutorados"
+        document.getElementById('tutorados').style.display = 'block';
+        // Ocultar otros elementos
+        document.getElementById('solicitudesCard').style.display = 'none';
+        document.getElementById('solicitudesEnProcesoCard').style.display = 'none';
+    }
+
 </script>
