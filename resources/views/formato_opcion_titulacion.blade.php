@@ -23,10 +23,16 @@
                 @foreach ($opciones as $item)
                     <div class="row">
                         <div class="col-md-8">
-                            <input class="form-check-input" type="radio" name="opcion_titulacion"
-                                id="opcion_{{ $item->id_opcion_titulacion }}" value="{{ $item->id_opcion_titulacion }}"
-                                >
-                            <label>"{{ $item->opcion_titulacion }}"</label>
+                            @if ($loop->first)
+                                <input class="form-check-input" type="radio" name="opcion_titulacion"
+                                    id="opcion_{{ $item->id_opcion_titulacion }}" value="{{ $item->id_opcion_titulacion }}"
+                                    checked>
+                            @else
+                                <input class="form-check-input" type="radio" name="opcion_titulacion"
+                                    id="opcion_{{ $item->id_opcion_titulacion }}" value="{{ $item->id_opcion_titulacion }}"
+                                    >
+                            @endif
+                            <label>{{ $item->opcion_titulacion }}</label>
                         </div>
                     </div>
                 @endforeach
@@ -37,73 +43,11 @@
                             <input class="form-check-input" type="radio" name="opcion_titulacion"
                                 id="opcion_{{ $item->id_opcion_titulacion }}" value="{{ $item->id_opcion_titulacion }}"
                                 disabled>
-                            <label>"{{ $item->opcion_titulacion }}"</label>
+                            <label>{{ $item->opcion_titulacion }}</label>
                         </div>
                     </div>
                 @endforeach
             @endif
-
-            {{-- <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox1" id="checkbox1" checked>
-                    <label>Trabajo Recepcional</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox2" id="checkbox2" checked>
-                    <label>Tesis</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox3" id="checkbox2" checked>
-                    <label>Examen Colectivo</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox4" id="checkbox2" checked>
-                    <label>Exención de Examen por Promedio</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox5" id="checkbox2" checked>
-                    <label>Mediante un semestre o dos cuatrimestres en Estudios de Especialidad o Posgrado</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox6" id="checkbox2" checked>
-                    <label>Mediante dos semestres o tres cuatrimestres en Estudios de Especialidad o Posgrado</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
-                    <label>Examen de Conocimientos con Duración de 8 horas</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
-                    <label>Memorias de Actividad Profesional</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
-                    <label>Opción a No trabajo Recepcional</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <input class="form-check-input" type="radio" name="checkbox" id="checkbox2" checked>
-                    <label>Examen General de Egreso de la Licenciatura</label>
-                </div>
-            </div> --}}
-
             <br>
 
             <div class="row">
@@ -140,12 +84,9 @@
 
             <div class="form-group">
                 @if ($exists)
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud" disabled>Registrar Solicitud</button>
                     <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
                 @else
                     <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
-                    <button class="btn btn-success" id="descargar-formato" disabled>Descargar
-                        Formato</button>
                 @endif
             </div>
         </form>
@@ -171,24 +112,31 @@
 
     <script type="text/javascript">
         var dataSet = @json($dataSet);
-        var url = "{{ route('opTitulacionPDF.show') }}?dataSet=" + JSON.stringify(dataSet);
+        @if (isset($id))
+            var id = @json($id);
+            var url = "{{ route('opTitulacionPDF.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;;
+        @endif
 
-        // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
-        document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                // código para registrar la solicitud si se hace clic en "Aceptar"
-                document.getElementById('formulario').submit()
-            }
-        });
+        @if (!isset($id))
+            // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
+            document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
+                    // código para registrar la solicitud si se hace clic en "Aceptar"
+                    document.getElementById('formulario').submit()
+                }
+            });
+        @endif
 
 
-        // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
-        document.getElementById('descargar-formato').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
-                window.open(url, "_blank");
-            }
-        });
+        @if (isset($id))
+            // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
+            document.getElementById('descargar-formato').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
+                    window.open(url, "_blank");
+                }
+            });
+        @endif
     </script>
 @endsection

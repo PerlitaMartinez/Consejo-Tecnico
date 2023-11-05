@@ -31,6 +31,7 @@ class CargaMaximaController extends Controller
         //Se verifica primero si el alumno tiene una solicitud de Carga Máxima ya registrada
         $dataSet = $request->input('dataSet');
         $exists = $this->cargaMaximaRegister($dataSet);
+        $id = $request->input('id');
 
         
         //dd($dataSet);
@@ -39,7 +40,8 @@ class CargaMaximaController extends Controller
             'duracion' => $this->cargaMaximaRegister[0]['duracion_y_media_semestre'],
             'matRep' => $this->cargaMaximaRegister[0]['materias_reprobadas_semestre'],
             'exists' => $exists,
-            'semestre' => $this->cargaMaximaRegister[0]['semestre']
+            'semestre' => $this->cargaMaximaRegister[0]['semestre'],
+            'id' => $id
         ]);
     }
 
@@ -52,12 +54,10 @@ class CargaMaximaController extends Controller
     {
         $dataSet = $request->input('dataSet');
         //verificamos que no haya una solicitud activa en la base de datos
-        $resultado = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
-            ->where(function ($query) {
-                $query->where('estado_solicitud', 'ALTA')
-                    ->orWhere('estado_solicitud', 'AUTORIZADA');
-            })
-            ->first();
+        $resultado = CargaMaximaModel::where('clave_unica',  $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
+        ->where ('estado_solicitud', '!=', 'FINALIZADO')
+        ->first();
+         
 
         if ($resultado != null && $resultado->count() > 0) {
             return back()->with('error', 'No tienes permitido hacer esta solicitud');
@@ -72,9 +72,10 @@ class CargaMaximaController extends Controller
         $cargaMaxima->estado_solicitud = "ALTA";
         $cargaMaxima->clave_unica = $dataSet[0]['clave_unica']; //<--Cambiar con servicio web
         $cargaMaxima->save();
-        session(['formularioCM_completado' => true]);
+        $newId = $cargaMaxima->id_solicitud_cm;
+        //dd($newId);
         $mensaje = "Solicitud registrada con éxito.";
-        return redirect()->route('cargaMaxima.show', ['dataSet' =>  $dataSet])->with('success', $mensaje);
+        return redirect()->route('cargaMaxima.show', ['dataSet' =>  $dataSet, 'id' => $newId])->with('success', $mensaje);
     }
 
 
@@ -84,14 +85,10 @@ class CargaMaximaController extends Controller
     {
 
         $dataSet = json_decode($request->input('dataSet'), true);
+        $id = $request->input('id');
 
         //Se obtiene la información de la base de datos.
-        $registro = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
-            ->where(function ($query) {
-                $query->where('estado_solicitud', 'ALTA')
-                    ->orWhere('estado_solicitud', 'AUTORIZADA');
-            })
-            ->first();
+        $registro = CargaMaximaModel::find($id);
 
         //verificamos que exista el registro
         if (!$registro) {
@@ -151,26 +148,21 @@ class CargaMaximaController extends Controller
         $pdf->SetXY(62, 214.55);
         $pdf->Write(0.1, $this->cargaMaximaRegister[0]['semestre']);//Cambiar cuando se tenga el servicio web
         // Preview PDF
-        $pdf->Output('I', "Demotest.pdf");
+        //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D $pdf->Output(‘D’,”Demotest.pdf");
+        //Download use D 
+        $pdf->Output('D',"carga-maxima.pdf");
 
         // Save PDF to Particular path or project path
 
-        $pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
-
-
-       
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");      
         
     }
 
 
-
     protected function cargaMaximaRegister($dataSet)
     {
-
-
         $registro = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
             ->where(function ($query) {
                 $query->where('estado_solicitud', 'ALTA')
@@ -187,5 +179,25 @@ class CargaMaximaController extends Controller
         $solicitudes = CargaMaximaModel::all();
         //dd($solicitudes);
         return view('rol', ['solicitudes' => $solicitudes]);
+    }
+
+    public function cargaMaximaDelete(Request $request){
+        $id = $request->input("id");
+        $dataSet = json_decode($request->input('dataSet'), true);
+
+
+        $registro = CargaMaximaModel::find($id);
+
+        if (!$registro) {
+            // Si no se encuentra el registro, se envía un mensaje de error
+            return response()->json(['message' => "No se encontró el registro"])
+                ->with('error', "No se pudo cancelar la solicitud.");
+        }
+
+        // Elimina el registro
+        $registro->delete();
+
+        // El registro se eliminó satisfactoriamente.
+        return response()->json(['message' => true]);
     }
 }

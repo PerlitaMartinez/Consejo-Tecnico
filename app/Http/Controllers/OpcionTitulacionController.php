@@ -22,6 +22,7 @@ class OpcionTitulacionController extends Controller
     public function showTitulacionForm(Request $request)
     {
         $dataSet = $request->input('dataSet');
+        $id = $request->input('id');
         //Se obtienen todas las opciones de titulación
         $opciones = CatOpcionTitulacionModel::all();
 
@@ -30,7 +31,7 @@ class OpcionTitulacionController extends Controller
 
 
 
-        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones]); //<----Cambiar por servicio web
+        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id]); //<----Cambiar por servicio web
     }
 
 
@@ -61,9 +62,9 @@ class OpcionTitulacionController extends Controller
         $opcionTitulacion->clave_unica = $dataSet[0]['clave_unica'];
         $opcionTitulacion->id_opcion_titulacion = $opcionTitulacionSeleccionada;
         $opcionTitulacion->save();
-        session(['formularioOT_completado' => true]);
+        $newId = $opcionTitulacion->id_solicitud_OT;
         $mensaje = "Solicitud registrada con éxito.";
-        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet])->with('success', $mensaje);
+        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId])->with('success', $mensaje);
     }
 
 
@@ -88,13 +89,8 @@ class OpcionTitulacionController extends Controller
 
         $dataSet = json_decode($request->input('dataSet'), true);
         //Se obtiene la información de la base de datos.
-
-        $registro = OpcionTitulacionModel::where('clave_unica', $dataSet[0]['clave_unica'])
-            ->where(function ($query) {
-                $query->where('estado_solicitud', 'ALTA')
-                    ->orWhere('estado_solicitud', 'AUTORIZADA');
-            })
-            ->first();
+        $id = $request->input('id');
+        $registro = OpcionTitulacionModel::find($id);
 
         //verificamos que exista el registro
         if (!$registro) {
@@ -209,14 +205,39 @@ class OpcionTitulacionController extends Controller
         //$pdf->SetXY(60, 213);
         //$pdf->Write(0.1,"2023-2024/I");
         // Preview PDF
-        $pdf->Output('I', "Demotest.pdf");
+        //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D $pdf->Output(‘D’,”Demotest.pdf");
+        //Download use D 
+        $pdf->Output('D','MateriaUnica.pdf');
 
         // Save PDF to Particular path or project path
 
-        $pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
+    }
+
+
+
+
+    public function opcionTitulacionDelete(Request $request){
+
+        $id = $request->input("id");
+        $dataSet = json_decode($request->input('dataSet'), true);
+
+
+        $registro = OpcionTitulacionModel::find($id);
+
+        if (!$registro) {
+            // Si no se encuentra el registro, se envía un mensaje de error
+            return response()->json(['message' => "No se encontró el registro"])
+                ->with('error', "No se pudo cancelar la solicitud.");
+        }
+
+        // Elimina el registro
+        $registro->delete();
+
+        // El registro se eliminó satisfactoriamente.
+        return response()->json(['message' => true]);
     }
 
 
