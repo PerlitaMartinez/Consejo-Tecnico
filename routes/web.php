@@ -77,6 +77,14 @@ Route::get('/hctc/rol', function(){
     return view('rol');
 })->name('rol');
 
+
+Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
+
+Route::get('/hctc/rol', [MateriaUnicaController::class, 'SacaDatosMateriaUnica'])->name('rol'); //enviar las solicitudes de materia única
+
+Route::get('/hctc/rol', [OpcionTitulacionController::class, 'SacaDatosOpcionTitulacion'])->name('rol'); //enviar las solicitudes de materia única
+
+
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
 
 //Route::get('/cargaMaxima', [TramitesController::class, 'showFormCargaMaxima'])->name('cargaMaxima.show');

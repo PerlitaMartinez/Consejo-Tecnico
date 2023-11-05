@@ -239,4 +239,13 @@ class OpcionTitulacionController extends Controller
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
     }
+
+
+    // función para mostrar los detalles desde la base de datos de la tabla de opción de titulación
+    public function SacaDatosOpcionTitulacion()
+    {
+        $solicitudes = OpcionTitulacionModel::all();
+        //dd($solicitudes);
+        return view('rol', ['solicitudes' => $solicitudes]);
+    }
 }
