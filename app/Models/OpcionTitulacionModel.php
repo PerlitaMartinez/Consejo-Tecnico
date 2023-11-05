@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OpcionTitulacionModel extends Model
 {
@@ -15,12 +16,12 @@ class OpcionTitulacionModel extends Model
     public $timestamps = false;
 
 
-    public function sesion(){
+    public function sesion() :BelongsTo{
         return $this->belongsTo(SesionHctcModel::class, 'id_sesion_hctc');
     }
 
-    public function catOpcionTitulacion(){
-        
-        return $this->belongsTo(CatOpcionTitulacionModel::class, 'id_opcion_titulacion');
+    public function catOpcionTitulacion() :BelongsTo
+    { 
+        return $this->belongsTo(CatOpcionTitulacionModel::class, 'id_solicitud_OT', 'id_opcion_titulacion');
     }
 }

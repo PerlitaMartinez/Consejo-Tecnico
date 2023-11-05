@@ -14,7 +14,8 @@
                 {{ session('error') }}
             </div>
         @endif
-        <form id="formulario" method="POST" action={{ route('materiaUnica.store', ['dataSet' => $dataSet]) }}>
+        <form id="formulario" method="POST"
+            action={{ route('materiaUnica.store', ['dataSet' => $dataSet, 'registered' => true]) }}>
             @csrf
             <h1>Materia Única</h1>
             <p>Selecciona la materia para registrarla como materia única</p>
@@ -23,16 +24,20 @@
                 <div class="col-md-6">
                     <div class="form-group d-flex">
                         <label for="materia" class="mr-2">Materia Única</label>
-                        @if (!$registrado)
-                            <select id="materia" name="materia" class="form-control">
-                                @foreach ($materias as $fila)
-                                    <option value="{{ $fila['nombre_materia'] }}">{{ $fila['nombre_materia'] }}</option>
-                                @endforeach
+
+                        @if ($materias == 'all')
+                            <select id="materia" name="materia" class="form-control" disabled>
+                                <option value=""> </option>
                             @else
-                                <select id="materia" name="materia" class="form-control" disabled>
-                                    <option value="{{ $registrado[0]['nombre_materia'] }}"> {{ $registrado[0]['nombre_materia'] }}</option>
+                                <select id="materia" name="materia" class="form-control">
+                                    @foreach ($materias as $fila)
+                                        <option value="{{ $fila['nombre_materia'] }}">{{ $fila['nombre_materia'] }}</option>
+                                    @endforeach
+                                    @php
+
+                                    @endphp
                         @endif
-                    </select>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -41,33 +46,28 @@
                 <div class="col-md-6">
                     <div class="form-group d-flex">
                         <label for="semestre" class="mr-2" style="margin-left:35px;">Semestre</label>
-                        @if (!$registrado)
-                            <select id="semestre" name="semestre" class="form-control" >
-                                <option value="{{ $materias[0]['semestre'] }}">{{ $materias[0]['semestre'] }}</option>
+
+                        @if ($materias == 'all')
+                            <select id="semestre" name="semestre" class="form-control" disabled>
+                                <option value="" disabled> </option>
                             @else
                                 <select id="semestre" name="semestre" class="form-control">
-                                    <option value="{{ $registrado[0]['semestre'] }}">{{ $registrado[0]['semestre'] }}
-                                    </option>
+                                    <option value="{{ $materias[0]['semestre'] }}">{{ $materias[0]['semestre'] }}</option>
                         @endif
                         </select>
                     </div>
                 </div>
             </div>
-
             <br>
-
             <div class="form-group">
-                @if ($registrado)
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud" disabled>Registrar Solicitud</button>
-                    <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
+                @if (!$registered)
+                    @if ($materias != 'all')
+                        <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
+                    @endif
                 @else
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
-                    <button class="btn btn-success" id="descargar-formato" disabled target="_blank">Descargar
-                        Formato</button>
+                    <button class="btn btn-success" id="descargar-formato">Descargar Formato</button>
                 @endif
-
             </div>
-
         </form>
     </div>
 
@@ -90,27 +90,43 @@
 
     <script type="text/javascript">
         var dataSet = @json($dataSet);
-        var url = "{{ route('materiaUnicaPDF.show') }}?dataSet=" + JSON.stringify(dataSet);
+        @if (isset($id))
+            var id = @json($id);
+            var url = "{{ route('materiaUnicaPDF.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;
+        @endif
+
 
         // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
-        document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                // código para registrar la solicitud si se hace clic en "Aceptar"
-                document.getElementById('formulario').submit()
-            }
-        });
+        @if (!isset($id))
+            document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
+                    // código para registrar la solicitud si se hace clic en "Aceptar"
+                    document.getElementById('formulario').submit()
+
+                    //Se genera el pdf
+                    //window.open("{{ route('materiaUnicaPDF.show') }}", "_blank");
+                    //Se redirige a la vista del formulario con un mensaje de éxito.
+                    //window.location.href = "{{ route('materiaUnica.show') }}?success=1&dataSet=" + JSON.stringify(dataSet) + "&id=" + ;
+                }
+            });
+        @endif
+        @if (isset($id))
+            // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
+            document.getElementById('descargar-formato').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
+
+                    window.open(url, "_blank");
+                    setTimeout(function() {
+                        window.location.href = "{{ route('materiaUnica.show') }}?dataSet=" + JSON
+                            .stringify(dataSet) + "&registered=" + Boolean(false);
+                    }, 2000);
+                }
+            });
+        @endif
 
 
-        // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
-        document.getElementById('descargar-formato').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
-                window.open(url, "_blank");
-            }
-        });
-
-        
         $(document).ready(function() {
             $('#materia ').on('change', function() {
                 var materias = @json($materias);

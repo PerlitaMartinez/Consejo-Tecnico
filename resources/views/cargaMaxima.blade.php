@@ -14,7 +14,7 @@
                 {{ session('error') }}
             </div>
         @endif
-        <form id="formulario" method="POST" action={{route('cargaMaxima.store',['dataSet' => $dataSet]) }}>
+        <form id="formulario" method="POST" action={{ route('cargaMaxima.store', ['dataSet' => $dataSet]) }}>
             @csrf
             <h1>Carga Máxima</h1>
             <p>El sistema seleccionará el motivo inicial de la carga máxima</p>
@@ -56,12 +56,9 @@
 
 
                 @if ($exists)
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud" disabled>Registrar Solicitud</button>
                     <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
                 @else
                     <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
-                    <button class="btn btn-success" id="descargar-formato" disabled>Descargar
-                        Formato</button>
                 @endif
             </div>
         </form>
@@ -87,24 +84,31 @@
 
     <script type="text/javascript">
         var dataSet = @json($dataSet);
-        var url = "{{ route('cargaMaximaPDF.show') }}?dataSet=" + JSON.stringify(dataSet);
+        @if (isset($id))
+            var id = @json($id);
+            var url = "{{ route('cargaMaximaPDF.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;
+        @endif
 
-        // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
-        document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                // código para registrar la solicitud si se hace clic en "Aceptar"
-                document.getElementById('formulario').submit()
-            }
-        });
+        @if (!isset($id))
+            // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
+            document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
+                    // código para registrar la solicitud si se hace clic en "Aceptar"
+                    document.getElementById('formulario').submit()
+                }
+            });
+        @endif
 
 
-        // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
-        document.getElementById('descargar-formato').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
-                window.open(url, "_blank");
-            }
-        });
+        @if (isset($id))
+            // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
+            document.getElementById('descargar-formato').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
+                    window.open(url, "_blank");
+                }
+            });
+        @endif
     </script>
 @endsection

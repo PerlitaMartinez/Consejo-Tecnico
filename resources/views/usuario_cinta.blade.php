@@ -5,10 +5,14 @@
 
 
 
-<link rel="stylesheet" href="{{ asset('assets/stylesForms.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('assets/stylesForms.css') }}"> --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 
 <!-- Separador -->
-<hr style="border: 0px solid #DCDCDC; margin: 10px 0;">
+<hr style="border: 0px solid #DCDCDC; margin: 5px 0;">
 
 <div style="display: flex; justify-content: center;">
     <div style="display: flex; justify-content: center;">
@@ -16,7 +20,7 @@
             style="width: 100px; height: 120px;">
     </div>
     <!-- Contenedor de la lista con fondo azul -->
-    <div style="background-color: #B0E0E6; text-align: right; padding: 5px; width: 160px; height: 130px;">
+    <div style="background-color: #B0E0E6;  text-align: right; padding: 5px; width: 190px; height: 130px;">
         <ul style="list-style: none; color: #004a98;">
             <li>Clave única</li>
             <li>Nombre</li>
@@ -25,8 +29,8 @@
             <li>Coordinador</li>
         </ul>
     </div>
-    <div style="background-color: #dfecde; padding: 5px; width: 480px; height: 130px;">
-        <ul style="list-style: none; color: #0d2607;">
+    <div style="background-color: #dfecde; width: 480px; height: 130px;">
+        <ul style="list-style: none;  padding: 5px 5px 5px 5px; color: #0d2607;">
             <li>{{ $dataSet[0]['clave_unica'] }}</li>
             <li>{{ $dataSet[0]['nombre_alumno'] }}</li>
             <li>--</li>
@@ -44,26 +48,31 @@
     <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href={{route('inicio.index', ['dataSet' => $dataSet ])}}> <i class="fas fa-home-alt"
-                        id="icono_casa"></i> Inicio</a>
+                <a class="nav-link btn btn-primary rounded" href={{ route('inicio.index', ['dataSet' => $dataSet]) }}>
+                    <i class="fas fa-home-alt" id="icono_casa"></i> Inicio</a>
             </li>
             {{-- $lista->tiene_materia_única->__toString() == 'si' --}}
             @if (true)
                 <li class="nav-item mr-5">
-                    <a class="nav-link btn btn-primary rounded" href={{route('materiaUnica.show', ['dataSet' => $dataSet])}}>Materia Única</a>
+                    <a class="nav-link btn btn-primary rounded"
+                        href={{ route('materiaUnica.show', ['dataSet' => $dataSet, 'registered' => false]) }}>Materia
+                        Única</a>
                 </li>
             @endif
             {{-- $lista->esta_car<ga_máxima->__toString() == 'si' --}}
             @if (true)
-            <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href={{route('cargaMaxima.show', ['dataSet' => $dataSet])}}>Carga Máxima</a>
-            </li>
+                <li class="nav-item mr-5">
+                    <a class="nav-link btn btn-primary rounded"
+                        href={{ route('cargaMaxima.show', ['dataSet' => $dataSet]) }}>Carga Máxima</a>
+                </li>
             @endif
             <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href={{ route('titulacion.show', ['dataSet' => $dataSet] )}}>Titulación</a>
+                <a class="nav-link btn btn-primary rounded"
+                    href={{ route('titulacion.show', ['dataSet' => $dataSet]) }}>Titulación</a>
             </li>
             <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href="#">Seguimiento de Solicitudes</a>
+                <a class="nav-link btn btn-primary rounded"
+                    href={{ route('seguimiento.show', ['dataSet' => $dataSet]) }}>Seguimiento de Solicitudes</a>
             </li>
             <li class="nav-item mr-5">
                 <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
@@ -74,12 +83,8 @@
 </nav>
 
 <!-- FontAwesome (para el ícono del botón) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 
-<!-- Bootstrap JS (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 <style>
     .navbar {
@@ -104,4 +109,5 @@
         background-color: #004a98 !important;
         color: white !important;
     }
+
 </style>
