@@ -73,8 +73,9 @@ Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
     return view('registro_tema_temario_memorias');
 })->name('registro_tema_temario_memorias');
 
-
-
+Route::get('/hctc/rol', function(){
+    return view('rol');
+})->name('rol');
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
 
