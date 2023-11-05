@@ -218,4 +218,13 @@ class OpcionTitulacionController extends Controller
 
         $pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
     }
+
+
+    // función para mostrar los detalles desde la base de datos de la tabla de opción de titulación
+    public function SacaDatosOpcionTitulacion()
+    {
+        $solicitudes = OpcionTitulacionModel::all();
+        //dd($solicitudes);
+        return view('rol', ['solicitudes' => $solicitudes]);
+    }
 }

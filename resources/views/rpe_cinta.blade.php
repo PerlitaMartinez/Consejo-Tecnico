@@ -49,29 +49,58 @@
             </li>
 
             <!-- Opciones Tutor -->
+
             <li class="nav-item tutor-option mr-5" style="display: none;">
                 <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesEnProcesoCard()">Solicitudes en proceso</a>
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesCargaMaxima()">Solicitudes Carga Máxima</a>
             </li>
             <li class="nav-item tutor-option mr-5" style="display: none;">
-                <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesCard()">Solicitudes entrantes</a>
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesMateriaUnica()">Solicitudes Materia Única</a>
             </li>
+            <li class="nav-item tutor-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesOpcionTitulacion()">Solicitudes Opción de Titulación</a>
+            </li>  
+            <!-- estas dos partes no se ven por que no existen aún controladores, ya que en el sprint los estuvieron haciendo -->
+            <li class="nav-item tutor-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesRegistroTema()">Solicitudes Registro de Tema</a>
+            </li> 
+            <li class="nav-item tutor-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesAutorizacionTemario()">Solicitudes Autorización de Temario</a>
+            </li> 
             <li class="nav-item tutor-option mr-5" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarTutorados()">Tutorados</a>
             </li>
             <!-- Fin de opciones Tutor -->
 
+
+
             <!-- Opciones Jefe de área -->
+            
             <li class="nav-item jefeArea-option mr-5" style="display: none;">
                 <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesEnProcesoCard()">Solicitudes en proceso</a>
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesCargaMaxima()">Solicitudes Carga Máxima</a>
             </li>
             <li class="nav-item jefeArea-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesMateriaUnica()">Solicitudes Materia Única</a>
+            </li>
+            <li class="nav-item jefeArea-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesOpcionTitulacion()">Solicitudes Opción de Titulación</a>
+            </li>  
+            <!-- estas dos partes no se ven por que no existen aún controladores, ya que en el sprint los estuvieron haciendo -->
+            <li class="nav-item jefeArea-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesRegistroTema()">Solicitudes Registro de Tema</a>
+            </li> 
+            <li class="nav-item jefeArea-option mr-5" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesAutorizacionTemario()">Solicitudes Autorización de Temario</a>
+            </li> 
+            <li class="nav-item jefeArea-option mr-5" style="display: none;">
                 <!-- ALEXHD - en esta parte se tendría que pasar el id del usuarios autentificado para poder mostrar específicamente ciertas solicitudes que le correspondan -->
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarSolicitudesCard()">Solicitudes entrantes</a>
+                <a class="nav-link btn btn-primary rounded" href="#" onclick="mostrarAlumnosArea()">Alumnos del Área</a>
             </li>
             <!-- Fin de opciones Jefe de área -->
+
+
+
 
             <!-- Opciones Administrador -->
             <li class="nav-item admin-option mr-5" style="display: none;">
@@ -103,97 +132,183 @@
 
 <!-- ALEXHD - card para que se muestre la lista de solicitudes entrantes, se tendría que enviar el id del tutor 
 o jefe de área para que se entre a la base de datos y muestre las solicitudes específicas de el usuario --> 
-<div id="solicitudesCard" class="container-fluid" style="padding: 50px; display: none;">
-    <center><h2>Solicitudes Entrantes</h2></center><br><br>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID solicitud</th>
-          <th scope="col">Nombre solicitud</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Solicitante</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Detalles</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>Mark</td>
-          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-          <td>Thornton</td>
-          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-          <td>Thornton</td>
-          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+<!-- esta parte hace una lista, pero se hacen muy pequeñas las columnas -->
+<div id="cargaMax" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes de Carga Máxima</h2></center><br><br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID Solicitud</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Semestre</th>
+                    <th scope="col">Materias Reprobadas</th>
+                    <th scope="col">Duración y Media</th>
+                    <th scope="col">Fecha Impresión</th>
+                    <th scope="col">Fecha y Hora Tutor</th>
+                    <th scope="col">Estado Solicitud</th>
+                    <th scope="col">Clave Única</th>
+                    <th scope="col">RPE Tutor</th>
+                    <th scope="col">RPE Staff</th>
+                    <th scope="col">ID Sesión HCTC</th>
+                </tr>
+            </thead>
+            <tbody>
+              @foreach($solicitudes as $solicitud)
+                <tr>
+                    <td>{{ $solicitud->id_solicitud_cm }}</td>
+                    <td>{{ $solicitud->fecha_solicitud }}</td>
+                    <td>{{ $solicitud->semestre }}</td>
+                    <td>{{ $solicitud->materias_reprobadas }}</td>
+                    <td>{{ $solicitud->duracion_y_media }}</td>
+                    <td>{{ $solicitud->fecha_impresion }}</td>
+                    <td>{{ $solicitud->fecha_hora_tutor }}</td>
+                    <td>{{ $solicitud->estado_solicitud }}</td>
+                    <td>{{ $solicitud->clave_unica }}</td>
+                    <td>{{ $solicitud->rpe_tutor }}</td>
+                    <td>{{ $solicitud->rpe_staff }}</td>
+                    <td>{{ $solicitud->id_sesion_hctc }}</td>
+                </tr>
+              @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
-
-<!-- ALEX HD - card para que se muestre la lista de solicitudes entrantes, se tendría que enviar el id del tutor 
-o jefe de área para que se entre a la base de datos y muestre las solicitudes específicas de el usuario -->
-<div id="solicitudesEnProcesoCard" class="container-fluid" style="padding: 50px; display: none;">
-    <center><h2>Solicitudes En Proceso</h2></center><br><br>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID solicitud</th>
-          <th scope="col">Nombre solicitud</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Solicitante</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Detalles</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>Mark</td>
-          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-          <td>Thornton</td>
-          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-          <td>Thornton</td>
-          <td><a href="#" class="btn btn-info">Ver detalles</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div id="MateriaUnica" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes de Materia Única</h2></center><br><br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID Solicitud</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Semestre</th>
+                    <th scope="col">Fecha Impresión</th>
+                    <th scope="col">Fecha y Hora Tutor</th>
+                    <th scope="col">Estado Solicitud</th>
+                    <th scope="col">Clave Única</th>
+                    <th scope="col">RPE Tutor</th>
+                    <th scope="col">RPE Staff</th>
+                    <th scope="col">ID Sesión HCTC</th>
+                    <th scope="col">Clave Materia</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($solicitudes as $solicitud)
+                <tr>
+                    <td>{{ $solicitud->id_solicitud_mu }}</td>
+                    <td>{{ $solicitud->fecha_solicitud }}</td>
+                    <td>{{ $solicitud->semestre }}</td>
+                    <td>{{ $solicitud->fecha_impresion }}</td>
+                    <td>{{ $solicitud->fecha_hora_tutor }}</td>
+                    <td>{{ $solicitud->estado_solicitud }}</td>
+                    <td>{{ $solicitud->clave_unica }}</td>
+                    <td>{{ $solicitud->rpe_tutor }}</td>
+                    <td>{{ $solicitud->rpe_staff }}</td>
+                    <td>{{ $solicitud->id_sesion_hctc }}</td>
+                    <td>{{ $solicitud->clave_materia }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
+<div id="OpcionTitulacion" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes de Opción de Titulación</h2></center><br><br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID Solicitud</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Semestre</th>
+                    <th scope="col">Fecha y Hora Coordinador</th>
+                    <th scope="col">Fecha Impresión</th>
+                    <th scope="col">Estado Solicitud</th>
+                    <th scope="col">Clave Única</th>
+                    <th scope="col">RPE Staff</th>
+                    <th scope="col">RPE Coordinador</th>
+                    <th scope="col">ID Opción Titulación</th>
+                    <th scope="col">ID Sesión HCTC</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($solicitudes as $solicitud)
+                <tr>
+                    <td>{{ $solicitud->id_solicitud_OT }}</td>
+                    <td>{{ $solicitud->fecha_solicitud }}</td>
+                    <td>{{ $solicitud->semestre }}</td>
+                    <td>{{ $solicitud->fecha_hora_coordinador }}</td>
+                    <td>{{ $solicitud->fecha_impresion }}</td>
+                    <td>{{ $solicitud->estado_solicitud }}</td>
+                    <td>{{ $solicitud->clave_unica }}</td>
+                    <td>{{ $solicitud->rpe_staff }}</td>
+                    <td>{{ $solicitud->rpe_coordinador }}</td>
+                    <td>{{ $solicitud->id_opcion_titulacion }}</td>
+                    <td>{{ $solicitud->id_sesion_hctc }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="RegistroTema" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes de Registro de Tema</h2></center><br><br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID Solicitud</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Trabajo Recepcional</th>
+                    <th scope="col">Tema</th>
+                    <th scope="col">RPE Asesor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- @foreach($solicitudes as $solicitud)
+                <tr>
+                    <td>{{ $solicitud->id_solicitud_OT }}</td>
+                    <td>{{ $solicitud->fecha_solicitud }}</td>
+                    <td>{{ $solicitud->trabajo_recepcional }}</td>
+                    <td>{{ $solicitud->tema }}</td>
+                    <td>{{ $solicitud->rpe_asesor }}</td>
+                </tr>
+                @endforeach -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="temarioAutorizacion" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Autorizaciones de Temario</h2></center><br><br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID Temario</th>
+                    <th scope="col">ID Sección</th>
+                    <th scope="col">Nombre Sección</th>
+                    <th scope="col">ID Solicitud OT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- @foreach($solicitudes as $solicitud)
+                <tr>
+                    <td>{{ $solicitud->id_temario }}</td>
+                    <td>{{ $solicitud->id_seccion }}</td>
+                    <td>{{ $solicitud->nombre_seccion }}</td>
+                    <td>{{ $solicitud->id_solicitud_OT }}</td>
+                </tr>
+                @endforeach -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- ALEX HD - card para que se muestre la lista de los tutorados, se tendría que enviar el id del tutor 
 para que se entre a la base de datos y muestre sus tutorados -->
@@ -206,7 +321,7 @@ para que se entre a la base de datos y muestre sus tutorados -->
           <th scope="col">Clave Única</th>
           <th scope="col">Nombre</th>
           <th scope="col">Generación</th>
-          <th scope="col">Solicitudes</th>
+          <!-- <th scope="col">Solicitudes</th> -->
         </tr>
       </thead>
       <tbody>
@@ -214,35 +329,147 @@ para que se entre a la base de datos y muestre sus tutorados -->
           <th scope="row">12345</th>
           <td>Mark</td>
           <td>2020</td>
-          <td>
-            <!-- aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario -->
+          <!-- <td>
+            aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario
             lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
             lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
-          </td>
+          </td> -->
         </tr>
         <tr>
           <th scope="row">23456</th>
           <td>Jacob</td>
           <td>2019</td>
-          <td>
-            <!-- aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario -->
+          <!-- <td>
+            aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario
             lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
             lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
-          </td>        
+          </td>         -->
         <tr>
           <th scope="row">34567</th>
           <td>Larry</td>
           <td>2022</td>
-          <td>
-            <!-- aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario -->
+          <!-- <td>
+            aquí se pondría un foreach para poner todas las solcitudes que tiene ese usuario
             lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
             lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
-          </td>  
+          </td>   -->
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<div id="alumnosArea" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Alumnos del Área</h2></center><br><br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Clave Única</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Generación</th>
+                    <!-- <th scope="col">Solicitudes</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">A12345</th>
+                    <td>John Doe</td>
+                    <td>2021</td>
+                    <!-- <td>
+                        Aquí se pondría un foreach para poner todas las solicitudes que tiene ese usuario
+                        Lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+                        Lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+                    </td> -->
+                </tr>
+                <tr>
+                    <th scope="row">B23456</th>
+                    <td>Jane Doe</td>
+                    <td>2020</td>
+                    <!-- <td>
+                        Aquí se pondría un foreach para poner todas las solicitudes que tiene ese usuario
+                        Lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+                        Lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+                    </td> -->
+                </tr>
+                <tr>
+                    <th scope="row">C34567</th>
+                    <td>Mario Rossi</td>
+                    <td>2022</td>
+                    <!-- <td>
+                        Aquí se pondría un foreach para poner todas las solicitudes que tiene ese usuario
+                        Lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+                        Lista de solicitudes <a href="#" class="btn btn-link btn-sm">Ver detalles</a><br>
+                    </td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<!-- aquí hace cada solicitud como en una card, se ven mejor los datos, y se podría poner el botón de cancelar 
+solicitud, un poco más senciila, sin tener que hacer otra vista de detalles de solicitud -->
+<!-- <div id="cargaMax" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes de Carga Máxima</h2></center><br><br>
+
+    <div class="card-deck">
+        @foreach($solicitudes as $solicitud)
+            <div class="card" style=" box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div class="card-body">
+                    <h5 class="card-title">ID Solicitud: {{ $solicitud->id_solicitud_cm }}</h5>
+                    <p class="card-text">Fecha Solicitud: {{ $solicitud->fecha_solicitud }}</p>
+                    <p class="card-text">Semestre: {{ $solicitud->semestre }}</p>
+                    <p class="card-text">Materias Reprobadas: {{ $solicitud->materias_reprobadas }}</p>
+                    <p class="card-text">Duración y Media: {{ $solicitud->duracion_y_media }}</p>
+                    <p class="card-text">Fecha Impresión: {{ $solicitud->fecha_impresion }}</p>
+                    <p class="card-text">Fecha y Hora Tutor: {{ $solicitud->fecha_hora_tutor }}</p>
+                    <p class="card-text">Estado Solicitud: {{ $solicitud->estado_solicitud }}</p>
+                    <p class="card-text">Clave Única: {{ $solicitud->clave_unica }}</p>
+                    <p class="card-text">RPE Tutor: {{ $solicitud->rpe_tutor }}</p>
+                    <p class="card-text">RPE Staff: {{ $solicitud->rpe_staff }}</p>
+                    <p class="card-text">ID Sesión HCTC: {{ $solicitud->id_sesion_hctc }}</p>
+                    <a href="#" class="btn btn-danger btn-sm">Cancelar Solicitud</a>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div> -->
+<!-- esta es con cards de materia única -->
+<!-- 
+<div id="MateriaUnica" class="container-fluid" style="padding: 50px; display: none;">
+    <center><h2>Solicitudes de Materia Única</h2></center><br><br>
+
+    <div class="card-deck">
+        @foreach($solicitudes as $solicitud)
+            <div class="card" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div class="card-body">
+                    <h5 class="card-title">ID Solicitud: {{ $solicitud->id_solicitud_mu }}</h5>
+                    <p class="card-text">Fecha Solicitud: {{ $solicitud->fecha_solicitud }}</p>
+                    <p class="card-text">Semestre: {{ $solicitud->semestre }}</p>
+                    <p class="card-text">Materias Reprobadas: {{ $solicitud->materias_reprobadas }}</p>
+                    <p class="card-text">Duración y Media: {{ $solicitud->duracion_y_media }}</p>
+                    <p class="card-text">Fecha Impresión: {{ $solicitud->fecha_impresion }}</p>
+                    <p class="card-text">Fecha y Hora Tutor: {{ $solicitud->fecha_hora_tutor }}</p>
+                    <p class="card-text">Estado Solicitud: {{ $solicitud->estado_solicitud }}</p>
+                    <p class="card-text">Clave Única: {{ $solicitud->clave_unica }}</p>
+                    <p class="card-text">RPE Tutor: {{ $solicitud->rpe_tutor }}</p>
+                    <p class="card-text">RPE Staff: {{ $solicitud->rpe_staff }}</p>
+                    <p class="card-text">ID Sesión HCTC: {{ $solicitud->id_sesion_hctc }}</p>
+                    <p class="card-text">Clave Materia: {{ $solicitud->clave_materia }}</p>
+                    <a href="#" class="btn btn-danger btn-sm">Cancelar Solicitud</a>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div> -->
+
+
+
+
+
 
 
 
@@ -335,28 +562,82 @@ para que se entre a la base de datos y muestre sus tutorados -->
 
     // ALEX HD - funciones para mostrar los cards correspondientes a lo seleccionado
     // me parece que aquí habría que enviar el id del usuario para sacar la info necesaria, hay que checarlo bien bien  
-    function mostrarSolicitudesCard() {
-        // Mostrar la card al hacer clic en "Solicitudes entrantes"
-        document.getElementById('solicitudesCard').style.display = 'block';
-        // Ocultar otros elementos
-        document.getElementById('solicitudesEnProcesoCard').style.display = 'none';
+    function mostrarSolicitudesCargaMaxima() {
+        document.getElementById('cargaMax').style.display = 'block';
+        document.getElementById('MateriaUnica').style.display = 'none';
+        document.getElementById('OpcionTitulacion').style.display = 'none';
+        document.getElementById('RegistroTema').style.display = 'none'; //falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'none';//falta hacer la ruta, controlador y modelo
         document.getElementById('tutorados').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'none';
     }
 
-    function mostrarSolicitudesEnProcesoCard() {
-        // Mostrar la card al hacer clic en "Solicitudes en proceso"
-        document.getElementById('solicitudesEnProcesoCard').style.display = 'block';
-        // Ocultar otros elementos
-        document.getElementById('solicitudesCard').style.display = 'none';
+    function mostrarSolicitudesMateriaUnica() {
+        // Mostrar la card al hacer clic en "Solicitudes entrantes"
+        document.getElementById('cargaMax').style.display = 'none';
+        document.getElementById('MateriaUnica').style.display = 'block';
+        document.getElementById('OpcionTitulacion').style.display = 'none';
+        document.getElementById('RegistroTema').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'none';//falta hacer la ruta, controlador y modelo
         document.getElementById('tutorados').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'none';
     }
+
+    function mostrarSolicitudesOpcionTitulacion() {
+        // Mostrar la card al hacer clic en "Solicitudes entrantes"
+        document.getElementById('cargaMax').style.display = 'none';
+        document.getElementById('MateriaUnica').style.display = 'none';
+        document.getElementById('OpcionTitulacion').style.display = 'block';
+        document.getElementById('RegistroTema').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('tutorados').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'none';
+    }
+
+    function mostrarSolicitudesRegistroTema() {
+        // Mostrar la card al hacer clic en "Solicitudes entrantes"
+        document.getElementById('cargaMax').style.display = 'none';
+        document.getElementById('MateriaUnica').style.display = 'none';
+        document.getElementById('OpcionTitulacion').style.display = 'none';
+        document.getElementById('RegistroTema').style.display = 'block';//falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('tutorados').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'none';
+    }
+
+    function mostrarSolicitudesAutorizacionTemario() {
+        // Mostrar la card al hacer clic en "Solicitudes entrantes"
+        document.getElementById('cargaMax').style.display = 'none';
+        document.getElementById('MateriaUnica').style.display = 'none';
+        document.getElementById('OpcionTitulacion').style.display = 'none';
+        document.getElementById('RegistroTema').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'block';//falta hacer la ruta, controlador y modelo
+        document.getElementById('tutorados').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'none';
+    }
+
 
     function mostrarTutorados() {
         // Mostrar la card al hacer clic en "tutorados"
+        document.getElementById('cargaMax').style.display = 'none';
+        document.getElementById('MateriaUnica').style.display = 'none';
+        document.getElementById('OpcionTitulacion').style.display = 'none';
+        document.getElementById('RegistroTema').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'none';//falta hacer la ruta, controlador y modelo
         document.getElementById('tutorados').style.display = 'block';
-        // Ocultar otros elementos
-        document.getElementById('solicitudesCard').style.display = 'none';
-        document.getElementById('solicitudesEnProcesoCard').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'none';
+    }
+
+    function mostrarAlumnosArea() {
+        // Mostrar la card al hacer clic en "tutorados"
+        document.getElementById('cargaMax').style.display = 'none';
+        document.getElementById('MateriaUnica').style.display = 'none';
+        document.getElementById('OpcionTitulacion').style.display = 'none';
+        document.getElementById('RegistroTema').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('temarioAutorizacion').style.display = 'none';//falta hacer la ruta, controlador y modelo
+        document.getElementById('tutorados').style.display = 'none';
+        document.getElementById('alumnosArea').style.display = 'block';
+
     }
 
 </script>
