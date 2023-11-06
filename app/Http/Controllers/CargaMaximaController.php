@@ -177,6 +177,15 @@ class CargaMaximaController extends Controller
         return $registro;
     }
 
+
+// función para mostrar los detalles desde la base de datos de la tabla de carga maxima
+    public function SacaDatosCargaMaxima()
+    {
+        $solicitudes = CargaMaximaModel::all();
+        //dd($solicitudes);
+        return view('rol', ['solicitudes' => $solicitudes]);
+    }
+
     public function cargaMaximaDelete(Request $request){
         $id = $request->input("id");
         $dataSet = json_decode($request->input('dataSet'), true);

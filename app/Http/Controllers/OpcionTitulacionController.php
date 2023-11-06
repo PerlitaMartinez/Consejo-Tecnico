@@ -244,8 +244,6 @@ class OpcionTitulacionController extends Controller
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
     }
-
-
     public function showTitulacionFormAdmin()
     {
         $opciones = CatOpcionTitulacionModel::all();
@@ -292,4 +290,13 @@ class OpcionTitulacionController extends Controller
         ];
         return redirect()->route('opTitulacionPDF.show', ['id' => $newId, 'dataSet' => $dataSet]);
     }
+    
+    public function SacaDatosOpcionTitulacion()
+    {
+        $solicitudes = OpcionTitulacionModel::all();
+        //dd($solicitudes);
+        return view('rol', ['solicitudes' => $solicitudes]);
+    }
+
+
 }
