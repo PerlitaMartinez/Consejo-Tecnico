@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SolicitudOpcionTitulacionSeeder extends Seeder
 {
@@ -12,7 +13,7 @@ class SolicitudOpcionTitulacionSeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('solicitud_opcion_titulacion')->insert([
+        DB::table('solicitud_opcion_titulacion')->insert([
             [
                 'fecha_solicitud' => '2023-11-14',
                 'semestre' => '2023A',

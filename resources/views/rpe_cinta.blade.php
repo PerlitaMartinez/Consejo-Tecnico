@@ -148,7 +148,7 @@
 o jefe de área para que se entre a la base de datos y muestre las solicitudes específicas de el usuario --> 
 
 <!-- esta parte hace una lista, pero se hacen muy pequeñas las columnas -->
-<div id="cargaMax" class="container-fluid" style="padding: 50px; display: none;">
+{{-- <div id="cargaMax" class="container-fluid" style="padding: 50px; display: none;">
     <center><h2>Solicitudes de Carga Máxima</h2></center><br><br>
     <div class="table-responsive">
         <table class="table">
@@ -478,7 +478,7 @@ solicitud, un poco más senciila, sin tener que hacer otra vista de detalles de 
             </div>
         @endforeach
     </div>
-</div> -->
+</div> --> --}}
 
 
 

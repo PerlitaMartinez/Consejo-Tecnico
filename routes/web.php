@@ -61,6 +61,7 @@ Route::get('administrador/titulacion', [OpcionTitulacionController::class, 'show
 Route::post('administrador/opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStoreAdmin'])->name('opcionTitulacionAdmin.store');
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
+Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
 
 
 
@@ -83,13 +84,14 @@ Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
 Route::get('/hctc/rol', function(){
     return view('rol');
 })->name('rol');
+
 Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
 
 Route::get('/hctc/rol', [MateriaUnicaController::class, 'SacaDatosMateriaUnica'])->name('rol'); //enviar las solicitudes de materia única
 
 Route::get('/hctc/rol', [OpcionTitulacionController::class, 'SacaDatosOpcionTitulacion'])->name('rol'); //enviar las solicitudes de materia única
 
-Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
+
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
 

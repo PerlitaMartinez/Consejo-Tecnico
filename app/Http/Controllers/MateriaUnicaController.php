@@ -117,13 +117,13 @@ class MateriaUnicaController extends Controller
     public function materiaUnicaPDFshow(Request $request)
     {
 
-        
+
         $dataSet = $request->input('dataSet');
         $vistaAdmin = $request->input('vistaAdmin');
- 
+
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
-        }else{
+        } else {
             $dataSet = $request->input('dataSet');
         }
         $id = $request->input('id');
@@ -170,15 +170,14 @@ class MateriaUnicaController extends Controller
 
         $pdf->SetXY(90, 112);
         $pdf->Write(0.1, $tupla->semestre);
-        if($tupla->clave_materia != null){
+        if ($tupla->clave_materia != null) {
             $pdf->SetXY(90, 130);
-             $pdf->Write(0.1, $nombreMateriaEncontrado); //<-----Cambiar cuando se tenga el servicio web
-        }
-        else{
+            $pdf->Write(0.1, $nombreMateriaEncontrado); //<-----Cambiar cuando se tenga el servicio web
+        } else {
             $pdf->SetXY(90, 130);
-             $pdf->Write(0.1, 'CALCULO A');
+            $pdf->Write(0.1, 'CALCULO A');
         }
-        
+
         $pdf->SetXY(60, 183);
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Write(0.1,  $dataSet[0]['nombre_alumno']);
@@ -262,13 +261,75 @@ class MateriaUnicaController extends Controller
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
     }
-// función para mostrar los detalles desde la base de datos de la tabla de carga maxima
-public function SacaDatosMateriaUnica()
-{
-    $solicitudes = MateriaUnicaModel::all();
-    // dd($solicitudes);
-    return view('rol', ['solicitudes' => $solicitudes]);
-}
+
+    public function materiaUnicaShowAdministrador(Request $request){
+        return view('materiaUnica', ['admin' => true]);
+    }
+
+    public function storeMateriaUnicaAdmin(Request $request)
+    {
+        //Simulación servicio Web
+        $materias = [
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "CALCULO A",
+                "cve_materia" => "2865",
+                "semestre" => '2018-2019/II',
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ],
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "BASE DE DATOS",
+                "cve_materia" => "3622",
+                "semestre" => '2020-2021/II',
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ],
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "ESTRUCTURAS DE DATOS II",
+                "cve_materia" => "9125",
+                "semestre" => "2023-2024/I",
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ],
+
+        ];
+
+        $data = $request->all();
+    
+
+        //Verificamos que los campos no estén vacios
+        foreach ($data as $key => $value) {
+            if (empty($value)) {
+                // El campo $key está vacío
+                return redirect()->back()->with('error', 'Por favor, complete todos los campos.');
+            }
+        }
 
 
+        $clave_unica = $request->input('clave_unica');
+       $materia  = $request->input('materia');
+        $semestre = $request->input('semestre');
+
+        $materiaUnica = new MateriaUnicaModel();
+        $materiaUnica->fecha_solicitud = now()->format('Y-m-d');
+
+        $materiaUnica->semestre = $semestre;
+        $materiaUnica->clave_unica = $clave_unica;
+        //Colocar la clave de la materia cuando se tenga ---------------
+        $materiaUnica->save();
+        $nuevoID = $materiaUnica->id_solicitud_mu;
+        $mensaje = "Solicitud Registrada con éxito.";
+
+        $materias[0]['clave_unica'] = $clave_unica;
+        $materias[0]['semestre'] =  $semestre;
+        $materias[0]['materia'] = $materia;
+        return redirect()->route('materiaUnicaPDF.show', [ 'dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
+    }
+    // función para mostrar los detalles desde la base de datos de la tabla de carga maxima
+    public function SacaDatosMateriaUnica()
+    {
+        $solicitudes = MateriaUnicaModel::all();
+        // dd($solicitudes);
+        return view('rol', ['solicitudes' => $solicitudes]);
+    }
 }
