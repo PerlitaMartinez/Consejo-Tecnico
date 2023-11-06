@@ -55,7 +55,7 @@
             @if (true)
                 <li class="nav-item mr-5">
                     <a class="nav-link btn btn-primary rounded"
-                        href={{ route('materiaUnica.show', ['dataSet' => $dataSet, 'registered' => false]) }}>Materia
+                        href={{ route('materiaUnica.show', ['dataSet' => $dataSet, 'registered' => false, 'admin' => true ]) }}>Materia
                         Única</a>
                 </li>
             @endif

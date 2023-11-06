@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgregarSolicitudController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CargaMaximaController;
 use App\Http\Controllers\HomeController;
@@ -41,17 +42,23 @@ Route::get('materiaUnica', [MateriaUnicaController::class, 'showMateriaUnicaForm
 Route::post('materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnica'])->name('materiaUnica.store');
 Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFshow'])->name('materiaUnicaPDF.show');
 Route::delete('materiaUnica-delete', [MateriaUnicaController::class,'materiaUnicaDelete'])->name('materiaUnica.delete');
+Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materiaUnicaShowAdministrador'])->name('materiaUnicaAdmin.show');
+Route::post('administrador/materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnicaAdmin'])->name('materiaUnicaAdmin.store');
+
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
 Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
 Route::get('cargaMaximaPDF', [CargaMaximaController::class,'cargaMaximaPDFshow'])->name('cargaMaximaPDF.show');
 Route::delete('cargaMaxima-delete', [CargaMaximaController::class,'cargaMaximaDelete'])->name('cargaMaxima.delete');
-
+Route::get('administrador/cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaFormAdmin'])->name('cargaMaximaAdmin.show');
+Route::post('administrador/cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStoreAdmin'])->name('cargaMaximaAdmin.store');
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
 Route::post('opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
 Route::get('opTitulacionPDF', [OpcionTitulacionController::class,'opTitulacionPDFshow'])->name('opTitulacionPDF.show');
 Route::delete('opTitulacion-delete', [OpcionTitulacionController::class,'opcionTitulacionDelete'])->name('opcionTitulacion.delete');
+Route::get('administrador/titulacion', [OpcionTitulacionController::class, 'showTitulacionFormAdmin'])->name('titulacionAdmin.show');
+Route::post('administrador/opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStoreAdmin'])->name('opcionTitulacionAdmin.store');
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 
@@ -76,6 +83,9 @@ Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
 Route::get('/hctc/rol', function(){
     return view('rol');
 })->name('rol');
+
+
+Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
 

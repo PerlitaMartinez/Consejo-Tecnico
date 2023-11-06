@@ -37,16 +37,16 @@ class MateriaUnicaController extends Controller
     {
         //----------implementar la lógica llamando al servicio web método "materia_unica"-----------
 
-        
+
         $dataSet = $request->input('dataSet');
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
-        } 
+        }
         $registered = $request->input('registered');
         //dd($registered);
-        if(gettype($registered) === 'string') {
-            
-            if($registered == "true" || $registered == "1")
+        if (gettype($registered) === 'string') {
+
+            if ($registered == "true" || $registered == "1")
                 $registered = true;
             else
                 $registered = false;
@@ -54,17 +54,17 @@ class MateriaUnicaController extends Controller
 
         $materiaRegistrada = $request->input('materiaRegistrada');
         $id = $request->input('id');
-        
+
 
 
         if ($registered) { //Hay que mostrar la vista para imprimir el formato
-            
+
             return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' => $materiaRegistrada, 'registered' => $registered, 'id' => $id]);
         }
 
         //Verificamos las materias que ya están registradas
         $materiasNoReg = $this->materiasNoReg($dataSet[0]['clave_unica']);
-        
+
         if ($materiasNoReg == null) { //Ninguna materia está registrada en base de datos
             return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' => $this->materias, 'registered' => $registered]);
         }
@@ -117,7 +117,15 @@ class MateriaUnicaController extends Controller
     public function materiaUnicaPDFshow(Request $request)
     {
 
-        $dataSet = json_decode($request->input('dataSet'), true);
+        
+        $dataSet = $request->input('dataSet');
+        $vistaAdmin = $request->input('vistaAdmin');
+ 
+        if (gettype($dataSet) === 'string') {
+            $dataSet = json_decode($request->input('dataSet'), true);
+        }else{
+            $dataSet = $request->input('dataSet');
+        }
         $id = $request->input('id');
         //Verificamos en la base de datos que esté el registro
         $tupla = MateriaUnicaModel::find($id);
@@ -162,19 +170,25 @@ class MateriaUnicaController extends Controller
 
         $pdf->SetXY(90, 112);
         $pdf->Write(0.1, $tupla->semestre);
-        $pdf->SetXY(90, 130);
-        $pdf->Write(0.1, $nombreMateriaEncontrado); //<-----Cambiar cuando se tenga el servicio web
+        if($tupla->clave_materia != null){
+            $pdf->SetXY(90, 130);
+             $pdf->Write(0.1, $nombreMateriaEncontrado); //<-----Cambiar cuando se tenga el servicio web
+        }
+        else{
+            $pdf->SetXY(90, 130);
+             $pdf->Write(0.1, 'CALCULO A');
+        }
+        
         $pdf->SetXY(60, 183);
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Write(0.1,  $dataSet[0]['nombre_alumno']);
         $pdf->SetXY(75, 193);
         $pdf->Write(0.1,  $dataSet[0]['clave_unica']);
         $pdf->SetXY(60, 203);
-        $pdf->Write(0.1, "ING. EN COMPUTACION");//<-----Cambiar cuando se tenga el servicio web
+        $pdf->Write(0.1, "ING. EN COMPUTACION"); //<-----Cambiar cuando se tenga el servicio web
         //$pdf->SetXY(60, 213);
         //$pdf->Write(0.1,"2023-2024/I");
         // Preview PDF
-        session(['formularioMU_completado' => true]);
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
@@ -182,7 +196,15 @@ class MateriaUnicaController extends Controller
 
         // Save PDF to Particular path or project path
 
-        $pdf->Output('D','materia-Unica.pdf');
+        $pdf->Output('D', 'materia-Unica.pdf');
+
+     
+        if($vistaAdmin == 1) {
+            $mensaje = "Solicitud Registrada con éxito.";
+
+            
+            return redirect()->route('materiaUnicaAdmin.show')->with('success', $mensaje);
+        }
     }
 
 
@@ -239,5 +261,74 @@ class MateriaUnicaController extends Controller
 
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
+    }
+
+
+
+    public function materiaUnicaShowAdministrador(Request $request)
+    {
+
+        return view('materiaUnica', ['admin' => true]);
+    }
+
+
+    public function storeMateriaUnicaAdmin(Request $request)
+    {
+        //Simulación servicio Web
+        $materias = [
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "CALCULO A",
+                "cve_materia" => "2865",
+                "semestre" => '2018-2019/II',
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ],
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "BASE DE DATOS",
+                "cve_materia" => "3622",
+                "semestre" => '2020-2021/II',
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ],
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "ESTRUCTURAS DE DATOS II",
+                "cve_materia" => "9125",
+                "semestre" => "2023-2024/I",
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ],
+
+        ];
+
+        $data = $request->all();
+    
+
+        //Verificamos que los campos no estén vacios
+        foreach ($data as $key => $value) {
+            if (empty($value)) {
+                // El campo $key está vacío
+                return redirect()->back()->with('error', 'Por favor, complete todos los campos.');
+            }
+        }
+
+
+        $clave_unica = $request->input('clave_unica');
+       $materia  = $request->input('materia');
+        $semestre = $request->input('semestre');
+
+        $materiaUnica = new MateriaUnicaModel();
+        $materiaUnica->fecha_solicitud = now()->format('Y-m-d');
+
+        $materiaUnica->semestre = $semestre;
+        $materiaUnica->clave_unica = $clave_unica;
+        //Colocar la clave de la materia cuando se tenga ---------------
+        $materiaUnica->save();
+        $nuevoID = $materiaUnica->id_solicitud_mu;
+        $mensaje = "Solicitud Registrada con éxito.";
+
+        $materias[0]['clave_unica'] = $clave_unica;
+        $materias[0]['semestre'] =  $semestre;
+        $materias[0]['materia'] = $materia;
+        return redirect()->route('materiaUnicaPDF.show', [ 'dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
     }
 }

@@ -84,7 +84,12 @@ class CargaMaximaController extends Controller
     public function cargaMaximaPDFshow(Request $request)
     {
 
-        $dataSet = json_decode($request->input('dataSet'), true);
+        $dataSet = $request->input('dataSet');
+        if (gettype($dataSet) === 'string') {
+            $dataSet = json_decode($request->input('dataSet'), true);
+        }else{
+            $dataSet = $request->input('dataSet');
+        }
         $id = $request->input('id');
 
         //Se obtiene la información de la base de datos.
@@ -190,5 +195,35 @@ class CargaMaximaController extends Controller
 
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
+    }
+
+    public function showCargaMaximaFormAdmin(Request $request){
+        return view('cargaMaxima', ['admin' => true]);
+    }
+
+
+
+    public function cargaMaximaStoreAdmin(Request $request){
+
+        $clave_unica = $request->input('clave_unica');
+
+        //dd($clave_unica);
+        $cargaMaxima = new CargaMaximaModel();
+        $cargaMaxima->fecha_solicitud = now()->format('Y-m-d');
+        $cargaMaxima->semestre = $this->cargaMaximaRegister[0]['semestre']; //<---Cambiar con datos del servicio web
+        $cargaMaxima->materias_reprobadas = ($this->cargaMaximaRegister[0]['materias_reprobadas_semestre'] == "SI") ? true : false; //<----Cambiar con datos del servicio web
+        $cargaMaxima->duracion_y_media = ($this->cargaMaximaRegister[0]['duracion_y_media_semestre'] == "SI") ? true : false; //<----Cambiar con datos del servicio web
+        $cargaMaxima->estado_solicitud = "ALTA";
+        $cargaMaxima->clave_unica = $clave_unica; //<--Cambiar con servicio web
+        $cargaMaxima->save();
+        $newId = $cargaMaxima->id_solicitud_cm;
+        $dataSet = [
+            [
+                "clave_unica" => $clave_unica,
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ]
+        ];
+
+        return redirect()->route('cargaMaximaPDF.show', ['id' => $newId, 'dataSet' => $dataSet]);
     }
 }

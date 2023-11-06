@@ -85,9 +85,13 @@ class OpcionTitulacionController extends Controller
     public function opTitulacionPDFshow(Request $request)
     {
 
-
-
-        $dataSet = json_decode($request->input('dataSet'), true);
+        $vistaAdmin = $request->input('vistaAdmin');
+        $dataSet = $request->input('dataSet');
+        if (gettype($dataSet) === 'string') {
+            $dataSet = json_decode($request->input('dataSet'), true);
+        }else{
+            $dataSet = $request->input('dataSet');
+        }
         //Se obtiene la información de la base de datos.
         $id = $request->input('id');
         $registro = OpcionTitulacionModel::find($id);
@@ -97,7 +101,7 @@ class OpcionTitulacionController extends Controller
             return back()->with('error', 'Solicitud no registrada.');
         }
 
-        
+
 
         //Procesamos la fecha para colocarla en el pdf
         $fechaSolicitud =  $registro->fecha_solicitud;
@@ -209,7 +213,7 @@ class OpcionTitulacionController extends Controller
 
         // Download PDF
         //Download use D 
-        $pdf->Output('D','MateriaUnica.pdf');
+        $pdf->Output('D', 'MateriaUnica.pdf');
 
         // Save PDF to Particular path or project path
 
@@ -219,7 +223,8 @@ class OpcionTitulacionController extends Controller
 
 
 
-    public function opcionTitulacionDelete(Request $request){
+    public function opcionTitulacionDelete(Request $request)
+    {
 
         $id = $request->input("id");
         $dataSet = json_decode($request->input('dataSet'), true);
@@ -238,5 +243,53 @@ class OpcionTitulacionController extends Controller
 
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
+    }
+
+
+    public function showTitulacionFormAdmin()
+    {
+        $opciones = CatOpcionTitulacionModel::all();
+
+        return view('formato_opcion_titulacion', ['admin' => true, 'opciones' => $opciones]);
+    }
+
+
+    public function opcionTitulacionStoreAdmin(Request $request)
+    {
+
+        $data = $request->all();
+        //dd($data);
+
+        //Verificamos que los campos no estén vacios
+        foreach ($data as $key => $value) {
+            if (empty($value) || $value == null || $value == '') {
+                // El campo $key está vacío
+                return redirect()->back()->with('error', 'Por favor, complete todos los campos.');
+            }
+        }
+
+        $clave_unica = $request->input('clave_unica');
+        $examen =  $request->input('fecha_examen_aprobado');
+        $promedio =  $request->input('promedio');
+        $ingreso = $request->input('ano_ingreso');
+        $opcionTitulacionSeleccionada = $request->input('opcion_titulacion');
+
+
+        $opcionTitulacion = new OpcionTitulacionModel();
+        $opcionTitulacion->fecha_solicitud = now()->format('Y-m-d');
+        $opcionTitulacion->semestre = $this->dataAlumno[0]['semestre']; //<----Cambiar cuando se tenga el servicio web
+        $opcionTitulacion->estado_solicitud = "ALTA";
+        $opcionTitulacion->clave_unica = $clave_unica;
+        $opcionTitulacion->id_opcion_titulacion = $opcionTitulacionSeleccionada;
+        $opcionTitulacion->save();
+        $newId = $opcionTitulacion->id_solicitud_OT;
+
+        $dataSet = [
+            [
+                "clave_unica" => $clave_unica,
+                "nombre_alumno" => "MARTINEZ LOPEZ IVAN",
+            ]
+        ];
+        return redirect()->route('opTitulacionPDF.show', ['id' => $newId, 'dataSet' => $dataSet]);
     }
 }

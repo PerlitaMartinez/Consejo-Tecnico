@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{asset('assets/stylesForms.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/stylesForms.css') }}">
 
 <!-- Separador -->
 <hr style="border: 0px solid #DCDCDC; margin: 10px 0;">
@@ -32,10 +32,17 @@
         <input type="checkbox" id="jefeAreaCheckbox" onchange="showJefeAreaOptions(this)" style="margin: 0;">
         <span style="margin-left: 5px;">Jefe de área</span>
     </label>
-    <label class="btn btn-primary rounded mr-3" style="width: 150px; display: flex; align-items: center;">
-        <input type="checkbox" id="adminCheckbox" onchange="showAdminOptions(this)" style="margin: 0;">
-        <span style="margin-left: 5px;">Administrador</span>
-    </label>
+    @if (isset($admin))
+        <label class="btn btn-primary rounded mr-3" style="width: 150px; display: flex; align-items: center;">
+            <input type="checkbox" id="adminCheckbox" onchange="showAdminOptions(this)" style="margin: 0;" checked>
+            <span style="margin-left: 5px;">Administrador</span>
+        </label>
+    @else
+        <label class="btn btn-primary rounded mr-3" style="width: 150px; display: flex; align-items: center;">
+            <input type="checkbox" id="adminCheckbox" onchange="showAdminOptions(this)" style="margin: 0;">
+            <span style="margin-left: 5px;">Administrador</span>
+        </label>
+    @endif
 </div>
 
 <!-- Separador -->
@@ -45,7 +52,8 @@
     <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-home-alt" id="icono_casa"></i> Inicio</a>
+                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-home-alt"
+                        id="icono_casa"></i> Inicio</a>
             </li>
 
             <!-- Opciones Tutor -->
@@ -73,9 +81,14 @@
             <li class="nav-item admin-option mr-5" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#">Solicitudes</a>
             </li>
+
             <li class="nav-item admin-option mr-5" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#">Nueva solicitud</a>
+                <a class="nav-link btn btn-primary rounded" href="{{ route('agregarSolicitud.show') }}">Nueva
+                    solicitud</a>
             </li>
+
+
+
             <li class="nav-item admin-option mr-5" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#">Usuarios</a>
             </li>
@@ -85,12 +98,13 @@
             <li class="nav-item admin-option mr-5" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#">Sesiones HCTC</a>
             </li>
-            <!-- Fin de opciones Administrador -->           
+            <!-- Fin de opciones Administrador -->
 
 
 
             <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt" id="icono_salir"></i> Salir</a>
+                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
+                        id="icono_salir"></i> Salir</a>
             </li>
         </ul>
     </div>
@@ -135,10 +149,12 @@
             // Mostrar opciones de Tutor
             document.querySelectorAll('.tutor-option').forEach(option => option.style.display = 'block');
             // Ocultar opciones de Jefe de área y Administrador
-            document.querySelectorAll('.jefeArea-option, .admin-option').forEach(option => option.style.display = 'none');
+            document.querySelectorAll('.jefeArea-option, .admin-option').forEach(option => option.style.display =
+                'none');
         } else {
             // Si se desmarca el checkbox, ocultar todas las opciones
-            document.querySelectorAll('.tutor-option, .jefeArea-option, .admin-option').forEach(option => option.style.display = 'none');
+            document.querySelectorAll('.tutor-option, .jefeArea-option, .admin-option').forEach(option => option.style
+                .display = 'none');
         }
     }
 
@@ -150,7 +166,8 @@
             document.querySelectorAll('.tutor-option, .admin-option').forEach(option => option.style.display = 'none');
         } else {
             // Si se desmarca el checkbox, ocultar todas las opciones
-            document.querySelectorAll('.tutor-option, .jefeArea-option, .admin-option').forEach(option => option.style.display = 'none');
+            document.querySelectorAll('.tutor-option, .jefeArea-option, .admin-option').forEach(option => option.style
+                .display = 'none');
         }
     }
 
@@ -159,10 +176,12 @@
             // Mostrar opciones de Administrador
             document.querySelectorAll('.admin-option').forEach(option => option.style.display = 'block');
             // Ocultar opciones de Tutor y Jefe de área
-            document.querySelectorAll('.tutor-option, .jefeArea-option').forEach(option => option.style.display = 'none');
+            document.querySelectorAll('.tutor-option, .jefeArea-option').forEach(option => option.style.display =
+                'none');
         } else {
             // Si se desmarca el checkbox, ocultar todas las opciones
-            document.querySelectorAll('.tutor-option, .jefeArea-option, .admin-option').forEach(option => option.style.display = 'none');
+            document.querySelectorAll('.tutor-option, .jefeArea-option, .admin-option').forEach(option => option.style
+                .display = 'none');
         }
     }
 
