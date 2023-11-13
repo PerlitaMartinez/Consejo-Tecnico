@@ -123,6 +123,11 @@
             window.location.href = '{{ route("administrador") }}'; // Reemplaza con la ruta correcta
             break;
 
+        case 'Director y secretario':
+            // Redirigir a la página correspondiente al Administrador
+            window.location.href = '{{ route("director_secretario") }}'; // Reemplaza con la ruta correcta
+            break;
+
         default:
             // Lógica predeterminada si no coincide con ningún caso
             window.location.href = '{{ route("rol") }}'; 

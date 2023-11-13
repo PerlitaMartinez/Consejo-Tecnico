@@ -89,6 +89,11 @@ Route::get('/administrador', function () {
     return view('administrador'); // Reemplaza 'administrador' con el nombre de tu vista
 })->name('administrador');
 
+//ruta para el boton de director y secretario de la pantalla de roles
+Route::get('/director%secretario', function () {
+    return view('director_secretario');
+})->name('director_secretario');
+
 Route::get('/consultar', function () {
     return view('consultar_solicitudes'); // Reemplaza 'administrador' con el nombre de tu vista
 })->name('consultar_solicitudes');

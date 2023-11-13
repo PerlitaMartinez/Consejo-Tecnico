@@ -98,7 +98,7 @@
                     'Coordinador': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                     'Jefe de Área': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                     'Administrador': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btnUsuarios', 'btnSesionesHCTC'],
-                    'Director y Secretario': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
+                    'Director y secretario': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                     'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                 };
 
