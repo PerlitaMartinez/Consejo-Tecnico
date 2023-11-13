@@ -64,7 +64,6 @@ Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoSh
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
 
 
-
 Route::get('/hctc/formato_registro_tema', function () {
     return view('formato_registro_tema');
 })->name('formato_registro_tema');
@@ -84,6 +83,15 @@ Route::get('/hctc/RegistroTemaTemarioMemorias', function(){
 Route::get('/hctc/rol', function(){
     return view('rol');
 })->name('rol');
+
+//ruta para el boton de administrador de la pantalla de roles
+Route::get('/administrador', function () {
+    return view('administrador'); // Reemplaza 'administrador' con el nombre de tu vista
+})->name('administrador');
+
+Route::get('/consultar', function () {
+    return view('consultar_solicitudes'); // Reemplaza 'administrador' con el nombre de tu vista
+})->name('consultar_solicitudes');
 
 Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
 
