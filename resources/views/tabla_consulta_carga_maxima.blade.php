@@ -4,7 +4,7 @@
             <thead class="thead-light">
             <tr class="text-center">
                     <th>Folio</th>
-                    <th >Materia</th>
+                    <th>Tipo</th>
                     <th>Semestre</th>
                     <th>Aprobar</th>
                     <th>Detalles</th>
