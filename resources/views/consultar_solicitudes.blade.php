@@ -157,6 +157,57 @@ function validarClaveUnica(event) {
             </div>
         </div>
     </div>
+        <!-- Tabla -->
+        <div class="mt-4">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">Folio</th>
+                        <th class="text-center">Materia</th>
+                        <th class="text-center">Semestre</th>
+                        <th class="text-center">Formato</th>
+                        <th class="text-center">Aprobar</th>
+                        <th class="text-center">Detalles</th>
+                        <th class="text-center">Descargar</th>
+                        <th class="text-center">Cancelar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Materia A</td>
+                        <td>3</td>
+                        <td>Formato X</td>
+                        <td class="text-center"><button class="btn btn-success"><i class="fas fa-check"></i></button></td>
+                        <td class="text-center"><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
+                        <td class="text-center"><button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button></td>
+                        <td class="text-center"><button class="btn btn-danger"><i class="fas fa-x"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Materia B</td>
+                        <td>5</td>
+                        <td>Formato Y</td>
+                        <td class="text-center"><button class="btn btn-success"><i class="fas fa-check"></i></button></td>
+                        <td class="text-center"><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
+                        <td class="text-center"><button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button></td>
+                        <td class="text-center"><button class="btn btn-danger"><i class="fas fa-x"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>Materia C</td>
+                        <td>2</td>
+                        <td>Formato Z</td>
+                        <td class="text-center"><button class="btn btn-success"><i class="fas fa-check"></i></button></td>
+                        <td class="text-center"><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
+                        <td class="text-center"><button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button></td>
+                        <td class="text-center"><button class="btn btn-danger"><i class="fas fa-x"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 
     <!-- Contenedor para la alerta -->
     <div id="mensajeContainer" class="row mt-4 justify-content-center"></div>

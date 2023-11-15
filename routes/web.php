@@ -106,6 +106,7 @@ Route::get('/sesiones', function () {
     return view('admin_sesiones_hctc'); 
 })->name('admin_sesiones_hctc');
 
+
 Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
 
 Route::get('/hctc/rol', [MateriaUnicaController::class, 'SacaDatosMateriaUnica'])->name('rol'); //enviar las solicitudes de materia única

@@ -44,7 +44,7 @@
             </li>
 
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href={{ route("sesionesHCTC") }}'>Sesiones del HCTC</a>
+                <a class="nav-link btn btn-primary rounded" href={{ route("admin_sesiones_hctc") }}'>Sesiones del HCTC</a>
             </li>
 
 
