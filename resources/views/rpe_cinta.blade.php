@@ -33,7 +33,7 @@
                 <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Usuarios</a>
             </li>
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href={{ route("sesionesHCTC") }}>Sesiones HCTC</a>
+                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
             </li>
 
 <!-- Botones para el rol Staff -->

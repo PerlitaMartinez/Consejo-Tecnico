@@ -99,26 +99,12 @@ Route::get('/director%secretario', function () {
 })->name('director_secretario');
 
 Route::get('/consultar', function () {
-    return view('consultar_solicitudes'); // Reemplaza 'administrador' con el nombre de tu vista
+    return view('consultar_solicitudes');
 })->name('consultar_solicitudes');
 
-
-Route::get('/consultarstaff', function () {
-    return view('consulta_solicitudStaff'); // Reemplaza 'administrador' con el nombre de tu vista
-})->name('consultar_solicitudStaff');
-
-Route::get('/consultar-Solicitud-materiaUnica', function () {
-    return view('consultar_solicitud_materiaUnica'); 
-})->name('consultar_solicitud_materiaUnica');
-
-Route::get('/sesionesHCTC', function () {
-    return view('sesionesHCTC'); 
-})->name('sesionesHCTC');
-
-Route::get('/crear_solicitud_staff', function () {
-    return view('crear_solicitud_staff'); 
-})->name('crear_solicitud_staff');
-
+Route::get('/sesiones', function () {
+    return view('admin_sesiones_hctc'); 
+})->name('admin_sesiones_hctc');
 
 Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
 
