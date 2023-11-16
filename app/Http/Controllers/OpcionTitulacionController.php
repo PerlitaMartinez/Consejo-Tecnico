@@ -291,11 +291,11 @@ class OpcionTitulacionController extends Controller
         return redirect()->route('opTitulacionPDF.show', ['id' => $newId, 'dataSet' => $dataSet]);
     }
     
-    public function SacaDatosOpcionTitulacion()
+    public static function SacaDatosOpcionTitulacion()
     {
-        $solicitudes = OpcionTitulacionModel::all();
+        $solicitudesOpcionTitulacion = OpcionTitulacionModel::all();
         //dd($solicitudes);
-        return view('rol', ['solicitudes' => $solicitudes]);
+        return view('consultar_solicitudes_varias', ['solicitudesOpcionTitulacion' => $solicitudesOpcionTitulacion]);
     }
 
 

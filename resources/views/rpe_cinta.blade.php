@@ -20,7 +20,7 @@
 
 <!-- Botones que le pertenecen a todos los roles -->
             <li class="nav-item mr-5" id="btnSolicitudes" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href='{{ route("consultar_solicitudes") }}'>Consulta de Solicitudes</a>
+                <a class="nav-link btn btn-primary rounded" href='{{ route("consultar_solicitudes_varias") }}'>Consulta de Solicitudes</a>
             </li>
 
 <!-- Botones para el rol Tutor Academico -->

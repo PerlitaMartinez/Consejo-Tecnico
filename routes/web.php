@@ -93,14 +93,26 @@ Route::get('/staff', function () {
     return view('staff'); // Reemplaza 'staff' 
 })->name('staff');
 
+
+
+// tutor ----------------------------------------------------------
+Route::get('/tutor', function () {
+    return view('tutor'); //vista de tutor
+})->name('tutor');
+
+Route::get('/consultar', [HomeController::class, 'mostrarTodasSolicitudes'])->name('consultar_solicitudes_varias');
+// tutor ----------------------------------------------------------
+
+
+
 //ruta para el boton de director y secretario de la pantalla de roles
 Route::get('/director%secretario', function () {
     return view('director_secretario');
 })->name('director_secretario');
 
-Route::get('/consultar', function () {
-    return view('consultar_solicitudes');
-})->name('consultar_solicitudes');
+// Route::get('/consultar', function () {
+//     return view('consultar_solicitudes');
+// })->name('consultar_solicitudes');
 
 Route::get('/sesiones', function () {
     return view('admin_sesiones_hctc'); 

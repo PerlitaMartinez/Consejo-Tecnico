@@ -325,11 +325,13 @@ class MateriaUnicaController extends Controller
         $materias[0]['materia'] = $materia;
         return redirect()->route('materiaUnicaPDF.show', [ 'dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
     }
+
+    
     // función para mostrar los detalles desde la base de datos de la tabla de carga maxima
-    public function SacaDatosMateriaUnica()
+    public static function SacaDatosMateriaUnica()
     {
-        $solicitudes = MateriaUnicaModel::all();
+        $solicitudesMateriaUnica = MateriaUnicaModel::all();
         // dd($solicitudes);
-        return view('rol', ['solicitudes' => $solicitudes]);
+        return view('consultar_solicitudes_varias', ['solicitudesMateriaUnica' => $solicitudesMateriaUnica]);
     }
 }

@@ -127,9 +127,15 @@
             // Redirigir a la página correspondiente al Administrador
             window.location.href = '{{ route("director_secretario") }}'; // Reemplaza con la ruta correcta
             break;
-                    case 'Staff':
-        //Redirigir a la pagina de Staff
+        
+        case 'Staff':
+            //Redirigir a la pagina de Staff
             window.location.href = '{{ route("staff") }}';
+            break;
+
+        case 'Tutor Académico':
+            //Redirigir a la pagina de Tutor
+            window.location.href = '{{ route("tutor") }}';
             break;
 
         default:
