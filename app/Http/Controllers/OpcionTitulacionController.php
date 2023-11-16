@@ -213,7 +213,7 @@ class OpcionTitulacionController extends Controller
 
         // Download PDF
         //Download use D 
-        $pdf->Output('D', 'MateriaUnica.pdf');
+        $pdf->Output('D', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
 

@@ -28,8 +28,8 @@
                     <div>
                         <p>Materia Única</p>
 
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table">
+                            <thead class="thead-light">
                                 <tr  class="text-center">
                                     <th>Folio</th>
                                     <th>Materia</th>
@@ -47,8 +47,8 @@
                                         <td>{{ $item['semestre'] }}</td>
                                         <td >
                                             <a id="{{ $item['id_solicitud_mu'] }}" type="button"
-                                                class="btn btn-success btn-sm px-3 download-mu">
-                                                <i class="fas fa-download"></i> </i>
+                                                class="btn btn-primary btn-sm px-3 download-mu">
+                                                <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
                                         </td>
                                         <td  type="button" >
@@ -56,7 +56,7 @@
                                                 class="btn btn-danger btn-sm px-3 cancel-mu" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal"
                                                 onclick="setSelectedId('mu_{{ $item['id_solicitud_mu'] }}')">
-                                                <i class="fas fa-times "></i>
+                                                <i class="fas fa-times" style="color: white;"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -100,7 +100,7 @@
                                     <td class="text-center">
                                         <a id="{{ $item['id_solicitud_cm'] }}" type="button"
                                             class="btn btn-success btn-sm px-3 download-cm">
-                                            <i class="fas fa-download"></i> </i>
+                                            <i class="fas fa-download" style="color: white;"></i> </i>
                                         </a>
                                     </td>
                                     <td type="button" class="text-center">
@@ -108,7 +108,7 @@
                                             class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal"
                                             onclick="setSelectedId('cm_{{ $item['id_solicitud_cm'] }}')">
-                                            <i class="fas fa-times"></i>
+                                            <i class="fas fa-times" style="color: white;"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -152,22 +152,22 @@
                                                 $item->opcion_titulacion == 'Memorias de Actividad Profesional')
                                             <a id="{{ $item->id_solicitud_OT }}" type="button"
                                                 class="btn btn-success btn-sm px-3 download-fot">
-                                                <i class="fas fa-download"></i> </i>
+                                                <i class="fas fa-download" style="color: white;"></i> </i>
                                             </a>
 
                                             <a id="" type="button"
                                                 class="btn btn-success btn-sm px-3 download-ot">
-                                                <i class="fas fa-download"></i> </i>
+                                                <i class="fas fa-download" style="color: white;"></i> </i>
                                             </a>
 
                                             <a id="" type="button"
                                                 class="btn btn-success btn-sm px-3 download-ot">
-                                                <i class="fas fa-download"></i> </i>
+                                                <i class="fas fa-download" style="color: white;"></i> </i>
                                             </a>
                                         @else
                                             <a id="{{ $item->id_solicitud_OT }}" type="button"
                                                 class="btn btn-success btn-sm px-3 download-fot">
-                                                <i class="fas fa-download"></i> </i>
+                                                <i class="fas fa-download" style="color: white;"></i> </i>
                                             </a>
                                         @endif
 
@@ -177,7 +177,7 @@
                                             class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal"
                                             onclick="setSelectedId('OT_{{ $item->id_solicitud_OT }}')">
-                                            <i class="fas fa-times"></i>
+                                            <i class="fas fa-times" style="color: white;"></i>
                                         </a>
                                     </td>
                                 </tr>

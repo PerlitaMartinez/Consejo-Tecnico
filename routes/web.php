@@ -44,6 +44,7 @@ Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFsho
 Route::delete('materiaUnica-delete', [MateriaUnicaController::class,'materiaUnicaDelete'])->name('materiaUnica.delete');
 Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materiaUnicaShowAdministrador'])->name('materiaUnicaAdmin.show');
 Route::post('administrador/materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnicaAdmin'])->name('materiaUnicaAdmin.store');
+Route::get('materiaUnica-getRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
 
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
@@ -86,7 +87,7 @@ Route::get('/hctc/rol', function(){
 
 //ruta para el boton de administrador de la pantalla de roles
 Route::get('/administrador', function () {
-    return view('administrador'); // Reemplaza 'administrador' con el nombre de tu vista
+    return view('administrador'); 
 })->name('administrador');
 
 //ruta para el boton de director y secretario de la pantalla de roles
