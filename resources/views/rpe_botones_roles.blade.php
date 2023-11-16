@@ -123,6 +123,21 @@
             window.location.href = '{{ route("administrador") }}'; // Reemplaza con la ruta correcta
             break;
 
+        case 'Tutor Académico':
+            // Redirigir a la página correspondiente al Administrador
+            window.location.href = '{{ route("tutor") }}'; // Reemplaza con la ruta correcta
+            break;
+
+        case 'Coordinador':
+            // Redirigir a la página correspondiente al Administrador
+            window.location.href = '{{ route("coordinador") }}'; // Reemplaza con la ruta correcta
+            break;
+
+        case 'Jefe de Área':
+            // Redirigir a la página correspondiente al Administrador
+            window.location.href = '{{ route("jefe_area") }}'; // Reemplaza con la ruta correcta
+            break;
+
         case 'Director y secretario':
             // Redirigir a la página correspondiente al Administrador
             window.location.href = '{{ route("director_secretario") }}'; // Reemplaza con la ruta correcta
