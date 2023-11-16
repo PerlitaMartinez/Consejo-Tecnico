@@ -98,9 +98,9 @@ Route::get('/director%secretario', function () {
     return view('director_secretario');
 })->name('director_secretario');
 
-Route::get('/consultar', function () {
-    return view('consultar_solicitudes');
-})->name('consultar_solicitudes');
+// Route::get('/consultar', function () {
+//     return view('consultar_solicitudes');
+// })->name('consultar_solicitudes');
 
 Route::get('/sesiones', function () {
     return view('admin_sesiones_hctc'); 
@@ -138,12 +138,23 @@ Route::get('/consultar_opcion_titulacion_reporte', function () {
     return view('consultar_opcion_titulacion_reporte'); 
 })->name('consultar_opcion_titulacion_reporte');
 
-Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
+Route::get('/tutor', function () {
+    return view('tutor'); //vista de tutor
+})->name('tutor');
 
-Route::get('/hctc/rol', [MateriaUnicaController::class, 'SacaDatosMateriaUnica'])->name('rol'); //enviar las solicitudes de materia única
+Route::get('/tutorados', function () {
+    return view('tutorados'); //vista de tutor
+})->name('tutorados');
 
-Route::get('/hctc/rol', [OpcionTitulacionController::class, 'SacaDatosOpcionTitulacion'])->name('rol'); //enviar las solicitudes de materia única
+Route::get('/jefe_area', function () {
+    return view('jefe_area'); //vista de tutor
+})->name('jefe_area');
 
+Route::get('/coordinador', function () {
+    return view('coordinador'); //vista de tutor
+})->name('coordinador');
+
+Route::get('/consultar', [HomeController::class, 'mostrarTodasSolicitudes'])->name('consultar_solicitudes');
 
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
