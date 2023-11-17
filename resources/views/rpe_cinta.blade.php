@@ -26,7 +26,7 @@
 
 <!-- Botones para el rol Tutor Academico -->
             <li class="nav-item mr-5" id="btnTutorados" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Tutorados</a>
+                <a class="nav-link btn btn-primary rounded" href="/tutorados" onclick="#">Tutorados</a>
             </li>
 
 <!-- Botones para el rol Administrador -->
