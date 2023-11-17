@@ -98,7 +98,7 @@
             <div class="tab-pane fade " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 <div class="col-md-8">
                     <div class="form-group d-flex">
-                        <label for="asesor" class="mr-2" style="">Asesor:</label>
+                        <label  for="asesor" class="mr-2" style="">Asesor:</label>
                         <input type="text" id="Asesor" class="form-control" placeholder="Nombre Asesor" value="Alberto Ramirez Blanco" readonly>
                     </div>
                 </div>
