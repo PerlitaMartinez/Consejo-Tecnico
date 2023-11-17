@@ -16,4 +16,10 @@ class CargaMaximaModel extends Model
     public function sesion(){
         return $this->belongsTo(SesionHctcModel::class, 'id_sesion_hctc');
     }
+
+    //Scope que sirve para traer todos los registros con una determinada clave 
+    public function scopeClave_Unica($query, $clave_unica)
+    {
+        return $query->where('clave_unica', $clave_unica);
+    }
 }

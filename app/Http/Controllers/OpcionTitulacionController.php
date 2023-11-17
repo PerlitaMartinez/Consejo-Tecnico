@@ -6,6 +6,7 @@ use App\Models\CatOpcionTitulacionModel;
 use App\Models\OpcionTitulacionModel;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Fpdi;
+use Illuminate\Support\Facades\DB;
 
 class OpcionTitulacionController extends Controller
 {
@@ -213,7 +214,7 @@ class OpcionTitulacionController extends Controller
 
         // Download PDF
         //Download use D 
-        $pdf->Output('D', 'MateriaUnica.pdf');
+        $pdf->Output('D', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
 
@@ -291,11 +292,42 @@ class OpcionTitulacionController extends Controller
         return redirect()->route('opTitulacionPDF.show', ['id' => $newId, 'dataSet' => $dataSet]);
     }
     
-    public function SacaDatosOpcionTitulacion()
+    public static function SacaDatosOpcionTitulacion()
     {
-        $solicitudes = OpcionTitulacionModel::all();
+        $solicitudesOpcionTitulacion = OpcionTitulacionModel::all();
         //dd($solicitudes);
-        return view('rol', ['solicitudes' => $solicitudes]);
+        return view('consultar_solicitudes', ['solicitudesOpcionTitulacion' => $solicitudesOpcionTitulacion]);
+    }
+
+
+    public function fetchOpcionTitulacion(Request $request){
+        $clave_unica = $request->input("clave_unica");
+     $registros = DB::table('solicitud_opcion_titulacion as OT')
+        ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica')
+        ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
+        ->where('OT.clave_unica',  $clave_unica)
+        ->get();
+        //dd($resultados);
+        if ($registros->isEmpty()) {
+            return null;
+        }
+        $html = view('tabla_consulta_opcion_titulacion', ['registros' => $registros])->render();
+        return response()->json(['html' => $html]);
+    }
+
+
+    public function fetchAllOpcionTitulacion(){
+     $registros = DB::table('solicitud_opcion_titulacion as OT')
+        ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica')
+        ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
+        ->get();
+
+        if ($registros->isEmpty()) {
+            return null;
+        }
+        //dd($registros);
+        $html = view('tabla_consulta_opcion_titulacion', ['registros' => $registros])->render();
+        return response()->json(['html' => $html]);
     }
 
 
