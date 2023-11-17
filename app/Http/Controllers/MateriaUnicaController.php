@@ -347,7 +347,7 @@ class MateriaUnicaController extends Controller
 
     private function fetchMateriaUnica($clave_Unica)
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre')
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica')
             ->where('clave_unica', $clave_Unica)
             ->get();
 
@@ -372,6 +372,7 @@ class MateriaUnicaController extends Controller
                 'id_solicitud_mu' => $data->id_solicitud_mu,
                 'materia' => $this->fetchNombreMateria($data->clave_materia),
                 'semestre' => $data->semestre,
+                'clave_unica' => $data->clave_unica
             ];
             $dataSet[] = $fila;
         }
@@ -394,5 +395,18 @@ class MateriaUnicaController extends Controller
             return "CALCULO A";
 
         return $nombre_materia;
+    }
+
+
+    public function fetchMateriaUnicaAllRegisters()
+    {
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica')->get();
+        if ($materias->isEmpty()) { //No hay solicitudes registradas de Materia Única
+            return null;
+        }
+        $registros = $this->procesaInfo($materias);
+
+        $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
+        return response()->json(['html' => $html]);
     }
 }

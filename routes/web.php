@@ -9,6 +9,7 @@ use App\Http\Controllers\OpcionTitulacionController;
 use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\SeguimientoSolicitudController;
 use App\Http\Controllers\TramitesController;
+use App\Http\Controllers\WebServiceController;
 use App\Http\Middleware\CheckFormCargaMaximaCompletion;
 use App\Http\Middleware\CheckFormMateriaUnicaCompletion;
 use App\Http\Middleware\CheckFormOpTitulacionCompletion;
@@ -31,6 +32,8 @@ Route::get('/', function () {
     return  view('welcome');
 });
 
+Route::get('validaAlumno', [WebServiceController::class,'validaAlumno'])->name('validaAlumnoGet');
+
 
 Route::get('/login/{userType}', [AuthController::class, 'showLoginForm'])->name('login.show');
 Route::post('post-login', [AuthController::class, 'login'])->name('login.sumbit');
@@ -45,7 +48,7 @@ Route::delete('materiaUnica-delete', [MateriaUnicaController::class,'materiaUnic
 Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materiaUnicaShowAdministrador'])->name('materiaUnicaAdmin.show');
 Route::post('administrador/materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnicaAdmin'])->name('materiaUnicaAdmin.store');
 Route::get('materiaUnica-getRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
-
+Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
 Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
@@ -53,6 +56,8 @@ Route::get('cargaMaximaPDF', [CargaMaximaController::class,'cargaMaximaPDFshow']
 Route::delete('cargaMaxima-delete', [CargaMaximaController::class,'cargaMaximaDelete'])->name('cargaMaxima.delete');
 Route::get('administrador/cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaFormAdmin'])->name('cargaMaximaAdmin.show');
 Route::post('administrador/cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStoreAdmin'])->name('cargaMaximaAdmin.store');
+Route::get('cargaMaxima-getRegistros', [CargaMaximaController::class, 'fetchCargaMaxima'])->name('cargaMaximaReg');
+Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
 Route::post('opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
@@ -60,6 +65,8 @@ Route::get('opTitulacionPDF', [OpcionTitulacionController::class,'opTitulacionPD
 Route::delete('opTitulacion-delete', [OpcionTitulacionController::class,'opcionTitulacionDelete'])->name('opcionTitulacion.delete');
 Route::get('administrador/titulacion', [OpcionTitulacionController::class, 'showTitulacionFormAdmin'])->name('titulacionAdmin.show');
 Route::post('administrador/opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStoreAdmin'])->name('opcionTitulacionAdmin.store');
+Route::get('opTitulacion-getRegistros', [OpcionTitulacionController::class,'fetchOpcionTitulacion'])->name('opcionTitulacionReg');
+Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'fetchAllOpcionTitulacion'])->name('opcionTitulacionAllReg');
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
@@ -90,6 +97,10 @@ Route::get('/administrador', function () {
     return view('administrador'); 
 })->name('administrador');
 
+Route::get('/staff', function () {
+    return view('staff'); // Reemplaza 'staff' 
+})->name('staff');
+
 //ruta para el boton de director y secretario de la pantalla de roles
 Route::get('/director%secretario', function () {
     return view('director_secretario');
@@ -102,6 +113,7 @@ Route::get('/consultar', function () {
 Route::get('/sesiones', function () {
     return view('admin_sesiones_hctc'); 
 })->name('admin_sesiones_hctc');
+
 
 Route::get('/hctc/rol', [CargaMaximaController::class, 'SacaDatosCargaMaxima'])->name('rol'); //enviar las solicitudes de carga maxima
 

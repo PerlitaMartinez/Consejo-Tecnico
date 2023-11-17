@@ -64,8 +64,8 @@
 
                         return; // Detén la ejecución si el campo está vacío
                     }
-
-
+                    //----------------Aqui se debería mandar llamar al servicio web Para consultar si la clave única Existe o no.
+                    
                 }
 
                 // Muestra la tabla correspondiente según la opción del radio seleccionada
@@ -82,31 +82,124 @@
                 tablaOpcionTitulacion.style.display = 'none';
 
                 if (document.getElementById('cargaMaximaCheckbox').checked) {
-                    tablaCargaMaxima.style.display = 'block';
-                    //console.log("carga maxima");
-                } else if (document.getElementById('materiaUnicaCheckbox').checked) {
-                    $.ajax({
-                        url: '{{ route('materiaUnicaReg') }}',
-                        method: 'GET',
-                        data: {
-                            "clave_unica": claveUnicaValor
-                        },
-                        success: function(data) {
-    
 
-                            // Actualizar el contenido del contenedor div con el HTML recibido
-                            $('#tablaCargaMaxima').html(data.html);
-                            $('#tablaCargaMaxima').show();;
-                            //tablaMateriaUnica.style.display = 'block';
-                        },
-                        error: function(error) {
-                            // Manejar cualquier error si es necesario
-                        }
-                    });
+                    if (criterioSeleccionado === 'clave_unica') {
+                        $.ajax({
+                            url: '{{ route('cargaMaximaReg') }}',
+                            method: 'GET',
+                            data: {
+                                "clave_unica": claveUnicaValor
+                            },
+                            success: function(data) {
+
+
+                                // Actualizar el contenido del contenedor div con el HTML recibido
+                                $('#tablaCargaMaxima').html(data.html);
+                                $('#tablaCargaMaxima').show();
+                                //tablaMateriaUnica.style.display = 'block';
+                            },
+                            error: function(error) {
+                                // Manejar cualquier error si es necesario
+                            }
+                        });
+                    } else if (criterioSeleccionado === 'todos') {
+                        $.ajax({
+                            url: '{{ route('cargaMaximaRegAll') }}',
+                            method: 'GET',
+                            data: {},
+                            success: function(data) {
+
+
+                                // Actualizar el contenido del contenedor div con el HTML recibido
+                                $('#tablaCargaMaxima').html(data.html);
+                                $('#tablaCargaMaxima').show();
+                                //tablaMateriaUnica.style.display = 'block';
+                            },
+                            error: function(error) {
+                                // Manejar cualquier error si es necesario
+                            }
+                        });
+                    }
+
+                } else if (document.getElementById('materiaUnicaCheckbox').checked) {
+                    if (criterioSeleccionado === 'clave_unica') {
+                        $.ajax({
+                            url: '{{ route('materiaUnicaReg') }}',
+                            method: 'GET',
+                            data: {
+                                "clave_unica": claveUnicaValor
+                            },
+                            success: function(data) {
+
+
+                                // Actualizar el contenido del contenedor div con el HTML recibido
+                                $('#tablaMateriaUnica').html(data.html);
+                                $('#tablaMateriaUnica').show();;
+                                //tablaMateriaUnica.style.display = 'block';
+                            },
+                            error: function(error) {
+                                // Manejar cualquier error si es necesario
+                            }
+                        });
+                    } else if (criterioSeleccionado === 'todos') {
+                        $.ajax({
+                            url: '{{ route('materiaUnicaAllReg') }}',
+                            method: 'GET',
+                            data: {
+
+                            },
+                            success: function(data) {
+
+
+                                // Actualizar el contenido del contenedor div con el HTML recibido
+                                $('#tablaMateriaUnica').html(data.html);
+                                $('#tablaMateriaUnica').show();;
+                                //tablaMateriaUnica.style.display = 'block';
+                            },
+                            error: function(error) {
+                                // Manejar cualquier error si es necesario
+                            }
+                        });
+                    }
+
                     //console.log("materia unica");
                 } else if (document.getElementById('opcionTitulacionCheckbox').checked) {
-                    tablaOpcionTitulacion.style.display = 'block';
-                    //console.log("opcion titulacion");
+                    if (criterioSeleccionado === 'clave_unica') {
+                        $.ajax({
+                            url: '{{ route('opcionTitulacionReg') }}',
+                            method: 'GET',
+                            data: {
+                                "clave_unica": claveUnicaValor
+                            },
+                            success: function(data) {
+
+
+                                // Actualizar el contenido del contenedor div con el HTML recibido
+                                $('#tablaOpcionTitulacion').html(data.html);
+                                $('#tablaOpcionTitulacion').show();;
+                                //tablaMateriaUnica.style.display = 'block';
+                            },
+                            error: function(error) {
+                                // Manejar cualquier error si es necesario
+                            }
+                        });
+                    } else if (criterioSeleccionado === 'todos') {
+                        $.ajax({
+                            url: '{{ route('opcionTitulacionAllReg') }}',
+                            method: 'GET',
+                            data: {},
+                            success: function(data) {
+
+                                // Actualizar el contenido del contenedor div con el HTML recibido
+                                $('#tablaOpcionTitulacion').html(data.html);
+                                $('#tablaOpcionTitulacion').show();;
+                                //tablaMateriaUnica.style.display = 'block';
+                            },
+                            error: function(error) {
+
+                            }
+                        });
+                    }
                 }
             });
         });
@@ -179,6 +272,8 @@
             </div>
         </div>
 
+
+
         <!-- Contenedor para la alerta -->
         <div id="mensajeContainer" class="row mt-4 justify-content-center"></div>
 
@@ -189,10 +284,6 @@
         <div id="tablaMateriaUnica" class="tabla-container" style="display:none;">
             @include('tabla_consulta_materia_unica')
         </div>
-
-
-
-
 
         <!-- Tabla carga maxima -->
         <div id="tablaCargaMaxima" class="tabla-container" style="display:none;">

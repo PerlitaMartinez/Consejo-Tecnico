@@ -38,8 +38,14 @@
             </li>
 
 <!-- Botones para el rol Staff -->
+    
+
             <li class="nav-item mr-5" id="btnCrearSolicitudes" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Crear Solicitudes</a>
+            </li>
+
+            <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href={{ route("admin_sesiones_hctc") }}'>Sesiones del HCTC</a>
             </li>
 
 

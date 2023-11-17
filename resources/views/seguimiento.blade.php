@@ -70,8 +70,8 @@
                 <div>
                     <p>Carga Máxima</p>
 
-                    <table class="table table-striped">
-                        <thead>
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr td class="text-center">
                                 <th>Folio</th>
                                 <th>Tipo </th>
@@ -99,8 +99,8 @@
                                     <td>{{ $item['semestre'] }}</td>
                                     <td class="text-center">
                                         <a id="{{ $item['id_solicitud_cm'] }}" type="button"
-                                            class="btn btn-success btn-sm px-3 download-cm">
-                                            <i class="fas fa-download" style="color: white;"></i> </i>
+                                            class="btn btn-primary btn-sm px-3 download-cm">
+                                            <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                         </a>
                                     </td>
                                     <td type="button" class="text-center">
@@ -124,8 +124,8 @@
                 <div>
                     <p>Opción Titulación</p>
 
-                    <table class="table table-striped">
-                        <thead>
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr td class="text-center">
                                 <th>Folio</th>
                                 <th>Tipo </th>
@@ -151,22 +151,22 @@
                                                 $item->opcion_titulacion == 'Tesis' ||
                                                 $item->opcion_titulacion == 'Memorias de Actividad Profesional')
                                             <a id="{{ $item->id_solicitud_OT }}" type="button"
-                                                class="btn btn-success btn-sm px-3 download-fot">
-                                                <i class="fas fa-download" style="color: white;"></i> </i>
+                                                class="btn btn-primary btn-sm px-3 download-fot">
+                                                <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
                                             <a id="" type="button"
-                                                class="btn btn-success btn-sm px-3 download-ot">
-                                                <i class="fas fa-download" style="color: white;"></i> </i>
+                                                class="btn btn-primary btn-sm px-3 download-ot">
+                                                <i class="fas fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
                                             <a id="" type="button"
-                                                class="btn btn-success btn-sm px-3 download-ot">
-                                                <i class="fas fa-download" style="color: white;"></i> </i>
+                                                class="btn btn-primary btn-sm px-3 download-ot">
+                                                <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
                                         @else
                                             <a id="{{ $item->id_solicitud_OT }}" type="button"
-                                                class="btn btn-success btn-sm px-3 download-fot">
+                                                class="btn btn-primary btn-sm px-3 download-fot">
                                                 <i class="fas fa-download" style="color: white;"></i> </i>
                                             </a>
                                         @endif
