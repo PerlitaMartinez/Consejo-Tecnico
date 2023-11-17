@@ -14,4 +14,9 @@ class MateriaUnicaModel extends Model
     public function sesion(){
         return $this->belongsTo(SesionHctcModel::class, 'id_sesion_hctc');
     }
+
+    public function scopeAllMU($query, $clave_unica)
+    {
+        return $query->where('clave_unica', $clave_unica)->get();
+    }
 }

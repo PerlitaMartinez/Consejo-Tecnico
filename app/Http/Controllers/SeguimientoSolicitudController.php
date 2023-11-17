@@ -56,7 +56,7 @@ class SeguimientoSolicitudController extends Controller
     }
 
 
-    private function fetchMateriaUnica($clave_Unica)
+    public function fetchMateriaUnica($clave_Unica)
     {
         $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre')
             ->where('clave_unica', $clave_Unica)
@@ -86,6 +86,7 @@ class SeguimientoSolicitudController extends Controller
             ];
             $dataSet[] = $fila;
         }
+        
         return $dataSet;
     }
 
@@ -100,6 +101,9 @@ class SeguimientoSolicitudController extends Controller
                 $nombre_materia = $this->materias[$i]['nombre_materia'];
             }
         }
+
+        if(!isset($nombre_materia))
+            return "CALCULO A";
 
         return $nombre_materia;
     }

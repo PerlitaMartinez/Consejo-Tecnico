@@ -197,11 +197,11 @@ class MateriaUnicaController extends Controller
 
         $pdf->Output('D', 'materia-Unica.pdf');
 
-     
-        if($vistaAdmin == 1) {
+
+        if ($vistaAdmin == 1) {
             $mensaje = "Solicitud Registrada con éxito.";
 
-            
+
             return redirect()->route('materiaUnicaAdmin.show')->with('success', $mensaje);
         }
     }
@@ -262,7 +262,8 @@ class MateriaUnicaController extends Controller
         return response()->json(['message' => true]);
     }
 
-    public function materiaUnicaShowAdministrador(Request $request){
+    public function materiaUnicaShowAdministrador(Request $request)
+    {
         return view('materiaUnica', ['admin' => true]);
     }
 
@@ -295,7 +296,7 @@ class MateriaUnicaController extends Controller
         ];
 
         $data = $request->all();
-    
+
 
         //Verificamos que los campos no estén vacios
         foreach ($data as $key => $value) {
@@ -307,7 +308,7 @@ class MateriaUnicaController extends Controller
 
 
         $clave_unica = $request->input('clave_unica');
-       $materia  = $request->input('materia');
+        $materia  = $request->input('materia');
         $semestre = $request->input('semestre');
 
         $materiaUnica = new MateriaUnicaModel();
@@ -323,7 +324,7 @@ class MateriaUnicaController extends Controller
         $materias[0]['clave_unica'] = $clave_unica;
         $materias[0]['semestre'] =  $semestre;
         $materias[0]['materia'] = $materia;
-        return redirect()->route('materiaUnicaPDF.show', [ 'dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
+        return redirect()->route('materiaUnicaPDF.show', ['dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
     }
     
     // función para mostrar los detalles desde la base de datos de la tabla de carga maxima
@@ -332,5 +333,104 @@ class MateriaUnicaController extends Controller
         $solicitudesMateriaUnica = MateriaUnicaModel::all();
         // dd($solicitudes);
         return view('consultar_solicitudes', ['solicitudesMateriaUnica' => $solicitudesMateriaUnica]);
+    }
+
+
+    //Regresa todos los registros de un alumno enviando la clave única
+    public function fetchMateriaUnicaClave(Request $request)
+    {
+        $clave_unica = $request->input("clave_unica");
+        $registros = $this->fetchMateriaUnica($clave_unica);
+        $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
+        return response()->json(['html' => $html]);
+    }
+
+
+    private function fetchMateriaUnica($clave_Unica)
+    {
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')
+            ->where('clave_unica', $clave_Unica)
+            ->get();
+
+
+
+        if ($materias->isEmpty()) { //El alumno no tiene ninguna materia única registrada
+            return null;
+        }
+
+        $infoMaterias = $this->procesaInfo($materias);
+
+        return  $infoMaterias;
+    }
+
+    private function procesaInfo($dataMaterias)
+    {
+
+        //----Cuando se tenga disponible, se manda llamar al servicio web.---------
+
+        foreach ($dataMaterias as $data) {
+            $fila = [
+                'id_solicitud_mu' => $data->id_solicitud_mu,
+                'materia' => $this->fetchNombreMateria($data->clave_materia),
+                'semestre' => $data->semestre,
+                'clave_unica' => $data->clave_unica,
+                'estado_solicitud' => $data->estado_solicitud,
+            ];
+            $dataSet[] = $fila;
+        }
+        return $dataSet;
+    }
+
+
+    private function fetchNombreMateria($clave_materia)
+    {
+        $encontrado = false;
+        for ($i = 0; $i < count($this->materias) && !$encontrado; $i++) {
+            if ($this->materias[$i]['cve_materia'] == $clave_materia) {
+                $encontrado = true;
+                $nombre_materia = $this->materias[$i]['nombre_materia'];
+            }
+        }
+
+        if (!isset($nombre_materia))
+            return "CALCULO A";
+
+        return $nombre_materia;
+    }
+
+
+    public function fetchMateriaUnicaAllRegisters()
+    {
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')->get();
+        if ($materias->isEmpty()) { //No hay solicitudes registradas de Materia Única
+            return null;
+        }
+        $registros = $this->procesaInfo($materias);
+
+        $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
+        return response()->json(['html' => $html]);
+    }
+
+    
+    public function updateCancelar($id){
+        $d=MateriaUnicaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud='CANCELADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
+    public function updateAutorizar($id){
+        $d=MateriaUnicaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud='AUTORIZADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
+    public function mostrarDetallesMU($id){
+        $data=MateriaUnicaModel::find($id);
+        // dd($data);
+        return view('/detallesMU', compact('data'));
     }
 }

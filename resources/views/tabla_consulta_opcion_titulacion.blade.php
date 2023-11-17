@@ -1,47 +1,61 @@
-<div id="tablaOpcionTitulacion" class="container-fluid">
-        <center><h2>Solicitudes de Opción de Titulación</h2></center><br><br>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">ID Solicitud</th>
-                        <th scope="col">Fecha Solicitud</th>
-                        <th scope="col">Semestre</th>
-                        <th scope="col">Fecha y Hora Coordinador</th>
-                        <th scope="col">Fecha Impresión</th>
-                        <th scope="col">Estado Solicitud</th>
-                        <th scope="col">Clave Única</th>
-                        <th scope="col">RPE Staff</th>
-                        <th scope="col">RPE Coordinador</th>
-                        <th scope="col">ID Opción Titulación</th>
-                        <th scope="col">ID Sesión HCTC</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @if(isset($solicitudesOpcionTitulacion) && (is_array($solicitudesOpcionTitulacion) || $solicitudesOpcionTitulacion instanceof Countable) && count($solicitudesOpcionTitulacion) > 0)
-                        @foreach($solicitudesOpcionTitulacion as $solicitudOT)
-                        <tr>
-                            <td>{{ $solicitudOT->id_solicitud_OT }}</td>
-                            <td>{{ $solicitudOT->fecha_solicitud }}</td>
-                            <td>{{ $solicitudOT->semestre }}</td>
-                            <td>{{ $solicitudOT->fecha_hora_coordinador }}</td>
-                            <td>{{ $solicitudOT->fecha_impresion }}</td>
-                            <td>{{ $solicitudOT->estado_solicitud }}</td>
-                            <td>{{ $solicitudOT->clave_unica }}</td>
-                            <td>{{ $solicitudOT->rpe_staff }}</td>
-                            <td>{{ $solicitudOT->rpe_coordinador }}</td>
-                            <td>{{ $solicitudOT->id_opcion_titulacion }}</td>
-                            <td>{{ $solicitudOT->id_sesion_hctc }}</td>
-                        </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="11">No hay solicitudes disponibles</td>
-                        </tr>
-                    @endif
+ <!-- Tabla opcion titulación -->
+ <div class="mt-4">
+     <table class="table">
+         <thead class="thead-light">
+             <tr class="text-center">
+                 <th>Folio</th>
+                 <th>Tipo</th>
+                 <th>Clave Única</th>
+                 <th>Semestre</th>                 
+                 <th>Estado</th>
+                 <th>Aprobar</th>
+                 <th>Detalles</th>
+                 <th>Formato</th>
+                 <th>Cancelar</th>
+             </tr>
+         </thead>
 
-                    
-                </tbody>
-            </table>
-        </div>
-    </div>
+         <tbody>
+             @if (isset($registros))
+                 @foreach ($registros as $item)
+                     <tr class="text-center">
+                         <td>{{ $item->id_solicitud_OT }}</td>
+                         <td style="max-width: 150px;">{{ $item->opcion_titulacion }}</td>
+                         <td>{{ $item->clave_unica }}</td>
+                         <td>{{ $item->semestre }}</td>
+                         <td>{{ $item->estado_solicitud }}</td>
+
+                         <td>
+                        <form action="{{ route('autorizarOT', $item->id_solicitud_OT) }}" method="POST">
+                        @csrf
+                            <button type="submit" class="btn btn-success" value="Autorizar"><i class="fas fa-check"></i></button>
+                        </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('detallesOT', $item->id_solicitud_OT)  }}" class="btn btn-info" style="text-decoration: none; color:white;">
+                                <i class="fas fa-circle-info"></i>
+                            </a>
+                        </td>                        
+                        <td>
+                             @if (
+                                 $item->opcion_titulacion == 'Trabajo Recepcional' ||
+                                     $item->opcion_titulacion == 'Tesis' ||
+                                     $item->opcion_titulacion == 'Memorias de Actividad Profesional')
+                                 <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                                 <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                                 <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                             @else
+                                 <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                             @endif
+                         </td>                        <td>
+                            <form action="{{ route('cancelarOT', $item->id_solicitud_OT) }}" method="POST">
+                            @csrf
+                                <button type="submit" class="btn btn-danger" value="Cancelar"><i class="fas fa-x"></i></button>
+                            </form>
+                        </td>
+                     </tr>
+                 @endforeach
+             @endif
+         </tbody>
+     </table>
+ </div>

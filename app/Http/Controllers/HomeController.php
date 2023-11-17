@@ -28,7 +28,7 @@ class HomeController extends Controller
         return view('inicio', ['dataSet' => $dataSet]);
     }
 
-    public function mostrarTodasSolicitudes()
+    /*public function mostrarTodasSolicitudes()
     {
         $solicitudesMateriaUnica = MateriaUnicaController::SacaDatosMateriaUnica();
         $solicitudesCargaMaxima = CargaMaximaController::SacaDatosCargaMaxima();
@@ -40,6 +40,6 @@ class HomeController extends Controller
             'solicitudesCargaMaxima' => $solicitudesCargaMaxima,
             'solicitudesOpcionTitulacion' => $solicitudesOpcionTitulacion,
         ]);
-    }
+    }*/
 
 }
