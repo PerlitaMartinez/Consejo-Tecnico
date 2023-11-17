@@ -119,15 +119,11 @@ Route::get('/director%secretario', function () {
 
 //CONTROLADOR DE SESIONES
 Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
-Route::post('/sesiones', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
+Route::post('/sesionesCreate', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
 
 Route::get('/consultar', function () {
     return view('consultar_solicitudes');
 })->name('consultar_solicitudes');
-
-Route::get('/sesiones', function () {
-    return view('admin_sesiones_hctc'); 
-})->name('admin_sesiones_hctc');
 
 Route::get('/consulta_materia_unica_reporte', function () {
     return view('consultar_solicitud_materiaUnica_reporte'); 

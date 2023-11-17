@@ -27,7 +27,6 @@ class SesionesController extends Controller{
     public function index(){
 
         $sesiones = SesionHctcModel::all();
-       
         return view('admin_sesiones_hctc', compact('sesiones'));
 
     }
