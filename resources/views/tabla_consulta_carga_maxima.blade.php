@@ -40,7 +40,11 @@
                                 <button type="submit" class="btn btn-success" value="Autorizar"><i class="fas fa-check"></i></button>
                             </form>
                         </td>
-                        <td><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
+                        <td>
+                            <a href="{{ route('detallesCM', $item->id_solicitud_cm) }}" class="btn btn-info" style="text-decoration: none; color:white;">
+                                <i class="fas fa-circle-info"></i>
+                            </a>
+                        </td>                        
                         <td><button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button></td>
                         <td>
                             <form action="{{ route('cancelarCM', $item->id_solicitud_cm)}}" method="POST">

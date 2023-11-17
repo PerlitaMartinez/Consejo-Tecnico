@@ -378,7 +378,6 @@ class MateriaUnicaController extends Controller
             ];
             $dataSet[] = $fila;
         }
-
         return $dataSet;
     }
 
@@ -429,4 +428,9 @@ class MateriaUnicaController extends Controller
         return redirect('/consultar');
     }
 
+    public function mostrarDetallesMU($id){
+        $data=MateriaUnicaModel::find($id);
+        // dd($data);
+        return view('/detallesMU', compact('data'));
+    }
 }

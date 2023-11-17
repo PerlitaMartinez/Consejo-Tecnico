@@ -346,4 +346,10 @@ class OpcionTitulacionController extends Controller
         $d->save();
         return redirect('/consultar');
     }
+
+    public function mostrarDetallesOT($id){
+        $data=OpcionTitulacionModel::find($id);
+        // dd($data);
+        return view('/detallesOT', compact('data'));
+    }
 }

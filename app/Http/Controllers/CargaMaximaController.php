@@ -286,4 +286,10 @@ class CargaMaximaController extends Controller
         return redirect('/consultar');
     }
 
+    public function mostrarDetallesCM($id){
+        $data=CargaMaximaModel::find($id);
+        // dd($data);
+        return view('/detallesCM', compact('data'));
+    }
+
 }

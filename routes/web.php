@@ -51,6 +51,7 @@ Route::get('materiaUnica-getRegistros', [MateriaUnicaController::class,'fetchMat
 Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
 Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
 Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');
+Route::get('/detallesMU/{id}', [MateriaUnicaController::class,'mostrarDetallesMU'])->name('detallesMU');
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
 Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
@@ -62,6 +63,8 @@ Route::get('cargaMaxima-getRegistros', [CargaMaximaController::class, 'fetchCarg
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
 Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
+Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');
+
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
 Route::post('opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
@@ -73,6 +76,7 @@ Route::get('opTitulacion-getRegistros', [OpcionTitulacionController::class,'fetc
 Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'fetchAllOpcionTitulacion'])->name('opcionTitulacionAllReg');
 Route::post('/cancelarOT/{id}', [OpcionTitulacionController::class, 'updateCancelar'])->name('cancelarOT');
 Route::post('/autorizarOT/{id}', [OpcionTitulacionController::class, 'updateAutorizar'])->name('autorizarOT');
+Route::get('/detallesOT/{id}', [OpcionTitulacionController::class,'mostrarDetallesOT'])->name('detallesOT');
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');

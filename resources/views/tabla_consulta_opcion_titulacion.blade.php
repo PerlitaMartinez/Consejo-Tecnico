@@ -31,7 +31,11 @@
                             <button type="submit" class="btn btn-success" value="Autorizar"><i class="fas fa-check"></i></button>
                         </form>
                         </td>
-                        <td><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
+                        <td>
+                            <a href="{{ route('detallesOT', $item->id_solicitud_OT)  }}" class="btn btn-info" style="text-decoration: none; color:white;">
+                                <i class="fas fa-circle-info"></i>
+                            </a>
+                        </td>                        
                         <td>
                              @if (
                                  $item->opcion_titulacion == 'Trabajo Recepcional' ||

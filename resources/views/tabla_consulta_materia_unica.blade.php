@@ -1,4 +1,5 @@
 <!-- Tabla materia unica -->
+
 <div class="mt-4">
     <table class="table">
         <thead class="thead-light">
@@ -29,8 +30,17 @@
                             <button type="submit" class="btn btn-success" value="Autorizar"><i class="fas fa-check"></i></button>
                         </form>
                     </td>
-                    <td><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
-                    <td><button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button></td>
+                    <td>
+                        <a href="{{ route('detallesMU', ['id' => $item['id_solicitud_mu']]) }}" class="btn btn-info" style="text-decoration: none; color:white;">
+                            <i class="fas fa-circle-info"></i>
+                        </a>
+                    </td>
+                    <td >
+                        <a id="{{ $item['id_solicitud_mu'] }}" type="button"
+                            class="btn btn-primary btn-sm px-3 download-mu">
+                            <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+                        </a>
+                    </td>
                     <td>
                         <form action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}" method="POST">
                         @csrf
