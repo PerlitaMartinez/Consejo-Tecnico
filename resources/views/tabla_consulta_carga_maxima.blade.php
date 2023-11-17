@@ -7,6 +7,7 @@
                 <th>Clave Única</th>
                 <th>Tipo</th>              
                 <th>Semestre</th>
+                <th>Estado</th>
                 <th>Aprobar</th>
                 <th>Detalles</th>
                 <th>Formato</th>
@@ -28,14 +29,25 @@
                             @if ($item->duracion_y_media == true)
                                 Duración y Media
                             @endif
-
                         </td>
                         
                         <td>{{ $item->semestre }}</td>
-                        <td><button class="btn btn-success"><i class="fas fa-check"></i></button></td>
+                        <td>{{ $item->estado_solicitud }}</td>
+
+                        <td>
+                            <form action="{{ route('autorizarCM', $item->id_solicitud_cm) }}" method="POST">
+                            @csrf
+                                <button type="submit" class="btn btn-success" value="Autorizar"><i class="fas fa-check"></i></button>
+                            </form>
+                        </td>
                         <td><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
                         <td><button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button></td>
-                        <td><button class="btn btn-danger"><i class="fas fa-x"></i></button></td>
+                        <td>
+                            <form action="{{ route('cancelarCM', $item->id_solicitud_cm)}}" method="POST">
+                            @csrf
+                                <button type="submit" class="btn btn-danger" value="Cancelar"><i class="fas fa-x"></i></button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             @endif

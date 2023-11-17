@@ -244,7 +244,7 @@ class CargaMaximaController extends Controller
     public function fetchCargaMaxima(Request $request)
     {
         $clave_unica = $request->input("clave_unica");
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica')
+        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica','estado_solicitud')
             ->where('clave_unica', $clave_unica)
             ->get();
 
@@ -260,7 +260,7 @@ class CargaMaximaController extends Controller
 
     public function fetchAllCargaMaxima()
     {
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica')
+        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica','estado_solicitud')
             ->get();
 
         if ($registros->isEmpty()) { //No hay solicitudes registradas
@@ -270,6 +270,20 @@ class CargaMaximaController extends Controller
         return response()->json(['html' => $html]);
     }
 
+    public function updateCancelar($id){
+        $d=CargaMaximaModel::find($id);
+        // dd($d)
+        $d->estado_solicitud='CANCELADA';
+        $d->save();
+        return redirect('/consultar');
+    }
 
+    public function updateAutorizar($id){
+        $d=CargaMaximaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud='AUTORIZADA';
+        $d->save();
+        return redirect('/consultar');
+    }
 
 }
