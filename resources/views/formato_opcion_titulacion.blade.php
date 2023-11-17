@@ -19,7 +19,7 @@
                 {{ session('error') }}
             </div>
         @endif
-        <form id="formulario" method="POST"
+    <form id="formulario" method="POST"
             @if (!isset($admin)) action="{{ route('opcionTitulacion.store', ['dataSet' => $dataSet]) }}">@else action="{{ route('opcionTitulacionAdmin.store') }}"> @endif
             @csrf <h1>Opciones de Titulación</h1>
             <p>Seleccionar la opción de titulación, de acuerdo a la opción seleccionada, el sistema solicitará la captura de
@@ -146,10 +146,12 @@
             <div class="form-group">
                 @if (isset($exists) && $exists)
                     <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
+                    <a class="btn btn-primary mr-2" id="siguiente" >Siguiente Formato</a>
                 @else
                     <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
                 @endif
-            </div>
+                
+             </div>
         </form>
     </div>
 
@@ -177,6 +179,7 @@
             @if (isset($id))
                 var id = @json($id);
                 var url = "{{ route('opTitulacionPDF.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;;
+                var url2 = "{{ route('Memorias.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;;
             @endif
 
             @if (!isset($id))
@@ -188,6 +191,7 @@
                         document.getElementById('formulario').submit()
                     }
                 });
+              
             @endif
 
 
@@ -197,6 +201,13 @@
                     event.preventDefault();
                     if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
                         window.open(url, "_blank");
+                    }
+                });
+                document.getElementById('siguiente').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (confirm('¿Estás seguro(a) que deseas seguir con el tramite?')) {
+                        // código para registrar la solicitud si se hace clic en "Aceptar"
+                        window.open(url2, "_blank");
                     }
                 });
             @endif

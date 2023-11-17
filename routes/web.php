@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CargaMaximaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MateriaUnicaController;
+use App\Http\Controllers\MemoriasController;
 use App\Http\Controllers\OpcionTitulacionController;
 use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\SeguimientoSolicitudController;
@@ -62,7 +63,14 @@ Route::post('administrador/opTitulacion-post', [OpcionTitulacionController::clas
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
-
+Route::get('agregarTemarioM',[MemoriasController::class,'registroTM'])->name('TemarioMemorias');
+Route::get('verTemario', [MemoriasController::class, 'showTM'])->name('Memorias.show');
+Route::post("agregar_temario",[MemoriasController::class, "create"])->name("temario.create");
+Route::post("agregar_datos",[MemoriasController::class, "agregaDatosP"])->name("agregar.datos");
+Route::post("agregar_tema",[MemoriasController::class, "agregaTema"])->name("agregar.tema");
+Route::post("agregar_datosE",[MemoriasController::class, "agregaDE"])->name("agregar.datosE");
+Route::get('memoriasPDF', [MemoriasController::class,'memoriasPdf'])->name('memoriasPDF.show');
+Route::get('memoriasPDF2', [MemoriasController::class,'memoriasPdf2'])->name('memoriasPDF2.show');
 
 
 Route::get('/hctc/formato_registro_tema', function () {
