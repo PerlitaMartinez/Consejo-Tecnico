@@ -39,7 +39,7 @@ Route::get('/login/{userType}', [AuthController::class, 'showLoginForm'])->name(
 Route::post('post-login', [AuthController::class, 'login'])->name('login.sumbit');
 
 
-Route::get('inicio', [HomeController::class, 'index'])->name('inicio.index');
+//Route::get('inicio', [HomeController::class, 'index'])->name('inicio.index');
 
 Route::get('materiaUnica', [MateriaUnicaController::class, 'showMateriaUnicaForm'])->name('materiaUnica.show');
 Route::post('materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnica'])->name('materiaUnica.store');
@@ -106,9 +106,9 @@ Route::get('/director%secretario', function () {
     return view('director_secretario');
 })->name('director_secretario');
 
-// Route::get('/consultar', function () {
-//     return view('consultar_solicitudes');
-// })->name('consultar_solicitudes');
+Route::get('/consultar', function () {
+    return view('consultar_solicitudes');
+})->name('consultar_solicitudes');
 
 Route::get('/sesiones', function () {
     return view('admin_sesiones_hctc'); 
@@ -162,7 +162,7 @@ Route::get('/coordinador', function () {
     return view('coordinador'); //vista de tutor
 })->name('coordinador');
 
-Route::get('/consultar', [HomeController::class, 'mostrarTodasSolicitudes'])->name('consultar_solicitudes');
+//Route::get('/consultar', [HomeController::class, 'mostrarTodasSolicitudes'])->name('consultar_solicitudes');
 
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');

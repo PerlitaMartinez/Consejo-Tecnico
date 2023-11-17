@@ -23,7 +23,7 @@
 
                         <td class="text-wrap" style="max-width: 200px;">
                             @if ($item->materias_reprobadas == true)
-                                20 Materias Reprobadas
+                                20 Materias Reprobadas<br>
                             @endif
                             @if ($item->duracion_y_media == true)
                                 Duración y Media

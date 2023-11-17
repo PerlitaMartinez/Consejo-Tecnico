@@ -244,7 +244,7 @@ class CargaMaximaController extends Controller
     public function fetchCargaMaxima(Request $request)
     {
         $clave_unica = $request->input("clave_unica");
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre')
+        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica')
             ->where('clave_unica', $clave_unica)
             ->get();
 
