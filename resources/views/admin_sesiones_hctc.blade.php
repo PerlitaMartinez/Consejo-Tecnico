@@ -5,32 +5,59 @@
 @include('rpe_datos')
 
 @include('rpe_cinta')
+    
+    @if (session('mensaje'))
+        <div class="alert alert-success">
+            {{ session('mensaje') }}
+        </div>
+    @endif
+
+
 
 <div class="custom-container mt-4">
     <h2>Sesiones Honorable Consejo Técnico Consultivo</h2>
 
 
-    <!-- Botón "Nueva Sesión" -->
-    <button class="btn btn-primary mt-4" data-toggle="modal" data-target="#nuevaSesionModal">Nueva Sesión</button>
+    <!-- Botón "Nueva Sesión" 
+    <button class="btn btn-primary mt-4" data-toggle="modal" data-target="#nuevaSesionModal">Nueva Sesión</button>-->
+
+    <form action="{{route('admin_sesiones_crear')}}"method="POST">
+        @csrf
+        <input type="text" name = "fecha_sesion" placeholder="Fecha 0000-00-00" class="form-control mb-2">
+        <input type="text" name = "tipo_sesion" placeholder="Tipo (Normal-Extraordinaria)" class="form-control mb-2">
+        <button class="btn btn-primary btn-block" type="submit" > Agregar Sesion </button>
+
+    </form>
 
     <!-- Lista de sesiones existentes (si las hay) -->
     <div class="mt-4">
         <table class="table">
             <thead class="thead-light">
                 <tr class="text-center">
+                    <th>Id</th>
                     <th>Fecha</th>
                     <th>Tipo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="sesionesList">
+            <tbody>
                 <!-- Aquí se mostrarán las sesiones -->
+                @foreach ($sesiones as $sesion )
+                <tr>
+                    <td> {{ $sesion->id_sesion_hctc }} </td>   
+                    <td> {{ $sesion->fecha_sesion }} </td>  
+                    <td> {{ $sesion->tipo_sesion }} </td>                
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Modal para agregar nueva sesión -->
+
+
+
+
+<!-- Modal para agregar nueva sesión 
 <div class="modal fade" id="nuevaSesionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -44,11 +71,11 @@
                 <form id="nuevaSesionForm">
                     <div class="form-group">
                         <label for="fecha">Fecha:</label>
-                        <input type="text" class="form-control datepicker" id="fecha" placeholder="Seleccione la fecha">
+                        <input type="text" name="fecha_sesion" class="form-control datepicker" id="fecha" placeholder="Seleccione la fecha">
                     </div>
                     <div class="form-group">
                         <label for="tipo">Tipo:</label>
-                        <select class="form-control" id="tipo">
+                        <select class="form-control" id="tipo" name="tipo_sesion">
                             <option value="normal">Normal</option>
                             <option value="extraordinaria">Extraordinaria</option>
                         </select>
@@ -57,11 +84,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" id="guardarSesionButton" class="btn btn-primary">Guardar Sesión</button>
+                <button type="submit" id="guardarSesionButton" class="btn btn-primary">Guardar Sesión</button>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

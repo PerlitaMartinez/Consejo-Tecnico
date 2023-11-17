@@ -39,16 +39,14 @@
 <!-- Botones para el rol Staff -->
     
 
-            <li class="nav-item mr-5" id="btnCrearSolicitudes" style="display: none;">
+            <li class="nav-item mr-5" id="crearSolictudes" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Crear Solicitudes</a>
             </li>
-
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href={{ route("admin_sesiones_hctc") }}'>Sesiones del HCTC</a>
+                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
             </li>
-
-
-
+            
+            <!-- Boton para salir -->
             <li class="nav-item mr-5" id="btnSalir" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
                         id="icono_salir"></i> Salir</a>

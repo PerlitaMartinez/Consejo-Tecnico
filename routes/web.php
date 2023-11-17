@@ -15,6 +15,7 @@ use App\Http\Middleware\CheckFormOpTitulacionCompletion;
 use App\Models\MateriaUnicaModel;
 use Doctrine\DBAL\Logging\Middleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SesionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,45 +99,10 @@ Route::get('/director%secretario', function () {
     return view('director_secretario');
 })->name('director_secretario');
 
-// Route::get('/consultar', function () {
-//     return view('consultar_solicitudes');
-// })->name('consultar_solicitudes');
+//CONTROLADOR DE SESIONES
+Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
+Route::post('/sesiones', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
 
-Route::get('/sesiones', function () {
-    return view('admin_sesiones_hctc'); 
-})->name('admin_sesiones_hctc');
-
-Route::get('/consulta_materia_unica_reporte', function () {
-    return view('consultar_solicitud_materiaUnica_reporte'); 
-})->name('consultar_solicitud_materiaUnica_reporte');
-
-Route::get('/crear/solictud/carga/maxima', function () {
-    return view('crear_solicitud_carga_maxima'); 
-})->name('crear_solicitud_carga_maxima');
-
-Route::get('/crear/solictud/materia/unica', function () {
-    return view('crear_solicitud_materia_unica'); 
-})->name('crear_solicitud_materia_unica');
-
-Route::get('/consultarSolicitudMateriaUnica', function () {
-    return view('consultar_materia_unica_Staff'); 
-})->name('consultar_materia_unica_Staff');
-
-Route::get('/crear/Solicitud/opcion/titulacion', function () {
-    return view('crear_solicitud_opcion_titulacion'); 
-})->name('crear_solicitud_opcion_titulacion');
-
-Route::get('/consultar_carga_maxima_reporte', function () {
-    return view('consultar_carga_maxima_reporte'); 
-})->name('consultar_carga_maxima_reporte');
-
-Route::get('/consultar_opcion_titulacion_tesis_reporte', function () {
-    return view('consultar_opcion_titulacion_tesis_reporte'); 
-})->name('consultar_opcion_titulacion_tesis_reporte');
-
-Route::get('/consultar_opcion_titulacion_reporte', function () {
-    return view('consultar_opcion_titulacion_reporte'); 
-})->name('consultar_opcion_titulacion_reporte');
 
 Route::get('/tutor', function () {
     return view('tutor'); //vista de tutor
@@ -155,6 +121,7 @@ Route::get('/coordinador', function () {
 })->name('coordinador');
 
 Route::get('/consultar', [HomeController::class, 'mostrarTodasSolicitudes'])->name('consultar_solicitudes');
+
 
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');
