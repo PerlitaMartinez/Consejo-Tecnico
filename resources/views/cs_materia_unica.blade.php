@@ -1,5 +1,5 @@
 <div class="contenedor">
-        <!-- Texto "Seleccionar la materia para registrarla como materia única" -->
+    <!-- Texto "Seleccionar la materia para registrarla como materia única" -->
     <div class="row mt-4 justify-content-start">
         <div class="col-md-10">
             <p>Seleccionar la materia para registrarla como materia única</p>
@@ -14,13 +14,18 @@
         <div class="col-md-3">
             <select class="form-control">
                 <!-- Opciones del combo box -->
+                @if (isset($infoAlumno))
+                    @foreach ($infoAlumno as $item)
+                        
+                    @endforeach
+                @endif
                 <option value="materia1">Materia 1</option>
                 <option value="materia2">Materia 2</option>
                 <!-- ... otras opciones ... -->
             </select>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-primary" style="width: 100%">Buscar Materia</button>
+            <button type="button" class="btn btn-primary" style="width: 110%">Buscar Materia</button>
         </div>
     </div>
 
@@ -42,8 +47,10 @@
 
 <style>
     .contenedor {
-    max-width: 75%; /* Ajusta el ancho máximo según tus necesidades */
-    margin: 0 auto; /* Centra el contenedor horizontalmente */
-    /* Otros estilos que desees aplicar */
-}
+        max-width: 75%;
+        /* Ajusta el ancho máximo según tus necesidades */
+        margin: 0 auto;
+        /* Centra el contenedor horizontalmente */
+        /* Otros estilos que desees aplicar */
+    }
 </style>

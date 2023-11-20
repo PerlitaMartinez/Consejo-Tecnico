@@ -18,11 +18,11 @@
     </div>
     <div style="background-color: #dfecde; width: 480px; height: 130px;">
         <ul style="list-style: none;  padding: 5px 5px 5px 5px; color: #0d2607;">
-            <li></li>
-            <li></li>
-            <li>--</li>
-            <li>--</li>
-            <li>--</li>
+            <li>@if(isset($infoAlumno)) {{$infoAlumno['clave_unica']}} @else -- @endif</li>
+            <li>@if(isset($infoAlumno)) {{$infoAlumno['nombre_alumno']}} @else -- @endif</li>
+            <li>@if(isset($infoAlumno)) {{$infoAlumno['nombre_carrera']}} @else -- @endif</li>
+            <li>@if(isset($infoAlumno)) {{$infoAlumno['nombre_tutor']}} @else -- @endif</li>
+            <li>@if(isset($infoAlumno)) {{$infoAlumno['nombre_coordinador']}} @else -- @endif</li>
         </ul>
     </div>
 

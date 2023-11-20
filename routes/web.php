@@ -34,6 +34,7 @@ Route::get('/', function () {
 });
 
 Route::get('validaAlumno', [WebServiceController::class,'validaAlumno'])->name('validaAlumnoGet');
+Route::get('Alumno', [WebServiceController::class,'alumno'])->name('AlumnoGet');
 
 
 Route::get('/login/{userType}', [AuthController::class, 'showLoginForm'])->name('login.show');
@@ -48,7 +49,7 @@ Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFsho
 Route::post('materiaUnica-cancel', [MateriaUnicaController::class,'materiaUnicaCancel'])->name('materiaUnica.delete');
 Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materiaUnicaShowAdministrador'])->name('materiaUnicaAdmin.show');
 Route::post('administrador/materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnicaAdmin'])->name('materiaUnicaAdmin.store');
-Route::get('materiaUnica-getRegistros/{id}', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
+Route::get('materiaUnica-getRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
 Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
 Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
 Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');

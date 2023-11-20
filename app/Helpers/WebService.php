@@ -4,10 +4,12 @@ namespace App\Helpers;
 
 use SoapClient;
 
-class WebService{
+class WebService
+{
 
 
-    public function valida_alumno($clave_unica, $contrasena){
+    public function valida_alumno($clave_unica, $contrasena)
+    {
         $url = "https://servicios.ing.uaslp.mx/ws_hctc/ws_hctc.svc?singleWsdl";
         $options = array(
             'cache_wsdl' => 0,
@@ -27,7 +29,7 @@ class WebService{
         $array = ["key_sw" => '4B4E-AC4E-2BE82F8704BE', "clave_unica" => $clave_unica, "contrasena" => $contrasena];
         $result = $client->valida_alumno($array);
         $xml = simplexml_load_string($result->valida_alumnoResult->any);
-        
+
         for ($i = 0; $i < count($xml->NewDataSet->TablaMensaje); $i++) {
             //var_dump(count($xml->NewDataSet->TablaMensaje));
 
@@ -46,7 +48,7 @@ class WebService{
             ];
 
 
-           /* echo "clave_unica: " . $alumno["clave_unica"] . "<br \>";
+            /* echo "clave_unica: " . $alumno["clave_unica"] . "<br \>";
             echo "nombre_alumno: " . $alumno["nombre_alumno"] . "<br \>";
             echo "tiene_materia_única: " . $alumno["tiene_materia_unica"] . "<br \>";
             echo "esta_carga_máxima: " . $alumno["esta_carga_maxima"] . "<br \>";
@@ -59,5 +61,34 @@ class WebService{
         }
 
         return $dataSet;
+    }
+
+
+    //Cambiar cuando se tenga el servicio web
+    public function materia_unica($clave_unica)
+    {
+        $materias = [
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "CALCULO A",
+                "cve_materia" => "2865",
+                "semestre" => '2018-2019/II',
+            ],
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "BASE DE DATOS",
+                "cve_materia" => "3622",
+                "semestre" => '2020-2021/II',
+            ],
+            [
+                "clave_unica" => 39999,
+                "nombre_materia" => "ESTRUCTURAS DE DATOS II",
+                "cve_materia" => "9125",
+                "semestre" => "2023-2024/I",
+            ],
+
+        ];
+
+        return $materias;
     }
 }
