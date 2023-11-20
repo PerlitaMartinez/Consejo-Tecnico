@@ -1,6 +1,7 @@
 @extends('layouts.header')
 
 @section('content')
+
     <!-- Agrega el enlace al archivo de estilo de Bootstrap si aún no está incluido -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 

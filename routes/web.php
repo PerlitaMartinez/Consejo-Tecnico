@@ -120,6 +120,7 @@ Route::get('/director%secretario', function () {
 //CONTROLADOR DE SESIONES
 Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
 Route::post('/sesionesCreate', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
+Route::delete('/sesionesDelete/{sesion}', [SesionesController::class, 'destroy'])->name('admin_sesiones_delete');  
 
 Route::get('/consultar', function () {
     return view('consultar_solicitudes');
@@ -156,6 +157,11 @@ Route::get('/consultar_opcion_titulacion_tesis_reporte', function () {
 Route::get('/consultar_opcion_titulacion_reporte', function () {
     return view('consultar_opcion_titulacion_reporte'); 
 })->name('consultar_opcion_titulacion_reporte');
+
+Route::get('/CrearSolicitud', function(){
+    return view('crear_solicitud');
+})->name('crear_solicitud');
+
 
 Route::get('/tutor', function () {
     return view('tutor'); //vista de tutor
