@@ -120,6 +120,7 @@ Route::get('/director%secretario', function () {
 //CONTROLADOR DE SESIONES
 Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
 Route::post('/sesionesCreate', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
+Route::delete('/sesionesDelete/{sesion}', [SesionesController::class, 'destroy'])->name('admin_sesiones_delete');  
 
 Route::get('/consultar', function () {
     return view('consultar_solicitudes');

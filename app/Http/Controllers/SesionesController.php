@@ -43,5 +43,12 @@ class SesionesController extends Controller{
        return back()->with('mensaje', 'SESION AGREGADA CORRECTAMENTE');
     }
 
+    public function destroy(SesionHctcModel $sesion  ){
+
+        $sesion->delete();
+        return back()->with('mensaje', 'SESION ELIMINADA CORRECTAMENTE');
+
+    }
+
  
 }

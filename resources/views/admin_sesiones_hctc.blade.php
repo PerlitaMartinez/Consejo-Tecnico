@@ -1,3 +1,6 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.15.0/font/bootstrap-icons.css" rel="stylesheet">
+
+
 @extends('layouts.header')
 
 @section('content')
@@ -11,7 +14,7 @@
             {{ session('mensaje') }}
         </div>
     @endif
-
+ 
 
 
 <div class="custom-container mt-4">
@@ -23,15 +26,27 @@
 
     <form action="{{route('admin_sesiones_crear')}}"method="POST">
         @csrf
-        <input type="text" name = "fecha_sesion" placeholder="Fecha 0000-00-00" class="form-control mb-2">
-        <input type="text" name = "tipo_sesion" placeholder="Tipo (Normal-Extraordinaria)" class="form-control mb-2">
-        <button class="btn btn-primary btn-block" type="submit" > Agregar Sesion </button>
+       
+     <div class="form-group">
+     <label for="selectExample">Selecciona la fecha de Sesion:</label>
+     <input type="date" name="fecha_sesion" min="2000-00-01" max="2028-04-30" />
+    </div>
 
+      <!--    <input type="text" name = "tipo_sesion" placeholder="Tipo (Normal-Extraordinaria)" class="form-control mb-2"> -->
+
+        <div class="checkbox">
+          <label><input type="checkbox" name = "tipo_sesion" value="Normal">Normal </label>
+        </div>
+        <div class="checkbox">
+          <label><input type="checkbox" name="tipo_sesion"  value="Extraordinaria">Extraordinaria</label>
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit" > Agregar Sesion </button>
     </form>
 
     <!-- Lista de sesiones existentes (si las hay) -->
     <div class="mt-4">
-        <table class="table">
+        <table class="table text-center">
             <thead class="thead-light">
                 <tr class="text-center">
                     <th>Id</th>
@@ -46,14 +61,26 @@
                 <tr>
                     <td> {{ $sesion->id_sesion_hctc }} </td>   
                     <td> {{ $sesion->fecha_sesion }} </td>  
-                    <td> {{ $sesion->tipo_sesion }} </td>                
+                    <td> {{ $sesion->tipo_sesion }} </td>       
+                 <td>    
+                    <form action="{{ route('admin_sesiones_delete', $sesion) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn-primary btn"> Eliminar  </button>
+                    </form>
+                </td>  
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
 
-
+<script type="text/javascript">
+    $("#datetime").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true
+    });
+    </script>
 
 
 
