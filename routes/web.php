@@ -17,6 +17,7 @@ use App\Http\Middleware\CheckFormOpTitulacionCompletion;
 use App\Models\MateriaUnicaModel;
 use Doctrine\DBAL\Logging\Middleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SesionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,9 @@ Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materi
 Route::post('administrador/materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnicaAdmin'])->name('materiaUnicaAdmin.store');
 Route::get('materiaUnica-getRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
 Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
+Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
+Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');
+Route::get('/detallesMU/{id}', [MateriaUnicaController::class,'mostrarDetallesMU'])->name('detallesMU');
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
 Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
@@ -59,6 +63,10 @@ Route::get('administrador/cargaMaxima', [CargaMaximaController::class, 'showCarg
 Route::post('administrador/cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStoreAdmin'])->name('cargaMaximaAdmin.store');
 Route::get('cargaMaxima-getRegistros', [CargaMaximaController::class, 'fetchCargaMaxima'])->name('cargaMaximaReg');
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
+Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
+Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
+Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');
+
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
 Route::post('opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStore'])->name('opcionTitulacion.store');
@@ -68,6 +76,9 @@ Route::get('administrador/titulacion', [OpcionTitulacionController::class, 'show
 Route::post('administrador/opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStoreAdmin'])->name('opcionTitulacionAdmin.store');
 Route::get('opTitulacion-getRegistros', [OpcionTitulacionController::class,'fetchOpcionTitulacion'])->name('opcionTitulacionReg');
 Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'fetchAllOpcionTitulacion'])->name('opcionTitulacionAllReg');
+Route::post('/cancelarOT/{id}', [OpcionTitulacionController::class, 'updateCancelar'])->name('cancelarOT');
+Route::post('/autorizarOT/{id}', [OpcionTitulacionController::class, 'updateAutorizar'])->name('autorizarOT');
+Route::get('/detallesOT/{id}', [OpcionTitulacionController::class,'mostrarDetallesOT'])->name('detallesOT');
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
@@ -114,13 +125,14 @@ Route::get('/director%secretario', function () {
     return view('director_secretario');
 })->name('director_secretario');
 
+//CONTROLADOR DE SESIONES
+Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
+Route::post('/sesionesCreate', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
+Route::delete('/sesionesDelete/{sesion}', [SesionesController::class, 'destroy'])->name('admin_sesiones_delete');  
+
 Route::get('/consultar', function () {
     return view('consultar_solicitudes');
 })->name('consultar_solicitudes');
-
-Route::get('/sesiones', function () {
-    return view('admin_sesiones_hctc'); 
-})->name('admin_sesiones_hctc');
 
 Route::get('/consulta_materia_unica_reporte', function () {
     return view('consultar_solicitud_materiaUnica_reporte'); 
@@ -154,6 +166,11 @@ Route::get('/consultar_opcion_titulacion_reporte', function () {
     return view('consultar_opcion_titulacion_reporte'); 
 })->name('consultar_opcion_titulacion_reporte');
 
+Route::get('/CrearSolicitud', function(){
+    return view('crear_solicitud');
+})->name('crear_solicitud');
+
+
 Route::get('/tutor', function () {
     return view('tutor'); //vista de tutor
 })->name('tutor');
@@ -171,6 +188,7 @@ Route::get('/coordinador', function () {
 })->name('coordinador');
 
 //Route::get('/consultar', [HomeController::class, 'mostrarTodasSolicitudes'])->name('consultar_solicitudes');
+
 
 
 //Route::get('/generar-pdf', [PdfGeneratorController::class, 'cargaMaximaGenerate'])->name('cargaMaximaPdf.show');

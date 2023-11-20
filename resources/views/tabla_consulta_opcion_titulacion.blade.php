@@ -6,7 +6,8 @@
                  <th>Folio</th>
                  <th>Tipo</th>
                  <th>Clave Única</th>
-                 <th>Semestre</th>
+                 <th>Semestre</th>                 
+                 <th>Estado</th>
                  <th>Aprobar</th>
                  <th>Detalles</th>
                  <th>Formato</th>
@@ -22,9 +23,20 @@
                          <td style="max-width: 150px;">{{ $item->opcion_titulacion }}</td>
                          <td>{{ $item->clave_unica }}</td>
                          <td>{{ $item->semestre }}</td>
-                         <td><button class="btn btn-success"><i class="fas fa-check"></i></button></td>
-                         <td><button class="btn btn-info"><i class="fas fa-circle-info"></i></button></td>
+                         <td>{{ $item->estado_solicitud }}</td>
+
                          <td>
+                        <form action="{{ route('autorizarOT', $item->id_solicitud_OT) }}" method="POST">
+                        @csrf
+                            <button type="submit" class="btn btn-success" value="Autorizar"><i class="fas fa-check"></i></button>
+                        </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('detallesOT', $item->id_solicitud_OT)  }}" class="btn btn-info" style="text-decoration: none; color:white;">
+                                <i class="fas fa-circle-info"></i>
+                            </a>
+                        </td>                        
+                        <td>
                              @if (
                                  $item->opcion_titulacion == 'Trabajo Recepcional' ||
                                      $item->opcion_titulacion == 'Tesis' ||
@@ -35,8 +47,12 @@
                              @else
                                  <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
                              @endif
-                         </td>
-                         <td><button class="btn btn-danger"><i class="fas fa-x"></i></button></td>
+                         </td>                        <td>
+                            <form action="{{ route('cancelarOT', $item->id_solicitud_OT) }}" method="POST">
+                            @csrf
+                                <button type="submit" class="btn btn-danger" value="Cancelar"><i class="fas fa-x"></i></button>
+                            </form>
+                        </td>
                      </tr>
                  @endforeach
              @endif

@@ -40,16 +40,14 @@
 <!-- Botones para el rol Staff -->
     
 
-            <li class="nav-item mr-5" id="btnCrearSolicitudes" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Crear Solicitudes</a>
+            <li class="nav-item mr-5" id="btncrearSolictud" style="display: none;">
+                <a class="nav-link btn btn-primary rounded" href='{{ route("crear_solicitud") }}'>Crear Solicitud</a>
             </li>
-
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href={{ route("admin_sesiones_hctc") }}'>Sesiones del HCTC</a>
+                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
             </li>
-
-
-
+            
+            <!-- Boton para salir -->
             <li class="nav-item mr-5" id="btnSalir" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
                         id="icono_salir"></i> Salir</a>
@@ -106,7 +104,7 @@
                     'Jefe de Área': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                     'Administrador': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btnUsuarios', 'btnSesionesHCTC'],
                     'Director y secretario': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
-                    'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
+                    'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btncrearSolictud'],
                 };
 
                 // Muestra u oculta elementos específicos usando css()

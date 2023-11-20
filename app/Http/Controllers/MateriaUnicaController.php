@@ -348,7 +348,7 @@ class MateriaUnicaController extends Controller
 
     private function fetchMateriaUnica($clave_Unica)
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica')
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')
             ->where('clave_unica', $clave_Unica)
             ->get();
 
@@ -373,11 +373,11 @@ class MateriaUnicaController extends Controller
                 'id_solicitud_mu' => $data->id_solicitud_mu,
                 'materia' => $this->fetchNombreMateria($data->clave_materia),
                 'semestre' => $data->semestre,
-                'clave_unica' => $data->clave_unica
+                'clave_unica' => $data->clave_unica,
+                'estado_solicitud' => $data->estado_solicitud,
             ];
             $dataSet[] = $fila;
         }
-
         return $dataSet;
     }
 
@@ -401,7 +401,7 @@ class MateriaUnicaController extends Controller
 
     public function fetchMateriaUnicaAllRegisters()
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica')->get();
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')->get();
         if ($materias->isEmpty()) { //No hay solicitudes registradas de Materia Única
             return null;
         }
@@ -409,5 +409,28 @@ class MateriaUnicaController extends Controller
 
         $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
         return response()->json(['html' => $html]);
+    }
+
+    
+    public function updateCancelar($id){
+        $d=MateriaUnicaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud='CANCELADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
+    public function updateAutorizar($id){
+        $d=MateriaUnicaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud='AUTORIZADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
+    public function mostrarDetallesMU($id){
+        $data=MateriaUnicaModel::find($id);
+        // dd($data);
+        return view('/detallesMU', compact('data'));
     }
 }
