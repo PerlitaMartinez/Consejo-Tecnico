@@ -158,6 +158,11 @@ Route::get('/consultar_opcion_titulacion_reporte', function () {
     return view('consultar_opcion_titulacion_reporte'); 
 })->name('consultar_opcion_titulacion_reporte');
 
+Route::get('/CrearSolicitud', function(){
+    return view('crear_solicitud');
+})->name('crear_solicitud');
+
+
 Route::get('/tutor', function () {
     return view('tutor'); //vista de tutor
 })->name('tutor');
