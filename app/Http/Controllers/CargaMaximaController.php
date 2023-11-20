@@ -54,9 +54,13 @@ class CargaMaximaController extends Controller
     {
         $dataSet = $request->input('dataSet');
         //verificamos que no haya una solicitud activa en la base de datos
-        $resultado = CargaMaximaModel::where('clave_unica',  $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
-            ->where('estado_solicitud', '!=', 'FINALIZADO')
-            ->first();
+        $resultado = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica'])
+            ->where(function ($query) {
+                $query->where('estado_solicitud', '!=', 'RESPUESTA')
+                    ->Where('estado_solicitud', '!=', 'CANCELADA');
+            })
+            ->get();
+       
 
 
         if ($resultado != null && $resultado->count() > 0) {
@@ -186,7 +190,7 @@ class CargaMaximaController extends Controller
         return view('consultar_solicitudes', ['solicitudesCargaMaxima' => $solicitudesCargaMaxima]);
     }
 
-    public function cargaMaximaDelete(Request $request)
+    public function cargaMaximaCancel(Request $request)
     {
         $id = $request->input("id");
         $dataSet = json_decode($request->input('dataSet'), true);
@@ -200,9 +204,9 @@ class CargaMaximaController extends Controller
                 ->with('error', "No se pudo cancelar la solicitud.");
         }
 
-        // Elimina el registro
-        $registro->delete();
-
+        // Se cancela la solicitud
+        $registro->estado_solicitud = "CANCELADA";
+        $registro->save();
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
     }
@@ -241,15 +245,25 @@ class CargaMaximaController extends Controller
 
 
 
-    public function fetchCargaMaxima(Request $request)
+    public function fetchCargaMaxima($idOrRequest = null, $origenVista)
     {
-        $clave_unica = $request->input("clave_unica");
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica','estado_solicitud')
+        if ($idOrRequest instanceof Request) {
+            $clave_unica = $idOrRequest->input("clave_unica");
+        } else {
+            $clave_unica = $idOrRequest;
+        }
+        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud', 'fecha_solicitud')
             ->where('clave_unica', $clave_unica)
             ->get();
 
+
+
         if ($registros->isEmpty()) { //El alumno no tiene niguna solicitud de carga máxima registrada.
             return null;
+        }
+        $reg = $this->procesaInfo($registros);
+        if ($origenVista == 'ALUMNOS') { //Éste metodo se llama desde la vista de alumnos
+            return  $reg;
         }
 
 
@@ -257,10 +271,32 @@ class CargaMaximaController extends Controller
         return response()->json(['html' => $html]);
     }
 
+    private function procesaInfo($dataMaterias)
+    {
+
+        //----Cuando se tenga disponible, se manda llamar al servicio web.---------
+
+        foreach ($dataMaterias as $data) {
+            $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
+            $fila = [
+                'id_solicitud_cm' => $data->id_solicitud_cm,
+                'materias_reprobadas' => $data->materias_reprobadas,
+                'duracion_y_media' => $data->duracion_y_media,
+                'semestre' => $data->semestre,
+                'clave_unica' => $data->clave_unica,
+                'estado_solicitud' => $data->estado_solicitud,
+                'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
+
+            ];
+            $dataSet[] = $fila;
+        }
+        return $dataSet;
+    }
+
 
     public function fetchAllCargaMaxima()
     {
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica','estado_solicitud')
+        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud')
             ->get();
 
         if ($registros->isEmpty()) { //No hay solicitudes registradas
@@ -270,26 +306,28 @@ class CargaMaximaController extends Controller
         return response()->json(['html' => $html]);
     }
 
-    public function updateCancelar($id){
-        $d=CargaMaximaModel::find($id);
+    public function updateCancelar($id)
+    {
+        $d = CargaMaximaModel::find($id);
         // dd($d)
-        $d->estado_solicitud='CANCELADA';
+        $d->estado_solicitud = 'CANCELADA';
         $d->save();
         return redirect('/consultar');
     }
 
-    public function updateAutorizar($id){
-        $d=CargaMaximaModel::find($id);
+    public function updateAutorizar($id)
+    {
+        $d = CargaMaximaModel::find($id);
         // dd($d);
-        $d->estado_solicitud='AUTORIZADA';
+        $d->estado_solicitud = 'AUTORIZADA';
         $d->save();
         return redirect('/consultar');
     }
 
-    public function mostrarDetallesCM($id){
-        $data=CargaMaximaModel::find($id);
+    public function mostrarDetallesCM($id)
+    {
+        $data = CargaMaximaModel::find($id);
         // dd($data);
         return view('/detallesCM', compact('data'));
     }
-
 }

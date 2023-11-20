@@ -118,7 +118,8 @@
                     <div class="col-md-10">
                         <div class="form-group d-flex">
                             <label for="semestre" class="mr-2">Fecha del examen en que aprobó su ultima materia </label>
-                            <input type="text" id="fecha_examen_aprobado" name = "fecha_examen_aprobado" class="form-control">
+                            <input type="text" id="fecha_examen_aprobado" name = "fecha_examen_aprobado"
+                                class="form-control">
                         </div>
                     </div>
                 </div>
@@ -137,7 +138,7 @@
                         <div class="form-group d-flex">
                             <label for="ano_ingreso" class="mr-2" style="margin-left:165px;">Año de ingreso a la
                                 licenciatura</label>
-                            <input type="text" id="ano_ingreso"  name="ano_ingreso" class="form-control">
+                            <input type="text" id="ano_ingreso" name="ano_ingreso" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -145,12 +146,60 @@
 
             <div class="form-group">
                 @if (isset($exists) && $exists)
-                    <a class="btn btn-success " id="descargar-formato" >Descargar Formato</a>
+                    <a class="btn btn-success text-white" id="descargar-formato" data-bs-toggle="modal"
+                        data-bs-target="#downloadPDF">Descargar Formato</a>
                 @else
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
+                    <button class="btn btn-primary mr-2" id="registrar-solicitud" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Registrar Solicitud</button>
                 @endif
             </div>
         </form>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro(a) que deseas registrar la solicitud?
+                        <input type="hidden" id="selectedId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id= "saveChangesButton" type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="downloadPDF" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro(a) que deseas descargar el formato?
+                        <input type="hidden" id="selectedId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id= "saveChangesButtonPDF" type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
 
@@ -183,10 +232,13 @@
                 // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
                 document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
                     event.preventDefault();
-                    if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                        // código para registrar la solicitud si se hace clic en "Aceptar"
-                        document.getElementById('formulario').submit()
-                    }
+                    $(document).ready(function() {
+
+                        // Asignar un manejador de clic al botón "saveChangesButton       
+                        $('#saveChangesButton').click(function() {
+                            document.getElementById('formulario').submit()
+                        });
+                    });
                 });
             @endif
 
@@ -195,22 +247,16 @@
                 // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
                 document.getElementById('descargar-formato').addEventListener('click', function(event) {
                     event.preventDefault();
-                    if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
-                        window.open(url, "_blank");
-                    }
+                    $(document).ready(function() {
+
+                        // Asignar un manejador de clic al botón "saveChangesButton       
+                        $('#saveChangesButtonPDF').click(function() {
+                            window.open(url, "_blank");
+                        });
+                    });
                 });
             @endif
         @else
-            @if (!isset($id))
-                // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
-                document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
-                    event.preventDefault();
-                    if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                        // código para registrar la solicitud si se hace clic en "Aceptar"
-                        document.getElementById('formulario').submit()
-                    }
-                });
-            @endif
         @endif
     </script>
 @endsection

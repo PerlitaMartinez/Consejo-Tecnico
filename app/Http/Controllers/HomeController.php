@@ -28,18 +28,5 @@ class HomeController extends Controller
         return view('inicio', ['dataSet' => $dataSet]);
     }
 
-    /*public function mostrarTodasSolicitudes()
-    {
-        $solicitudesMateriaUnica = MateriaUnicaController::SacaDatosMateriaUnica();
-        $solicitudesCargaMaxima = CargaMaximaController::SacaDatosCargaMaxima();
-        $solicitudesOpcionTitulacion = OpcionTitulacionController::SacaDatosOpcionTitulacion();
-
-        // dd($solicitudesMateriaUnica,$solicitudesCargaMaxima,$solicitudesOpcionTitulacion);
-        return view('consultar_solicitudes', [
-            'solicitudesMateriaUnica' => $solicitudesMateriaUnica,
-            'solicitudesCargaMaxima' => $solicitudesCargaMaxima,
-            'solicitudesOpcionTitulacion' => $solicitudesOpcionTitulacion,
-        ]);
-    }*/
 
 }

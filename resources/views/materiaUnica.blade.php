@@ -45,19 +45,20 @@
                         @if (isset($materias))
                             @if ($materias == 'all')
                                 <select id="materia" name="materia" class="form-control" disabled>
-                                    <option value=""> </option></select>
-                                @else
-                                    <select id="materia" name="materia" class="form-control">
-                                        @foreach ($materias as $fila)
-                                            <option value="{{ $fila['nombre_materia'] }}">{{ $fila['nombre_materia'] }}</option>
-                                        @endforeach
-                                    </select>
+                                    <option value=""> </option>
+                                </select>
+                            @else
+                                <select id="materia" name="materia" class="form-control">
+                                    @foreach ($materias as $fila)
+                                        <option value="{{ $fila['nombre_materia'] }}">{{ $fila['nombre_materia'] }}</option>
+                                    @endforeach
+                                </select>
                             @endif
                         @else
                             <input id="materia" name="materia" class="form-control" type="text"
                                 placeholder="Default input">
                         @endif
-                        
+
                     </div>
                 </div>
             </div>
@@ -69,12 +70,13 @@
                         @if (isset($materias))
                             @if ($materias == 'all')
                                 <select id="semestre" name="semestre" class="form-control" disabled>
-                                    <option value="" disabled> </option></select>
-                                @else
-                                    <select id="semestre" name="semestre" class="form-control">
-                                        <option value="{{ $materias[0]['semestre'] }}">{{ $materias[0]['semestre'] }}
-                                        </option>
-                                    </select>
+                                    <option value="" disabled> </option>
+                                </select>
+                            @else
+                                <select id="semestre" name="semestre" class="form-control">
+                                    <option value="{{ $materias[0]['semestre'] }}">{{ $materias[0]['semestre'] }}
+                                    </option>
+                                </select>
                             @endif
                         @else
                             <input id="semestre" name="semestre" class="form-control" type="text"
@@ -89,17 +91,66 @@
                 @if (isset($registered))
                     @if (!$registered)
                         @if ($materias != 'all')
-                            <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
+                            <button class="btn btn-primary mr-2" id="registrar-solicitud" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Registrar Solicitud</button>
                         @endif
                     @else
-                        <button class="btn btn-success" id="descargar-formato">Descargar Formato</button>
+                        <button class="btn btn-success" id="descargar-formato" data-bs-toggle="modal"
+                        data-bs-target="#downloadPDF">Descargar Formato</button>
                     @endif
                 @else
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
+                    <button class="btn btn-primary mr-2" id="registrar-solicitud" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Registrar Solicitud</button>
                 @endif
 
             </div>
         </form>
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro(a) que deseas registrar la solicitud?
+                        <input type="hidden" id="selectedId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id= "saveChangesButton" type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="downloadPDF" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro(a) que deseas descargar el formato?
+                        <input type="hidden" id="selectedId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id= "saveChangesButtonPDF" type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <style>
@@ -132,29 +183,31 @@
             @if (!isset($id))
                 document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
                     event.preventDefault();
-                    if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                        // código para registrar la solicitud si se hace clic en "Aceptar"
-                        document.getElementById('formulario').submit()
-
-                        //Se genera el pdf
-                        //window.open("{{ route('materiaUnicaPDF.show') }}", "_blank");
-                        //Se redirige a la vista del formulario con un mensaje de éxito.
-                        //window.location.href = "{{ route('materiaUnica.show') }}?success=1&dataSet=" + JSON.stringify(dataSet) + "&id=" + ;
-                    }
+                    $(document).ready(function() {
+                       
+                        // Asignar un manejador de clic al botón "saveChangesButton       
+                        $('#saveChangesButton').click(function() {
+                            document.getElementById('formulario').submit()
+                        });
+                    });
                 });
             @endif
             @if (isset($id))
                 // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
+
                 document.getElementById('descargar-formato').addEventListener('click', function(event) {
                     event.preventDefault();
-                    if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
-
-                        window.open(url, "_blank");
+                    $(document).ready(function() {
+                       
+                        // Asignar un manejador de clic al botón "saveChangesButton       
+                        $('#saveChangesButtonPDF').click(function() {
+                            window.open(url, "_blank");
                         setTimeout(function() {
                             window.location.href = "{{ route('materiaUnica.show') }}?dataSet=" + JSON
                                 .stringify(dataSet) + "&registered=" + Boolean(false);
-                        }, 2000);
-                    }
+                        }, 1000);
+                        });
+                    });
                 });
             @endif
 
@@ -162,15 +215,15 @@
             $(document).ready(function() {
                 $('#materia ').on('change', function() {
                     var materias = @json($materias);
-                    
+
                     var materiaSeleccionada = $('#materia option:selected').text()
-                   
+
                     $('#semestre').empty();
-                    
+
                     for (var i = 0; i < materias.length; i++) {
                         if (materias[i]['nombre_materia'] == materiaSeleccionada) {
-                           
-                            
+
+
                             $('#semestre').append(
                                 '<option value="' + materias[i]["semestre"] + '">' + materias[i][
                                     "semestre"
@@ -182,36 +235,7 @@
                 });
             });
         @else
-            @if (!isset($id))
-                document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
-                    event.preventDefault();
-                    if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
-                        // código para registrar la solicitud si se hace clic en "Aceptar"
-                        document.getElementById('formulario').submit()
-
-                        //Se genera el pdf
-                        //window.open("{{ route('materiaUnicaPDF.show') }}", "_blank");
-                        //Se redirige a la vista del formulario con un mensaje de éxito.
-                        //window.location.href = "{{ route('materiaUnica.show') }}?success=1&dataSet=" + JSON.stringify(dataSet) + "&id=" + ;
-                    }
-                });
-            @endif
-
-
-            @if (isset($id))
-                // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
-                document.getElementById('descargar-formato').addEventListener('click', function(event) {
-                    event.preventDefault();
-                    if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
-
-                        window.open(url, "_blank");
-                        setTimeout(function() {
-                            window.location.href = "{{ route('materiaUnica.show') }}?dataSet=" + JSON
-                                .stringify(dataSet) + "&registered=" + Boolean(false);
-                        }, 2000);
-                    }
-                });
-            @endif
+        
         @endif
     </script>
 @endsection
