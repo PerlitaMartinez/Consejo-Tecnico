@@ -118,8 +118,7 @@
                     <div class="col-md-10">
                         <div class="form-group d-flex">
                             <label for="semestre" class="mr-2">Fecha del examen en que aprobó su ultima materia </label>
-                            <input type="text" id="fecha_examen_aprobado" name = "fecha_examen_aprobado"
-                                class="form-control">
+                            <input type="text" id="fecha_examen_aprobado" name = "fecha_examen_aprobado" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -138,7 +137,7 @@
                         <div class="form-group d-flex">
                             <label for="ano_ingreso" class="mr-2" style="margin-left:165px;">Año de ingreso a la
                                 licenciatura</label>
-                            <input type="text" id="ano_ingreso" name="ano_ingreso" class="form-control">
+                            <input type="text" id="ano_ingreso"  name="ano_ingreso" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -146,15 +145,10 @@
 
             <div class="form-group">
                 @if (isset($exists) && $exists)
-<<<<<<< HEAD
                     <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
                     <a class="btn btn-primary mr-2" id="siguiente" >Siguiente Formato</a>
-=======
-                    <a class="btn btn-success " id="descargar-formato" >Descargar Formato</a>
->>>>>>> f350bcc0ea3e99e9f5d5358803596d5729ec1212
                 @else
-                    <button class="btn btn-primary mr-2" id="registrar-solicitud" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">Registrar Solicitud</button>
+                    <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
                 @endif
                 
              </div>
@@ -192,13 +186,10 @@
                 // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
                 document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
                     event.preventDefault();
-                    $(document).ready(function() {
-
-                        // Asignar un manejador de clic al botón "saveChangesButton       
-                        $('#saveChangesButton').click(function() {
-                            document.getElementById('formulario').submit()
-                        });
-                    });
+                    if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
+                        // código para registrar la solicitud si se hace clic en "Aceptar"
+                        document.getElementById('formulario').submit()
+                    }
                 });
               
             @endif
@@ -208,13 +199,9 @@
                 // Agrega un cuadro de diálogo de confirmación al botón "Descargar Formato"
                 document.getElementById('descargar-formato').addEventListener('click', function(event) {
                     event.preventDefault();
-                    $(document).ready(function() {
-
-                        // Asignar un manejador de clic al botón "saveChangesButton       
-                        $('#saveChangesButtonPDF').click(function() {
-                            window.open(url, "_blank");
-                        });
-                    });
+                    if (confirm('¿Estás seguro(a) de que deseas descargar el formato?')) {
+                        window.open(url, "_blank");
+                    }
                 });
                 document.getElementById('siguiente').addEventListener('click', function(event) {
                     event.preventDefault();

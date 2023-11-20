@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class AuthController extends Controller
 {
-    use HasRoles;
+    //use HasRoles;
     public function showLoginForm($userType): View
     {
 
@@ -37,22 +37,11 @@ class AuthController extends Controller
         // $contrasena = $request->input('contrasena');
         $webService = new WebService();
         $dataSet = $webService->valida_alumno($request->input('clave_unica'), $request->input('contrasena'));
-       
+
         $respuesta = $dataSet[0]['validacion'];
         $clave = $dataSet[0]['clave_unica'];
 
-        if($respuesta === "USUARIO-VALIDO" && $clave === "262000" )
-        {
-            return redirect()->route('inicio.index', ['dataSet' => $dataSet]);
-        
-        }else{
-          
-                return redirect()->route('login.show','Alumnos');
-            
-            
-        }
-        
 
-        
+        return redirect()->route('inicio.index', ['dataSet' => $dataSet]);
     }
 }

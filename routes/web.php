@@ -83,6 +83,8 @@ Route::get('/detallesOT/{id}', [OpcionTitulacionController::class,'mostrarDetall
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
+
+
 Route::get('agregarTemarioM',[MemoriasController::class,'registroTM'])->name('TemarioMemorias');
 Route::get('verTemario', [MemoriasController::class, 'showTM'])->name('Memorias.show');
 Route::post("agregar_temario",[MemoriasController::class, "create"])->name("temario.create");

@@ -176,25 +176,14 @@
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
-<<<<<<< HEAD
-                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
-                                                class="btn btn-success btn-sm px-3 download-fotM">
-                                                <i class="fas fa-download"></i> </i>
-                                            </a>
-
-                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
-                                                class="btn btn-success btn-sm px-3 download-fotS">
-                                                <i class="fas fa-download"></i> </i>
-=======
-                                            <a id="" type="button"
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-ot">
                                                 <i class="fas fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
-                                            <a id="" type="button"
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-ot">
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
->>>>>>> f350bcc0ea3e99e9f5d5358803596d5729ec1212
                                             </a>
                                         @else
                                             <a id="{{ $item['id_solicitud_OT'] }}" type="button"
