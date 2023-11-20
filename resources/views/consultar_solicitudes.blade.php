@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <script>
+        var texto="Prueba"
         document.addEventListener('DOMContentLoaded', function() {
             // Verifica si hay un rol almacenado en la sesión
             var rolAlmacenado = sessionStorage.getItem('rolActual');
@@ -66,7 +67,7 @@
                         return; // Detén la ejecución si el campo está vacío
                     }
                     //----------------Aqui se debería mandar llamar al servicio web Para consultar si la clave única Existe o no.
-                    
+
                 }
 
                 // Muestra la tabla correspondiente según la opción del radio seleccionada
