@@ -176,6 +176,16 @@
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
+<<<<<<< HEAD
+                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
+                                                class="btn btn-success btn-sm px-3 download-fotM">
+                                                <i class="fas fa-download"></i> </i>
+                                            </a>
+
+                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
+                                                class="btn btn-success btn-sm px-3 download-fotS">
+                                                <i class="fas fa-download"></i> </i>
+=======
                                             <a id="" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-ot">
                                                 <i class="fas fas fa-file-arrow-down" style="color: white;"></i> </i>
@@ -184,6 +194,7 @@
                                             <a id="" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-ot">
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+>>>>>>> f350bcc0ea3e99e9f5d5358803596d5729ec1212
                                             </a>
                                         @else
                                             <a id="{{ $item['id_solicitud_OT'] }}" type="button"
@@ -252,6 +263,8 @@
         var download_buttons_mu = document.querySelectorAll('.download-mu');
         var download_buttons_cm = document.querySelectorAll('.download-cm');
         var download_buttons_fot = document.querySelectorAll('.download-fot');
+        var download_buttons_fotM = document.querySelectorAll('.download-fotM');
+        var download_buttons_fotS = document.querySelectorAll('.download-fotS');
         var dataSet = @json($dataSet);
         var token = $("meta[name='csrf-token']").attr("content");
         //----------------------PDF'S--------------------------
@@ -281,6 +294,24 @@
                 var id = this.getAttribute('id');
 
                 var url = "{{ route('opTitulacionPDF.show') }}?id=" + id + "&dataSet=" + JSON.stringify(
+                    dataSet);
+                window.open(url, "_blank"); // Abre en una nueva pestaña
+            });
+        });
+        download_buttons_fotM.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var id = this.getAttribute('id');
+
+                var url = "{{ route('memoriasPDF.show') }}?id=" + id + "&dataSet=" + JSON.stringify(
+                    dataSet);
+                window.open(url, "_blank"); // Abre en una nueva pestaña
+            });
+        });
+        download_buttons_fotS.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var id = this.getAttribute('id');
+
+                var url = "{{ route('memoriasPDF2.show') }}?id=" + id + "&dataSet=" + JSON.stringify(
                     dataSet);
                 window.open(url, "_blank"); // Abre en una nueva pestaña
             });

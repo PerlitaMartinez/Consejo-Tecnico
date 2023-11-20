@@ -19,7 +19,7 @@
                 {{ session('error') }}
             </div>
         @endif
-        <form id="formulario" method="POST"
+    <form id="formulario" method="POST"
             @if (!isset($admin)) action="{{ route('opcionTitulacion.store', ['dataSet' => $dataSet]) }}">@else action="{{ route('opcionTitulacionAdmin.store') }}"> @endif
             @csrf <h1>Opciones de Titulación</h1>
             <p>Seleccionar la opción de titulación, de acuerdo a la opción seleccionada, el sistema solicitará la captura de
@@ -146,60 +146,19 @@
 
             <div class="form-group">
                 @if (isset($exists) && $exists)
-                    <a class="btn btn-success text-white" id="descargar-formato" data-bs-toggle="modal"
-                        data-bs-target="#downloadPDF">Descargar Formato</a>
+<<<<<<< HEAD
+                    <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
+                    <a class="btn btn-primary mr-2" id="siguiente" >Siguiente Formato</a>
+=======
+                    <a class="btn btn-success " id="descargar-formato" >Descargar Formato</a>
+>>>>>>> f350bcc0ea3e99e9f5d5358803596d5729ec1212
                 @else
                     <button class="btn btn-primary mr-2" id="registrar-solicitud" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">Registrar Solicitud</button>
                 @endif
-            </div>
+                
+             </div>
         </form>
-
-
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro(a) que deseas registrar la solicitud?
-                        <input type="hidden" id="selectedId" value="">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button id= "saveChangesButton" type="button" class="btn btn-primary">Aceptar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="downloadPDF" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro(a) que deseas descargar el formato?
-                        <input type="hidden" id="selectedId" value="">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button id= "saveChangesButtonPDF" type="button" class="btn btn-primary">Aceptar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 
 
@@ -226,6 +185,7 @@
             @if (isset($id))
                 var id = @json($id);
                 var url = "{{ route('opTitulacionPDF.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;;
+                var url2 = "{{ route('Memorias.show') }}?dataSet=" + JSON.stringify(dataSet) + "&id=" + id;;
             @endif
 
             @if (!isset($id))
@@ -240,6 +200,7 @@
                         });
                     });
                 });
+              
             @endif
 
 
@@ -255,8 +216,25 @@
                         });
                     });
                 });
+                document.getElementById('siguiente').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (confirm('¿Estás seguro(a) que deseas seguir con el tramite?')) {
+                        // código para registrar la solicitud si se hace clic en "Aceptar"
+                        window.open(url2, "_blank");
+                    }
+                });
             @endif
         @else
+            @if (!isset($id))
+                // Agrega un cuadro de diálogo de confirmación al botón "Registrar Solicitud"
+                document.getElementById('registrar-solicitud').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (confirm('¿Estás seguro(a) que deseas registrar la solicitud?')) {
+                        // código para registrar la solicitud si se hace clic en "Aceptar"
+                        document.getElementById('formulario').submit()
+                    }
+                });
+            @endif
         @endif
     </script>
 @endsection
