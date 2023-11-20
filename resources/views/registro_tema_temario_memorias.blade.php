@@ -481,8 +481,8 @@
         <br>
         <div class="form-group">
                 @if ($exists == 1)
-                    <a class="btn btn-success" id="descargar-formato">Descargar Formato1</a>
-                    <a class="btn btn-success" id="descargar-formato1">Descargar Formato2</a>
+                    <a class="btn btn-success" id="descargar-formato">Descargar Formato 1</a>
+                    <a class="btn btn-success" id="descargar-formato1">Descargar Formato 2</a>
                     
                 @else
                      <button type="submit" class="btn btn-primary">Registrar Solicitud</button>

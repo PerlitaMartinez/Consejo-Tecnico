@@ -24,7 +24,7 @@ class MemoriasController extends Controller
     public function create(request $request)
     {
         $id = $request->input('id');
-        $temario =DB::insert("insert into temario(id_seccion,nombre_seccion,id_solicitud_OT)values(?,?,?)",[
+        $temario =DB::insert("insert into temario_autorizacion(id_seccion,nombre_seccion,id_solicitud_OT)values(?,?,?)",[
             $request->txtorden,
             $request->txttitulo,
             $id
@@ -46,7 +46,7 @@ class MemoriasController extends Controller
         $exists = 0;
         $id = $request->input('id');
         $registro = OpcionTitulacionModel::find($id);
-         $temarios = DB::select('select * from temario where id_solicitud_OT =?',[
+         $temarios = DB::select('select * from temario_autorizacion where id_solicitud_OT =?',[
             $id,
          ]);
          $tema = DB::select("select * from solicitud_registro_tema where id_solicitud_OT=$id");
@@ -191,6 +191,7 @@ class MemoriasController extends Controller
     public function memoriasPdf(Request $request)
     {
         $dataSet = $request->input('dataSet');
+        $calle = $request->txtcalle;
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
         }else{
@@ -241,7 +242,7 @@ class MemoriasController extends Controller
         $pdf->Write(0.1, $dataSet[0]['nombre_alumno']);
         
         $pdf->SetXY(46, 102);
-        $pdf->Write(0.1, 'Kepler');
+        $pdf->Write(0.1, $calle);
         $pdf->SetXY(60, 102);
         $pdf->Write(0.1, 'Progreso');
         $pdf->SetXY(80, 102);
