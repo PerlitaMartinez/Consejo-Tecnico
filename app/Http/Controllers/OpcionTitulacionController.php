@@ -347,7 +347,10 @@ class OpcionTitulacionController extends Controller
             ];
             $dataSet[] = $fila;
         }
-        return $dataSet;
+        if(isset($dataSet))
+            return $dataSet;
+        else
+            return null;
     }
 
 

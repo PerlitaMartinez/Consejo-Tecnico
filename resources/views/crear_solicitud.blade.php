@@ -84,6 +84,7 @@
                             $('#cs-materia-unica').show();
                         }
                         //tablaMateriaUnica.style.display = 'block';
+                        return;
                     },
                     error: function(error) {
                         var alertaClaveUnicaVacia = document.createElement('div');

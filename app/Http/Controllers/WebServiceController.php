@@ -35,7 +35,7 @@ class WebServiceController extends Controller
             if ($solicitud == "mu") {
                 $ws = new WebService();
                 $infoAlumnoMU = $ws->materia_unica($clave);
-                $htmlMU = view('crear_solicitud_materia_unica', ['infoAlumno' => $infoAlumnoMU])->render();
+                $htmlMU = view('cs_materia_unica', ['infoAlumno' => $infoAlumnoMU])->render();
                 return response()->json(['infoAlumno' => $html, 'infoAlumnoMU' => $htmlMU]);
             }
             
