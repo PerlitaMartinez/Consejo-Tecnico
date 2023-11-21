@@ -59,7 +59,7 @@ class OpcionTitulacionController extends Controller
                 $query->where('estado_solicitud', 'ALTA')
                     ->orWhere('estado_solicitud', 'AUTORIZADA');
             })
-            ->first();
+            ->get();
 
         if ($resultado != null && $resultado->count() > 0) {
             return back()->with('error', 'No tienes permitido hacer esta solicitud');
@@ -100,7 +100,7 @@ class OpcionTitulacionController extends Controller
         $dataSet = $request->input('dataSet');
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
-        }else{
+        } else {
             $dataSet = $request->input('dataSet');
         }
         //Se obtiene la información de la base de datos.
@@ -234,7 +234,7 @@ class OpcionTitulacionController extends Controller
 
 
 
-    public function opcionTitulacionDelete(Request $request)
+    public function opcionTitulacionCancel(Request $request)
     {
 
         $id = $request->input("id");
@@ -249,11 +249,13 @@ class OpcionTitulacionController extends Controller
                 ->with('error', "No se pudo cancelar la solicitud.");
         }
 
-        // Elimina el registro
-        $registro->delete();
-
+        //Se cancela la solicitud
+        $registro->estado_solicitud = "CANCELADA";
+        $registro->save();
+        //dd($registro);
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
+
     }
     public function showTitulacionFormAdmin()
     {
@@ -301,7 +303,7 @@ class OpcionTitulacionController extends Controller
         ];
         return redirect()->route('opTitulacionPDF.show', ['id' => $newId, 'dataSet' => $dataSet]);
     }
-    
+
     public static function SacaDatosOpcionTitulacion()
     {
         $solicitudesOpcionTitulacion = OpcionTitulacionModel::all();
@@ -310,14 +312,25 @@ class OpcionTitulacionController extends Controller
     }
 
 
-    public function fetchOpcionTitulacion(Request $request){
-        $clave_unica = $request->input("clave_unica");
-     $registros = DB::table('solicitud_opcion_titulacion as OT')
-        ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica','estado_solicitud')
-        ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
-        ->where('OT.clave_unica',  $clave_unica)
-        ->get();
+    public function fetchOpcionTitulacion($idOrRequest = null, $origenVista)
+    {
+        if ($idOrRequest instanceof Request) {
+            $clave_unica = $idOrRequest->input("clave_unica");
+        } else {
+            $clave_unica = $idOrRequest;
+        }
+        $registros = DB::table('solicitud_opcion_titulacion as OT')
+            ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
+            ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
+            ->where('OT.clave_unica',  $clave_unica)
+            ->get();
+
+        $reg = $this->procesaInfo($registros);
         //dd($resultados);
+        if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
+
+            return  $reg;
+        }
         if ($registros->isEmpty()) {
             return null;
         }
@@ -325,12 +338,35 @@ class OpcionTitulacionController extends Controller
         return response()->json(['html' => $html]);
     }
 
+    private function procesaInfo($dataMaterias)
+    {
 
-    public function fetchAllOpcionTitulacion(){
-     $registros = DB::table('solicitud_opcion_titulacion as OT')
-        ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica' ,'estado_solicitud')
-        ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
-        ->get();
+        //----Cuando se tenga disponible, se manda llamar al servicio web.---------
+
+        foreach ($dataMaterias as $data) {
+            $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
+            $fila = [
+                'id_solicitud_OT' => $data->id_solicitud_OT,
+                'opcion_titulacion' => $data->opcion_titulacion,
+                'semestre' => $data->semestre,
+                'clave_unica' => $data->clave_unica,
+                'estado_solicitud' => $data->estado_solicitud,  
+                'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
+                
+
+            ];
+            $dataSet[] = $fila;
+        }
+        return $dataSet;
+    }
+
+
+    public function fetchAllOpcionTitulacion()
+    {
+        $registros = DB::table('solicitud_opcion_titulacion as OT')
+            ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'estado_solicitud')
+            ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
+            ->get();
 
         if ($registros->isEmpty()) {
             return null;
@@ -341,24 +377,27 @@ class OpcionTitulacionController extends Controller
     }
 
 
-    public function updateCancelar($id){
-        $d=OpcionTitulacionModel::find($id);
+    public function updateCancelar($id)
+    {
+        $d = OpcionTitulacionModel::find($id);
         // dd($d)
-        $d->estado_solicitud='CANCELADA';
+        $d->estado_solicitud = 'CANCELADA';
         $d->save();
         return redirect('/consultar');
     }
 
-    public function updateAutorizar($id){
-        $d=OpcionTitulacionModel::find($id);
+    public function updateAutorizar($id)
+    {
+        $d = OpcionTitulacionModel::find($id);
         // dd($d);
-        $d->estado_solicitud='AUTORIZADA';
+        $d->estado_solicitud = 'AUTORIZADA';
         $d->save();
         return redirect('/consultar');
     }
 
-    public function mostrarDetallesOT($id){
-        $data=OpcionTitulacionModel::find($id);
+    public function mostrarDetallesOT($id)
+    {
+        $data = OpcionTitulacionModel::find($id);
         // dd($data);
         return view('/detallesOT', compact('data'));
     }

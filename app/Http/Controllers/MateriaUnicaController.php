@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MateriaUnicaModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Fpdi;
 
@@ -217,7 +218,7 @@ class MateriaUnicaController extends Controller
             for ($i = 0; $i < count($this->materias); $i++) {
                 $encontrada = false;
                 foreach ($materiasRegistradas as $mat) {
-                    if ($this->materias[$i]['cve_materia'] == $mat->clave_materia) {
+                    if ($this->materias[$i]['cve_materia'] == $mat->clave_materia && ($mat->estado_solicitud == 'ALTA' || $mat->estado_solicitud == 'AUTORIZADA')  ) {
                         $encontrada = true;
                     }
                 }
@@ -241,7 +242,7 @@ class MateriaUnicaController extends Controller
 
 
 
-    public function materiaUnicaDelete(Request $request)
+    public function materiaUnicaCancel(Request $request)
     {
         $id = $request->input("id");
         $dataSet = json_decode($request->input('dataSet'), true);
@@ -249,15 +250,18 @@ class MateriaUnicaController extends Controller
 
         $registro = MateriaUnicaModel::find($id);
 
+        
+
         if (!$registro) {
             // Si no se encuentra el registro, se envía un mensaje de error
-            return response()->json(['message' => "Solicitud cancelada con éxito"])
-                ->with('success', "Solicitud cancelada con éxito");
+            return response()->json(['message' => "No se encontro el registro"])
+                ->with('success', "No se encontro el registro");
         }
 
-        // Elimina el registro
-        $registro->delete();
-
+        // Se cancela la solicitud
+        $registro->estado_solicitud = "CANCELADA";
+        $registro->save();
+        //dd($registro);
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
     }
@@ -337,9 +341,17 @@ class MateriaUnicaController extends Controller
 
 
     //Regresa todos los registros de un alumno enviando la clave única
-    public function fetchMateriaUnicaClave(Request $request)
+    public function fetchMateriaUnicaClave($idOrRequest = null, $origenVista)
     {
-        $clave_unica = $request->input("clave_unica");
+        if ($idOrRequest instanceof Request) {
+            $clave_unica = $idOrRequest->input("clave_unica");
+        }else{
+            $clave_unica = $idOrRequest;
+        }
+        if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
+            $registros = $this->fetchMateriaUnica($clave_unica);
+            return  $registros;
+        }//Este método se llama desde la vista de Usuarios con RPE para consulta de solicitudes
         $registros = $this->fetchMateriaUnica($clave_unica);
         $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
         return response()->json(['html' => $html]);
@@ -348,11 +360,9 @@ class MateriaUnicaController extends Controller
 
     private function fetchMateriaUnica($clave_Unica)
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud', 'fecha_solicitud')
             ->where('clave_unica', $clave_Unica)
             ->get();
-
-
 
         if ($materias->isEmpty()) { //El alumno no tiene ninguna materia única registrada
             return null;
@@ -369,12 +379,16 @@ class MateriaUnicaController extends Controller
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
 
         foreach ($dataMaterias as $data) {
+            $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [
                 'id_solicitud_mu' => $data->id_solicitud_mu,
                 'materia' => $this->fetchNombreMateria($data->clave_materia),
                 'semestre' => $data->semestre,
                 'clave_unica' => $data->clave_unica,
-                'estado_solicitud' => $data->estado_solicitud,
+                'estado_solicitud' => $data->estado_solicitud,  
+                'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
+                
+
             ];
             $dataSet[] = $fila;
         }

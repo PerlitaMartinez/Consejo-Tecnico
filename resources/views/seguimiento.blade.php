@@ -30,10 +30,12 @@
 
                         <table class="table">
                             <thead class="thead-light">
-                                <tr  class="text-center">
+                                <tr class="text-center">
                                     <th>Folio</th>
                                     <th>Materia</th>
                                     <th>Semestre</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
                                     <th>Formato</th>
                                     <th>Cancelar Solicitud</th>
 
@@ -41,24 +43,31 @@
                             </thead>
                             <tbody>
                                 @foreach ($mu_info as $item)
-                                    <tr  class="text-center">
+                                    <tr class="text-center">
                                         <td>{{ $item['id_solicitud_mu'] }}</td>
                                         <td>{{ $item['materia'] }}</td>
                                         <td>{{ $item['semestre'] }}</td>
-                                        <td >
+                                        <td>{{ $item['fecha_solicitud'] }}</td>
+                                        <td>{{ $item['estado_solicitud'] }}</td>
+
+                                        <td>
                                             <a id="{{ $item['id_solicitud_mu'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-mu">
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
                                         </td>
-                                        <td  type="button" >
-                                            <a id="mu_{{ $item['id_solicitud_mu'] }}" type="button"
-                                                class="btn btn-danger btn-sm px-3 cancel-mu" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal"
-                                                onclick="setSelectedId('mu_{{ $item['id_solicitud_mu'] }}')">
-                                                <i class="fas fa-times" style="color: white;"></i>
-                                            </a>
-                                        </td>
+                                        @if ($item['estado_solicitud'] == 'ALTA' || $item['estado_solicitud'] == 'AUTORIZADA')
+                                            <td>
+                                                <a id="mu_{{ $item['id_solicitud_mu'] }}" type="button"
+                                                    class="btn btn-danger btn-sm px-3 cancel-mu" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal"
+                                                    onclick="setSelectedId('mu_{{ $item['id_solicitud_mu'] }}')">
+                                                    <i class="fas fa-times" style="color: white;"></i>
+                                                </a>
+                                            </td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                     </tr>
                                 @endforeach
                         </table>
@@ -76,6 +85,8 @@
                                 <th>Folio</th>
                                 <th>Tipo </th>
                                 <th>Semestre</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
                                 <th>Formato</th>
                                 <th>Cancelar Solicitud</th>
 
@@ -83,11 +94,11 @@
                         </thead>
                         <tbody>
                             @foreach ($cm_info as $item)
-                                <tr  class="text-center">
+                                <tr class="text-center">
                                     <td>{{ $item['id_solicitud_cm'] }}</td>
-                                    <td class="text-wrap" style="max-width: 150px;">
+                                    <td class="text-wrap" style="max-width: 200px;">
                                         @if ($item['materias_reprobadas'])
-                                            {{ '20 Materias Reprobadas' }}
+                                            {{ '20 Materias Reprobadas' }}<br>
                                         @endif
 
                                         @if ($item['duracion_y_media'])
@@ -97,20 +108,27 @@
 
                                     </td>
                                     <td>{{ $item['semestre'] }}</td>
+                                    <td>{{ $item['fecha_solicitud'] }}</td>
+                                    <td>{{ $item['estado_solicitud'] }}</td>
+
                                     <td class="text-center">
                                         <a id="{{ $item['id_solicitud_cm'] }}" type="button"
                                             class="btn btn-primary btn-sm px-3 download-cm">
                                             <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                         </a>
                                     </td>
-                                    <td type="button" class="text-center">
-                                        <a id="{{ $item['id_solicitud_cm'] }}" type="button"
-                                            class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"
-                                            onclick="setSelectedId('cm_{{ $item['id_solicitud_cm'] }}')">
-                                            <i class="fas fa-times" style="color: white;"></i>
-                                        </a>
-                                    </td>
+                                    @if ($item['estado_solicitud'] == 'ALTA' || $item['estado_solicitud'] == 'AUTORIZADA')
+                                        <td class="text-center">
+                                            <a id="{{ $item['id_solicitud_cm'] }}" type="button"
+                                                class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                onclick="setSelectedId('cm_{{ $item['id_solicitud_cm'] }}')">
+                                                <i class="fas fa-times" style="color: white;"></i>
+                                            </a>
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -130,6 +148,8 @@
                                 <th>Folio</th>
                                 <th>Tipo </th>
                                 <th>Semestre</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
                                 <th>Formato</th>
                                 <th>Cancelar Solicitud</th>
 
@@ -138,52 +158,57 @@
                         <tbody>
                             @foreach ($ot_info as $item)
                                 <tr class="text-center">
-                                    <td>{{ $item->id_solicitud_OT }}</td>
+                                    <td>{{ $item['id_solicitud_OT'] }}</td>
                                     <td class="text-wrap" style="max-width: 150px;">
-                                        {{ $item->opcion_titulacion }}
+                                        {{ $item['opcion_titulacion'] }}
                                     </td>
-                                    <td>{{ $item->semestre }}</td>
-
+                                    <td>{{ $item['semestre'] }}</td>
+                                    <td>{{ $item['fecha_solicitud'] }}</td>
+                                    <td>{{ $item['estado_solicitud'] }}</td>
 
                                     <td class="text-center">
                                         @if (
-                                            $item->opcion_titulacion == 'Trabajo Recepcional' ||
-                                                $item->opcion_titulacion == 'Tesis' ||
-                                                $item->opcion_titulacion == 'Memorias de Actividad Profesional')
-                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
+                                            $item['opcion_titulacion'] == 'Trabajo Recepcional' ||
+                                                $item['opcion_titulacion'] == 'Tesis' ||
+                                                $item['opcion_titulacion'] == 'Memorias de Actividad Profesional')
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-fot">
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
-                                           
                                             
 
-                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-fotM">
                                                 <i class="fas fas fa-file-arrow-down" style="color: white;"></i> </i>
                                             </a>
 
-                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-fotS">
                                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
 
-                                            </a>
+
+                                           
                                         @else
-                                            <a id="{{ $item->id_solicitud_OT }}" type="button"
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
                                                 class="btn btn-primary btn-sm px-3 download-fot">
                                                 <i class="fas fa-download" style="color: white;"></i> </i>
                                             </a>
                                         @endif
 
                                     </td>
-                                    <td type="button" class="text-center">
-                                        <a id="{{ $item->id_solicitud_OT }}" type="button"
-                                            class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"
-                                            onclick="setSelectedId('OT_{{ $item->id_solicitud_OT }}')">
-                                            <i class="fas fa-times" style="color: white;"></i>
-                                        </a>
-                                    </td>
+                                    @if ($item['estado_solicitud'] == 'ALTA' || $item['estado_solicitud'] == 'AUTORIZADA')
+                                        <td class="text-center">
+                                            <a id="{{ $item['id_solicitud_OT'] }}" type="button"
+                                                class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                onclick="setSelectedId('OT_{{ $item['id_solicitud_OT'] }}')">
+                                                <i class="fas fa-times" style="color: white;"></i>
+                                            </a>
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -302,7 +327,7 @@
             // Asignar un manejador de clic al botón "saveChangesButton"
             $('#saveChangesButton').click(function() {
                 var selectedId = $('#selectedId').val();
-                
+
                 if (selectedId) {
 
                     // Verificar si el botón que se hizo clic tiene la clase "cancel-mu"
@@ -311,7 +336,7 @@
                         deleteSolicitudMU(idSinPrefijo); // Llama a la función adecuada según el prefijo
                     }
                     if (selectedId.startsWith("cm_")) {
-                    
+
                         var idSinPrefijo = selectedId.replace('cm_', '');
                         deleteSolicitudCM(idSinPrefijo); // Llama a la función adecuada según el prefijo
                     }
@@ -333,7 +358,7 @@
             // Realizar una solicitud AJAX para eliminar la solicitud
             $.ajax({
                 url: "{{ route('materiaUnica.delete') }}",
-                type: 'DELETE',
+                type: 'POST',
                 data: {
                     "dataSet": JSON.stringify(dataSet),
                     "id": id,
@@ -361,7 +386,7 @@
             // Realizar una solicitud AJAX para eliminar la solicitud
             $.ajax({
                 url: "{{ route('cargaMaxima.delete') }}",
-                type: 'DELETE',
+                type: 'POST',
                 data: {
                     "dataSet": JSON.stringify(dataSet),
                     "id": id,
@@ -388,7 +413,7 @@
             // Realizar una solicitud AJAX para eliminar la solicitud
             $.ajax({
                 url: "{{ route('opcionTitulacion.delete') }}",
-                type: 'DELETE',
+                type: 'POST',
                 data: {
                     "dataSet": JSON.stringify(dataSet),
                     "id": id,
