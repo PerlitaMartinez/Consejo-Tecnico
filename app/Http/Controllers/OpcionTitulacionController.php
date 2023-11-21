@@ -24,25 +24,35 @@ class OpcionTitulacionController extends Controller
     {
         $dataSet = $request->input('dataSet');
         $id = $request->input('id');
+        $veri = $request->input('veri');
+       
+        
         //Se obtienen todas las opciones de titulación
         $opciones = CatOpcionTitulacionModel::all();
 
         //Se verifica si ya se tiene una solicitd de titulación ya registrada
         $exists = $this->opTitulacionRegister($dataSet);
+       
+       
+            return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id, 'veri'=> $veri], ); //<----Cambiar por servicio web
 
 
-
-        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id]); //<----Cambiar por servicio web
+        
     }
+   
+    
 
 
     public function opcionTitulacionStore(Request $request)
     {
         $dataSet = $request->input('dataSet');
         $opcionTitulacionSeleccionada = $request->input('opcion_titulacion');
+        $veri =0;
 
-
-
+         if($opcionTitulacionSeleccionada == '7')
+         {
+            $veri = 1;
+         }
         //verificamos que no haya una solicitud activa en la base de datos
         $resultado = OpcionTitulacionModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
             ->where(function ($query) {
@@ -65,7 +75,7 @@ class OpcionTitulacionController extends Controller
         $opcionTitulacion->save();
         $newId = $opcionTitulacion->id_solicitud_OT;
         $mensaje = "Solicitud registrada con éxito.";
-        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId])->with('success', $mensaje);
+        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId,'veri'=> $veri])->with('success', $mensaje);
     }
 
 

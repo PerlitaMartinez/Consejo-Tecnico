@@ -49,8 +49,8 @@ class MemoriasController extends Controller
          $temarios = DB::select('select * from temario_autorizacion where id_solicitud_OT =?',[
             $id,
          ]);
-         $tema = DB::select("select * from solicitud_registro_tema where id_solicitud_OT=$id");
-         $coasesor = DB::select("select * from datos_coasesor where datos_coasesor.id_solicitud_OT= $id");
+         $tema = DB::select("select * from solicitud_registro_tema where id_solicitud_OT='$id'");
+         $coasesor = DB::select("select * from datos_coasesor where datos_coasesor.id_solicitud_OT= '$id'");
          $datosE = DB::select('select * from datos_empresa where id_solicitud_OT=?',[
             $id,
          ]);
@@ -77,6 +77,14 @@ class MemoriasController extends Controller
                 'coasesor',
                 'temarios',
                 'registro',
+            ));
+         }else{
+            return view('registro_tema_temario_memorias',compact(
+                'dataSet',
+                'id',
+                'exists',
+                'temarios',
+                
             ));
          }
 
@@ -191,7 +199,7 @@ class MemoriasController extends Controller
     public function memoriasPdf(Request $request)
     {
         $dataSet = $request->input('dataSet');
-        $calle = $request->txtcalle;
+        
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
         }else{
@@ -242,7 +250,7 @@ class MemoriasController extends Controller
         $pdf->Write(0.1, $dataSet[0]['nombre_alumno']);
         
         $pdf->SetXY(46, 102);
-        $pdf->Write(0.1, $calle);
+        $pdf->Write(0.1, 'Kepler');
         $pdf->SetXY(60, 102);
         $pdf->Write(0.1, 'Progreso');
         $pdf->SetXY(80, 102);
