@@ -149,6 +149,7 @@
                     <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
                     @if($veri == 1)
                     <a class="btn btn-primary mr-2" id="siguiente" >Siguiente Formato</a>
+
                     @endif
                    
                 @else

@@ -45,7 +45,7 @@ class MemoriasController extends Controller
         $dataSet = $request->input('dataSet');
         $exists = 0;
         $id = $request->input('id');
-        $registro = OpcionTitulacionModel::find($id);
+        
          $temarios = DB::select('select * from temario_autorizacion where id_solicitud_OT =?',[
             $id,
          ]);
@@ -76,7 +76,7 @@ class MemoriasController extends Controller
                 'datosA',
                 'coasesor',
                 'temarios',
-                'registro',
+                
             ));
          }else{
             return view('registro_tema_temario_memorias',compact(
