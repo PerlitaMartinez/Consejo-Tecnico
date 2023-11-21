@@ -29,16 +29,16 @@
        
      <div class="form-group">
      <label for="selectExample">Selecciona la fecha de Sesion:</label>
-     <input type="date" name="fecha_sesion" min="2000-00-01" max="2028-04-30" />
+     <input required ="date" name="fecha_sesion" min="2000-00-01" max="2028-04-30" />
     </div>
 
       <!--    <input type="text" name = "tipo_sesion" placeholder="Tipo (Normal-Extraordinaria)" class="form-control mb-2"> -->
 
         <div class="checkbox">
-          <label><input type="checkbox" name = "tipo_sesion" value="Normal">Normal </label>
+          <label><input required type="radio" name = "tipo_sesion" value="Normal">Normal </label>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox" name="tipo_sesion"  value="Extraordinaria">Extraordinaria</label>
+          <label><input required type="radio" name="tipo_sesion"  value="Extraordinaria">Extraordinaria</label>
         </div>
 
         <button class="btn btn-primary btn-block" type="submit" > Agregar Sesion </button>
@@ -61,14 +61,30 @@
                 <tr>
                     <td> {{ $sesion->id_sesion_hctc }} </td>   
                     <td> {{ $sesion->fecha_sesion }} </td>  
-                    <td> {{ $sesion->tipo_sesion }} </td>       
-                 <td>    
+                    <td> {{ $sesion->tipo_sesion }} </td>   
+                <td type="button" class="text-center">    
+                        <form action="{{ route('admin_sesiones_delete', $sesion) }}" method="POST">
+                         <button type="submit" style="border:none" >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="green" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                          </svg>
+                        </button>
+                     </form>
+                 </td>  
+
+                  <!-- Eliminar -->
+                  <td type="button" class="text-center">    
                     <form action="{{ route('admin_sesiones_delete', $sesion) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn-primary btn"> Eliminar  </button>
+                            <button type="submit"class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                <i class="fas fa-times" style="color: white;"></i>
+                            </button>
+                        <!-- <button type="submit" class="btn-primary btn"> Eliminar  </button>-->
                     </form>
-                </td>  
+                </td>   
                 @endforeach
             </tbody>
         </table>
