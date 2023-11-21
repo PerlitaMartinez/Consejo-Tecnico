@@ -50,7 +50,7 @@ Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFsho
 Route::post('materiaUnica-cancel', [MateriaUnicaController::class,'materiaUnicaCancel'])->name('materiaUnica.delete');
 Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materiaUnicaShowAdministrador'])->name('materiaUnicaAdmin.show');
 Route::post('administrador/materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnicaAdmin'])->name('materiaUnicaAdmin.store');
-Route::get('materiaUnica-getRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
+Route::get('materiaUnica-getRegistros/{clave}/{rol?}', [MateriaUnicaController::class,'fetchMateriaUnicaClave'])->name('materiaUnicaReg');
 Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
 Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
 Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');
@@ -62,7 +62,7 @@ Route::get('cargaMaximaPDF', [CargaMaximaController::class,'cargaMaximaPDFshow']
 Route::post('cargaMaxima-cancel', [CargaMaximaController::class,'cargaMaximaCancel'])->name('cargaMaxima.delete');
 Route::get('administrador/cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaFormAdmin'])->name('cargaMaximaAdmin.show');
 Route::post('administrador/cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStoreAdmin'])->name('cargaMaximaAdmin.store');
-Route::get('cargaMaxima-getRegistros', [CargaMaximaController::class, 'fetchCargaMaxima'])->name('cargaMaximaReg');
+Route::get('cargaMaxima-getRegistros/{clave}/{rol?}', [CargaMaximaController::class, 'fetchCargaMaxima'])->name('cargaMaximaReg');
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
 Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
@@ -75,7 +75,7 @@ Route::get('opTitulacionPDF', [OpcionTitulacionController::class,'opTitulacionPD
 Route::post('opTitulacion-cancel', [OpcionTitulacionController::class,'opcionTitulacionCancel'])->name('opcionTitulacion.delete');
 Route::get('administrador/titulacion', [OpcionTitulacionController::class, 'showTitulacionFormAdmin'])->name('titulacionAdmin.show');
 Route::post('administrador/opTitulacion-post', [OpcionTitulacionController::class, 'opcionTitulacionStoreAdmin'])->name('opcionTitulacionAdmin.store');
-Route::get('opTitulacion-getRegistros', [OpcionTitulacionController::class,'fetchOpcionTitulacion'])->name('opcionTitulacionReg');
+Route::get('opTitulacion-getRegistros/{clave}/{rol?}', [OpcionTitulacionController::class,'fetchOpcionTitulacion'])->name('opcionTitulacionReg');
 Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'fetchAllOpcionTitulacion'])->name('opcionTitulacionAllReg');
 Route::post('/cancelarOT/{id}', [OpcionTitulacionController::class, 'updateCancelar'])->name('cancelarOT');
 Route::post('/autorizarOT/{id}', [OpcionTitulacionController::class, 'updateAutorizar'])->name('autorizarOT');
