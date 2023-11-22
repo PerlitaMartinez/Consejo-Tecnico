@@ -10,7 +10,7 @@
 @include('rpe_cinta')
     
     @if (session('mensaje'))
-        <div class="alert alert-success">
+        <div class="alert alert-success text-center">
             {{ session('mensaje') }}
         </div>
     @endif
@@ -20,19 +20,13 @@
 <div class="custom-container mt-4">
     <h2>Sesiones Honorable Consejo Técnico Consultivo</h2>
 
-
-    <!-- Botón "Nueva Sesión" 
-    <button class="btn btn-primary mt-4" data-toggle="modal" data-target="#nuevaSesionModal">Nueva Sesión</button>-->
-
     <form action="{{route('admin_sesiones_crear')}}"method="POST">
         @csrf
        
      <div class="form-group">
      <label for="selectExample">Selecciona la fecha de Sesion:</label>
-     <input required ="date" name="fecha_sesion" min="2000-00-01" max="2028-04-30" />
+     <input required type="date" name="fecha_sesion" min="2000-00-01" max="2028-04-30" />
     </div>
-
-      <!--    <input type="text" name = "tipo_sesion" placeholder="Tipo (Normal-Extraordinaria)" class="form-control mb-2"> -->
 
         <div class="checkbox">
           <label><input required type="radio" name = "tipo_sesion" value="Normal">Normal </label>
@@ -61,9 +55,10 @@
                 <tr>
                     <td> {{ $sesion->id_sesion_hctc }} </td>   
                     <td> {{ $sesion->fecha_sesion }} </td>  
-                    <td> {{ $sesion->tipo_sesion }} </td>   
+                    <td> {{ $sesion->tipo_sesion }} </td>  
+                       <!-- Editar -->
                 <td type="button" class="text-center">    
-                        <form action="{{ route('admin_sesiones_delete', $sesion) }}" method="POST">
+                        <form action="{{ route('admin_sesiones_edit', $sesion) }}">
                          <button type="submit" style="border:none" >
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="green" class="bi bi-pencil-square" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>

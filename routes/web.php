@@ -132,6 +132,8 @@ Route::get('/director%secretario', function () {
 Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
 Route::post('/sesionesCreate', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
 Route::delete('/sesionesDelete/{sesion}', [SesionesController::class, 'destroy'])->name('admin_sesiones_delete');  
+Route::get('/sesionesEditar/{sesion}/edit', [SesionesController::class, 'edit'])->name('admin_sesiones_edit');
+Route::patch('/sesiones{sesion}', [SesionesController::class, 'update'])->name('sesion.update');
 
 Route::get('/consultar', function () {
     return view('consultar_solicitudes');
