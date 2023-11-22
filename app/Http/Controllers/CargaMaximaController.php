@@ -252,6 +252,7 @@ class CargaMaximaController extends Controller
         } else {
             $clave_unica = $idOrRequest;
         }
+        
         $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud', 'fecha_solicitud')
             ->where('clave_unica', $clave_unica)
             ->get();

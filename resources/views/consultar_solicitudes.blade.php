@@ -86,10 +86,12 @@
 
                     if (criterioSeleccionado === 'clave_unica') {
                         $.ajax({
-                            url: '{{ route('cargaMaximaReg') }}',
+                            url: '/cargaMaxima-getRegistros/' + claveUnicaValor + '/RPE',
                             method: 'GET',
                             data: {
-                                "clave_unica": claveUnicaValor
+                                "clave": claveUnicaValor,
+                                "origenVista": "RPE"
+                                
                             },
                             success: function(data) {
 
@@ -125,10 +127,10 @@
                 } else if (document.getElementById('materiaUnicaCheckbox').checked) {
                     if (criterioSeleccionado === 'clave_unica') {
                         $.ajax({
-                            url: '{{ route('materiaUnicaReg') }}',
+                            url: '/materiaUnica-getRegistros/' + claveUnicaValor + '/RPE',
                             method: 'GET',
                             data: {
-                                "clave_unica": claveUnicaValor
+    
                             },
                             success: function(data) {
 
@@ -167,10 +169,10 @@
                 } else if (document.getElementById('opcionTitulacionCheckbox').checked) {
                     if (criterioSeleccionado === 'clave_unica') {
                         $.ajax({
-                            url: '{{ route('opcionTitulacionReg') }}',
+                            url: '/opTitulacion-getRegistros/' + claveUnicaValor + '/RPE',
                             method: 'GET',
                             data: {
-                                "clave_unica": claveUnicaValor
+     
                             },
                             success: function(data) {
 
