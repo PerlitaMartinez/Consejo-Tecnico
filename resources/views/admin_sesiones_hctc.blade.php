@@ -70,20 +70,47 @@
 
                   <!-- Eliminar -->
                   <td type="button" class="text-center">    
-                    <form action="{{ route('admin_sesiones_delete', $sesion) }}" method="POST">
+            
+                    <form action="{{ route('admin_sesiones_delete', $sesion) }}" method="POST" clas="formulario-eliminar">
+                        
                         @csrf
                         @method('delete')
                             <button type="submit"class="btn btn-danger btn-sm px-3 cancel-cm" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                                 data-toggle="modal" data-target="#confirmarEliminar">
                                 <i class="fas fa-times" style="color: white;"></i>
                             </button>
                         <!-- <button type="submit" class="btn-primary btn"> Eliminar  </button>-->
+                       
                     </form>
                 </td>   
                 @endforeach
             </tbody>
         </table>
     </div>
+</div>
+
+<div class="container mt-5">
+
+  <!-- Modal de Confirmación de Eliminación -->
+  <div class="modal fade" id="confirmarEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmar Eliminación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar la sesion?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -201,6 +228,8 @@
 
 @endsection
 
+
+
 <style>
     .custom-container {
         max-width: 70%; /* Ajusta el valor según tus necesidades */
@@ -208,3 +237,4 @@
         margin-left: auto;
     }
 </style>
+
