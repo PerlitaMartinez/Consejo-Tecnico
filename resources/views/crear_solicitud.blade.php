@@ -9,29 +9,34 @@
             // Obtén referencias a los elementos que deseas mostrar/ocultar
             var materiaUnicaContainer = document.getElementById('cs-materia-unica');
             var cargaMaximaContainer = document.getElementById('cs-carga-maxima');
+            var opcionTitulacionContainer = document.getElementById('cs-opcion-titulacion');
 
-            // Agrega un evento de cambio a los radio buttons
-            var cargaMaximaCheckbox = document.getElementById('cargaMaximaCheckbox');
-            var materiaUnicaCheckbox = document.getElementById('materiaUnicaCheckbox');
-            var opcionTitulacionCheckbox = document.getElementById('opcionTitulacionCheckbox');
+        // Agrega un evento de cambio a los radio buttons
+        var cargaMaximaCheckbox = document.getElementById('cargaMaximaCheckbox');
+        var materiaUnicaCheckbox = document.getElementById('materiaUnicaCheckbox');
+        var opcionTitulacionCheckbox = document.getElementById('opcionTitulacionCheckbox');
 
-            cargaMaximaCheckbox.addEventListener('change', function() {
-                // Oculta los elementos que no deben mostrarse
-                materiaUnicaContainer.style.display = 'none';
-                cargaMaximaContainer.style.display = 'block';
-            });
+        cargaMaximaCheckbox.addEventListener('change', function() {
+            // Oculta los elementos que no deben mostrarse
+            materiaUnicaContainer.style.display = 'none';
+            opcionTitulacionContainer.style.display = 'none';
+            cargaMaximaContainer.style.display = 'block';
+        });
 
-            materiaUnicaCheckbox.addEventListener('change', function() {
-                // Oculta los elementos que no deben mostrarse
-                cargaMaximaContainer.style.display = 'none';
-                materiaUnicaContainer.style.display = 'block';
-            });
+        materiaUnicaCheckbox.addEventListener('change', function() {
+            // Oculta los elementos que no deben mostrarse
+            cargaMaximaContainer.style.display = 'none';
+            opcionTitulacionContainer.style.display = 'none';
+            materiaUnicaContainer.style.display = 'block';
+        });
 
-            opcionTitulacionCheckbox.addEventListener('change', function() {
-                // Oculta ambos elementos en el caso de que estén visibles
-                cargaMaximaContainer.style.display = 'none';
-                materiaUnicaContainer.style.display = 'none';
-            });
+        opcionTitulacionCheckbox.addEventListener('change', function() {
+            // Oculta ambos elementos en el caso de que estén visibles
+            cargaMaximaContainer.style.display = 'none';
+            materiaUnicaContainer.style.display = 'none';
+            opcionTitulacionContainer.style.display = 'block';
+        });
+            
             // Verifica si hay un rol almacenado en la sesión
             var rolAlmacenado = sessionStorage.getItem('rolActual');
             var claveUnicaValor;
@@ -198,9 +203,10 @@
             @include('cs_materia_unica')
         </div>
 
-
-
-
+        <div id="cs-opcion-titulacion" style="display: none;">
+            <!-- Contenido de Materia Única aquí -->
+            @include('cs_opcion_titulacion')
+        </div>
 
 
         <div class="contenedor-btns">
