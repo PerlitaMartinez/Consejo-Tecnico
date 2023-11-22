@@ -44,7 +44,7 @@
                 <a class="nav-link btn btn-primary rounded" href='{{ route("crear_solicitud") }}'>Crear Solicitud</a>
             </li>
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
+                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}'>Sesiones HCTC</a>
             </li>
             
             <!-- Boton para salir -->
@@ -104,7 +104,7 @@
                     'Jefe de Área': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                     'Administrador': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btnUsuarios', 'btnSesionesHCTC'],
                     'Director y secretario': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
-                    'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btncrearSolictud'],
+                    'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btncrearSolictud', 'btnSesionesHCTC'],
                 };
 
                 // Muestra u oculta elementos específicos usando css()
