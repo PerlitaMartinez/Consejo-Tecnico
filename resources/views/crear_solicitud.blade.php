@@ -1,8 +1,9 @@
 @extends('layouts.header')
 
 @section('content')
-    <!-- Agrega el enlace al archivo de estilo de Bootstrap si aún no está incluido -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    @include('rpe_datos')
+
+    @include('rpe_cinta')
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -64,7 +65,7 @@
                 //----------------Aqui se debería mandar llamar al servicio web Para consultar si la clave única Existe o no.
                 var solicitud
                 if (materiaUnicaCheckbox.checked) {
-                     solicitud = "mu";
+                    solicitud = "mu";
                 }
                 $.ajax({
                     url: '{{ route('AlumnoGet') }}',
@@ -75,11 +76,11 @@
                     },
                     success: function(data) {
 
-
+                        cargaMaximaContainer.style.display = 'none';
                         // Actualizar el contenido del contenedor div con el HTML recibido
                         $('#infoAlumno').html(data.infoAlumno);
                         $('#infoAlumno').show();
-                        if(solicitud == "mu"){
+                        if (solicitud == "mu") {
                             $('#cs-materia-unica').html(data.infoAlumnoMU);
                             $('#cs-materia-unica').show();
                         }
@@ -106,8 +107,11 @@
 
             });
 
-
-
+            $(document).ready(function() {
+                $('#registrar-solicitud').on('click', function(event) {
+                    // Tu lógica aquí
+                });
+            });
         });
     </script>
 
@@ -125,9 +129,7 @@
         }
     </script>
 
-    @include('rpe_datos')
 
-    @include('rpe_cinta')
 
     <div class="custom-container mt-4">
         <h2>Crear Solicitud</h2>
@@ -207,7 +209,8 @@
             <!-- Botones "Registrar Solicitud" y "Descargar Formato" -->
             <div class="row mt-4 justify-content-start">
                 <div class="col-md-5">
-                    <button type="button" class="btn btn-primary" style="width: 100%">Registrar Solicitud</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        style="width: 100%">Registrar Solicitud</button>
                 </div>
                 <div class="col-md-5">
                     <button type="button" class="btn btn-success" style="width: 100%">Descargar Formato</button>
@@ -218,9 +221,30 @@
         <!-- Separador -->
         <hr style="border: 0px solid #DCDCDC; margin: 50px 0;">
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro(a) que deseas registrar la solicitud?
+                        <input type="hidden" id="selectedId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id= "saveChangesButton" type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
-@endsection
 
 <style>
     /* Agrega un estilo personalizado para el contenedor */
@@ -246,3 +270,4 @@
         /* Otros estilos que desees aplicar */
     }
 </style>
+@endsection

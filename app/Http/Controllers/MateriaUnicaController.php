@@ -209,7 +209,7 @@ class MateriaUnicaController extends Controller
 
 
 
-    private function materiasNoReg($clave_unica)
+    public function materiasNoReg($clave_unica)
     {
         //Obtenemos de Base de datos las materias registradas.
 
@@ -237,7 +237,7 @@ class MateriaUnicaController extends Controller
                 return "registered";
             }
         }
-        return null;
+        return null; //El alumno no tiene ninguna materia registrada
     }
 
 
@@ -331,7 +331,7 @@ class MateriaUnicaController extends Controller
         return redirect()->route('materiaUnicaPDF.show', ['dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
     }
     
-    // función para mostrar los detalles desde la base de datos de la tabla de carga maxima
+    // función para mostrar los detalles desde la base de datos de la tabla de materia única
     public static function SacaDatosMateriaUnica()
     {
         $solicitudesMateriaUnica = MateriaUnicaModel::all();
@@ -358,6 +358,7 @@ class MateriaUnicaController extends Controller
     }
 
 
+    //Trae los registros de materia única segun la clave única
     private function fetchMateriaUnica($clave_Unica)
     {
         $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud', 'fecha_solicitud')
@@ -379,7 +380,7 @@ class MateriaUnicaController extends Controller
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
 
         foreach ($dataMaterias as $data) {
-            $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
+            $carbonFecha = Carbon::parse($data->fecha_solicitud);
             $fila = [
                 'id_solicitud_mu' => $data->id_solicitud_mu,
                 'materia' => $this->fetchNombreMateria($data->clave_materia),
@@ -405,10 +406,6 @@ class MateriaUnicaController extends Controller
                 $nombre_materia = $this->materias[$i]['nombre_materia'];
             }
         }
-
-        if (!isset($nombre_materia))
-            return "CALCULO A";
-
         return $nombre_materia;
     }
 

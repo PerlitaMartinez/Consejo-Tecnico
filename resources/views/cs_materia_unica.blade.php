@@ -6,26 +6,28 @@
         </div>
     </div>
 
+    @if (isset($infoAlumno) && $infoAlumno == 'registered')
+        <div class="col-md-10">
+            <p>El alumno no cuenta con alguna materia única para ser registrada.</p>
+        </div>
+    @endif
+
     <!-- Fila con combo box para la materia y botón "Buscar Materia" -->
     <div class="row mt-2 justify-content-start">
         <div class="col-md-3 text-left">
             <label class="col-form-label">Materia única:</label>
         </div>
         <div class="col-md-3">
-            <select class="form-control">
+            <select id="materia" name="materia" style="width: 25vmin;" class="form-control">
                 <!-- Opciones del combo box -->
-                @if (isset($infoAlumno))
+                @if (isset($infoAlumno) && $infoAlumno != 'registered')
                     @foreach ($infoAlumno as $item)
-                        
+                        <option value="{{ $item['nombre_materia'] }}">{{ $item['nombre_materia'] }}
+                        </option>
                     @endforeach
                 @endif
-                <option value="materia1">Materia 1</option>
-                <option value="materia2">Materia 2</option>
                 <!-- ... otras opciones ... -->
             </select>
-        </div>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-primary" style="width: 110%">Buscar Materia</button>
         </div>
     </div>
 
@@ -35,11 +37,12 @@
             <label class="col-form-label">Semestre:</label>
         </div>
         <div class="col-md-3">
-            <select class="form-control">
+            <select id="semestre" name="semestre" style="width: 25vmin;" class="form-control">
                 <!-- Opciones del combo box -->
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <!-- ... otras opciones ... -->
+                @if (isset($infoAlumno) && $infoAlumno != 'registered')
+                    <option value="{{ $infoAlumno[0]['semestre'] }}">{{ $infoAlumno[0]['semestre'] }}</option>
+                @endif
+  
             </select>
         </div>
     </div>
@@ -54,3 +57,29 @@
         /* Otros estilos que desees aplicar */
     }
 </style>
+
+
+
+<script>
+    @if (isset($infoAlumno) && $infoAlumno != 'registered')
+        $(document).ready(function() {
+            $('#materia').on('change', function() {
+                var materias = @json($infoAlumno);
+                var materiaSeleccionada = $('#materia option:selected').text().trim();
+                $('#semestre').empty();
+                for (var i = 0; i < materias.length; i++) {
+                    if (materias[i]['nombre_materia'].trim() == materiaSeleccionada) {
+                        $('#semestre').append(
+                            '<option value="' + materias[i]["semestre"] + '">' + materias[i][
+                                "semestre"
+                            ] + '</option>'
+                        );
+
+                    }
+                }
+            });
+        });
+    @endif
+
+    
+</script>

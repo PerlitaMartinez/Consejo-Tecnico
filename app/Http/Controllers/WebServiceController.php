@@ -33,8 +33,15 @@ class WebServiceController extends Controller
         } else {
             $html = view('alumnos_tabla_datos', ['infoAlumno' => $infoAlumno])->render();
             if ($solicitud == "mu") {
-                $ws = new WebService();
-                $infoAlumnoMU = $ws->materia_unica($clave);
+                $mu = new MateriaUnicaController();
+
+                $infoAlumnoMU = $mu->materiasNoReg($clave);
+
+                if($infoAlumnoMU == null){//El alumno no tiene niguna materia registrada en base de datos
+                    $ws = new WebService();
+                    $infoAlumnoMU = $ws->materia_unica($clave);
+
+                }
                 $htmlMU = view('cs_materia_unica', ['infoAlumno' => $infoAlumnoMU])->render();
                 return response()->json(['infoAlumno' => $html, 'infoAlumnoMU' => $htmlMU]);
             }
