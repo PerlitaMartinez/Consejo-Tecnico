@@ -28,10 +28,11 @@ class WebServiceController extends Controller
         //---------------Cuando se tenga el servicio web, sustituir por la lógica para llamar al servicio web desde la clase WebService
 
         $infoAlumno = $this->buscaAlumno($clave);
+        $html = view('alumnos_tabla_datos', ['infoAlumno' => $infoAlumno])->render();
         if ($infoAlumno == null) {
             return response()->json(['mensaje' => 'Clave Única no encontrada'], 500);
         } else {
-            $html = view('alumnos_tabla_datos', ['infoAlumno' => $infoAlumno])->render();
+           
             if ($solicitud == "mu") {
                 $mu = new MateriaUnicaController();
 
@@ -44,7 +45,12 @@ class WebServiceController extends Controller
                 }
                 $htmlMU = view('cs_materia_unica', ['infoAlumno' => $infoAlumnoMU])->render();
                 return response()->json(['infoAlumno' => $html, 'infoAlumnoMU' => $htmlMU]);
+            }else if($solicitud == "cm"){
+                return response()->json(['infoAlumno' => $html]);
+            }else if($solicitud == "ot"){
+                return response()->json(['infoAlumno' => $html]);
             }
+            return response()->json(['infoAlumno' => $html]);
             
         }
     }
