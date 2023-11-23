@@ -331,4 +331,91 @@ class CargaMaximaController extends Controller
         // dd($data);
         return view('/detallesCM', compact('data'));
     }
+
+
+
+    // funcion provisional para descargar pdf, con el servicio web se sacan los datos faltantes correctos
+    public function cargaMaximaPDFshowPROVISIONAL(Request $request,$id)
+    {
+
+        // $dataSet = $request->input('dataSet');
+        // if (gettype($dataSet) === 'string') {
+        //     $dataSet = json_decode($request->input('dataSet'), true);
+        // } else {
+        //     $dataSet = $request->input('dataSet');
+        // }
+        // $id = $request->input('id');
+
+        //Se obtiene la información de la base de datos.
+        $registro = CargaMaximaModel::find($id);
+
+        //verificamos que exista el registro
+        if (!$registro) {
+            return back()->with('error', 'Solicitud no registrada.');
+        }
+
+
+
+        //Procesamos la fecha para colocarla en el pdf
+        $fechaSolicitud =  $registro->fecha_solicitud;
+        $carbonFecha = \Carbon\Carbon::parse($fechaSolicitud);
+
+        //Registramos la fecha de impresión
+        $registro->fecha_impresion = now();
+        $registro->save();
+
+        $pdf = new Fpdi('P', 'mm', 'A4');
+
+        // add a page
+        $pdf->AddPage('P', 'A4');
+        $pdf->SetFont('Arial', 'B', 10);
+
+        // set the source file
+        $path = public_path("FormaSGCM01.pdf");
+
+        $pdf->setSourceFile($path);
+
+        // import page 1
+        $tplId = $pdf->importPage(1);
+
+
+
+        // use the imported page and place it at point 10,10 with a width of 100 mm
+        $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+        $pdf->SetXY(169, 52);
+        $pdf->Write(0.1, $carbonFecha->day);
+        $pdf->SetXY(183, 52);
+        $pdf->Write(0.1, $carbonFecha->month);
+        $pdf->SetXY(196, 52);
+        $pdf->Write(0.1, $carbonFecha->year);
+        if ($registro->materias_reprobadas) {
+            $pdf->SetXY(146, 112);
+            $pdf->Write(0.1, "X");
+        }
+        if ($registro->duracion_y_media) {
+            $pdf->SetXY(146, 116.5);
+            $pdf->Write(0.1, "X");
+        }
+        $pdf->SetXY(47, 201);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Write(0.1, 'NOMBRE ALUMNO');
+        $pdf->SetXY(47, 206);
+        $pdf->Write(0.1, $registro->clave_unica);
+        $pdf->SetXY(47, 210);
+        $pdf->Write(0.1, "ING. EN COMPUTACION"); //Cambiar cuando se tenga el servicio web
+        $pdf->SetXY(62, 214.55);
+        $pdf->Write(0.1, $registro->semestre); //Cambiar cuando se tenga el servicio web
+        // Preview PDF
+        //$pdf->Output('I', "Demotest.pdf");
+
+        // Download PDF
+        //Download use D 
+        $pdf->Output('D', "carga-maxima.pdf");
+
+        // Save PDF to Particular path or project path
+
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");      
+
+    }
 }

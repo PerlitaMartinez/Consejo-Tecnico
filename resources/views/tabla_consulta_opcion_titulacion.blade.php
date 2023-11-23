@@ -46,11 +46,19 @@
                             $item->opcion_titulacion == 'Trabajo Recepcional' ||
                             $item->opcion_titulacion == 'Tesis' ||
                             $item->opcion_titulacion == 'Memorias de Actividad Profesional')
-                                <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
-                                <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
-                                <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                                <a href="{{ route('opTitulacionPdfPROVISIONAL.show', $item->id_solicitud_OT) }}" type="button" class="btn btn-primary btn-sm px-3 download-cm">
+                                    <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+                                </a>
+                                <a href="{{ route('opTitulacionPdfPROVISIONAL.show', $item->id_solicitud_OT) }}" type="button" class="btn btn-primary btn-sm px-3 download-cm">
+                                    <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+                                </a>    
+                                <a href="{{ route('opTitulacionPdfPROVISIONAL.show', $item->id_solicitud_OT) }}" type="button" class="btn btn-primary btn-sm px-3 download-cm">
+                                    <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+                                </a>                                    
                             @else
-                                <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                                <a href="{{ route('opTitulacionPdfPROVISIONAL.show', $item->id_solicitud_OT) }}" type="button" class="btn btn-primary btn-sm px-3 download-cm">
+                                    <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+                                </a>    
                             @endif
                         </td>
                         <td>

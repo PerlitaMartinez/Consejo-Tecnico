@@ -39,9 +39,9 @@
                             <i class="fas fa-circle-info"></i>
                         </a>
                     </td>
-                    <td>
-                        <a id="{{ $item['id_solicitud_mu'] }}" type="button" class="btn btn-primary btn-sm px-3 download-mu">
-                            <i class="fas fa-file-arrow-down" style="color: white;"></i>
+                    <td class="text-center">
+                        <a href="{{ route('materiaUnicaPdfPROVISIONAL.show', $item['id_solicitud_mu']) }}" type="button" class="btn btn-primary btn-sm px-3 download-cm">
+                            <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                         </a>
                     </td>
                     <td>
@@ -100,6 +100,7 @@
             </div>
         </div>
     </div>
+    
 </div>
 
 <script>
@@ -149,5 +150,10 @@
             // Enviar el formulario
             form.submit();
         });
-    });
+
+
+
+    
+
+    
 </script>

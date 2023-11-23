@@ -45,8 +45,10 @@
                                 <i class="fas fa-circle-info"></i>
                             </a>
                         </td>                        
-                        <td>
-                            <button class="btn btn-primary"><i class="fas fa-file-arrow-down"></i></button>
+                        <td class="text-center">
+                            <a href="{{ route('cargaMaximaPdfPROVISIONAL.show', $item->id_solicitud_cm) }}" type="button" class="btn btn-primary btn-sm px-3 download-cm">
+                                <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
+                            </a>
                         </td>
                         <td>
                             <form action="{{ route('cancelarCM', $item->id_solicitud_cm)}}" method="POST">

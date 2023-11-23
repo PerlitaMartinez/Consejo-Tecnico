@@ -447,4 +447,97 @@ class MateriaUnicaController extends Controller
         // dd($data);
         return view('/detallesMU', compact('data'));
     }
+
+
+    // funcion provisional para descargar pdf, con el servicio web se sacan los datos faltantes correctos
+    public function materiaUnicaPDFshowPROVISIONAL(Request $request,$id)
+    {
+        // $dataSet = $request->input('dataSet');
+        // $vistaAdmin = $request->input('vistaAdmin');
+
+        // if (gettype($dataSet) === 'string') {
+        //     $dataSet = json_decode($request->input('dataSet'), true);
+        // } else {
+        //     $dataSet = $request->input('dataSet');
+        // }
+        // $id = $request->input('id');
+
+        //Verificamos en la base de datos que esté el registro
+        $tupla = MateriaUnicaModel::find($id);
+        if (!$tupla) {
+            return back()->with('error', 'Solicitud no registrada.');
+        }
+
+        //buscamos el  nombre de la materia
+        $nombreMateriaEncontrado = null;
+        foreach ($this->materias as $materia) {
+            if ($materia["cve_materia"] == $tupla->clave_materia) {
+                $nombreMateriaEncontrado = $materia["nombre_materia"];
+
+                break;
+            }
+        }
+
+        //registramos la fecha de impresión
+        $tupla->fecha_impresion = now();
+        $tupla->save();
+
+        //Generación del PDF
+        $pdf = new Fpdi('P', 'mm', 'A4');
+        // add a page
+        $pdf->AddPage('P', 'A4');
+        $pdf->SetFont('Arial', 'B', 10);
+
+        // set the source file
+        $path = public_path("SolicitudMateriaUnica.pdf");
+
+        $pdf->setSourceFile($path);
+
+        // import page 1
+        $tplId = $pdf->importPage(1);
+
+        // use the imported page and place it at point 10,10 with a width of 100 mm
+        $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+        //FECHA
+        $pdf->SetXY(155, 58);
+        $pdf->Write(0.1, $tupla->fecha_solicitud);
+
+        $pdf->SetXY(90, 112);
+        $pdf->Write(0.1, $tupla->semestre);
+        if ($tupla->clave_materia != null) {
+            $pdf->SetXY(90, 130);
+            $pdf->Write(0.1, $nombreMateriaEncontrado); //<-----Cambiar cuando se tenga el servicio web
+        } else {
+            $pdf->SetXY(90, 130);
+            $pdf->Write(0.1, 'CALCULO A');
+        }
+
+        $pdf->SetXY(60, 183);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Write(0.1,  'NOMBRE ALUMNO');
+        $pdf->SetXY(75, 193);
+        $pdf->Write(0.1,  $tupla->clave_unica);
+        $pdf->SetXY(60, 203);
+        $pdf->Write(0.1, "ING. EN COMPUTACION"); //<-----Cambiar cuando se tenga el servicio web
+        //$pdf->SetXY(60, 213);
+        //$pdf->Write(0.1,"2023-2024/I");
+        // Preview PDF
+        //$pdf->Output('I', "Demotest.pdf");
+
+        // Download PDF
+        //Download use D $pdf->Output(‘D’,”Demotest.pdf");
+
+        // Save PDF to Particular path or project path
+
+        $pdf->Output('D', 'materia-Unica.pdf');
+
+
+        if ($vistaAdmin == 1) {
+            $mensaje = "Solicitud Registrada con éxito.";
+
+
+            return redirect()->route('materiaUnicaAdmin.show')->with('success', $mensaje);
+        }
+    }
 }

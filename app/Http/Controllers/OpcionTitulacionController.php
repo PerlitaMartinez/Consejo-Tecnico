@@ -394,4 +394,142 @@ class OpcionTitulacionController extends Controller
         // dd($data);
         return view('/detallesOT', compact('data'));
     }
+
+    public function opTitulacionPDFshowPROVISIONAL(Request $request,$id)
+    {
+
+        // $vistaAdmin = $request->input('vistaAdmin');
+        // $dataSet = $request->input('dataSet');
+        // if (gettype($dataSet) === 'string') {
+        //     $dataSet = json_decode($request->input('dataSet'), true);
+        // } else {
+        //     $dataSet = $request->input('dataSet');
+        // }
+        //Se obtiene la información de la base de datos.
+        // $id = $request->input('id');
+        $registro = OpcionTitulacionModel::find($id);
+
+        //verificamos que exista el registro
+        if (!$registro) {
+            return back()->with('error', 'Solicitud no registrada.');
+        }
+
+
+
+        //Procesamos la fecha para colocarla en el pdf
+        $fechaSolicitud =  $registro->fecha_solicitud;
+        $carbonFecha = \Carbon\Carbon::parse($fechaSolicitud);
+
+        //Registramos la fecha de impresión
+        $registro->fecha_impresion = now();
+        $registro->save();
+
+
+        $pdf = new Fpdi('P', 'mm', 'A4');
+
+
+        // add a page
+        $pdf->AddPage('P', 'A4');
+        $pdf->SetFont('Arial', 'B', 10);
+
+        // set the source file
+        $path = public_path("FormaCTTL01.pdf");
+
+        $pdf->setSourceFile($path);
+
+        // import page 1
+        $tplId = $pdf->importPage(1);
+
+
+
+        // use the imported page and place it at point 10,10 with a width of 100 mm
+        $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+        $pdf->SetXY(161, 55);
+        $pdf->Write(0.1, $carbonFecha->day);
+        $pdf->SetXY(175, 55);
+        $pdf->Write(0.1, $carbonFecha->month);
+        $pdf->SetXY(189, 55);
+        $pdf->Write(0.1, $carbonFecha->year);
+        $pdf->SetXY(90, 96);
+        $pdf->Write(0.1, "EN COMPUTACION"); //<--Cambiar cuandoi tenga el servicio web
+
+        //Dependiendo de la opción seleccionada se coloca la selección dentro del formato
+        switch ($registro->id_opcion_titulacion) {
+
+            case 1:
+                $pdf->SetXY(26.5, 109);
+                $pdf->Write(0.1, "X");
+                break;
+            case 2:
+                $pdf->SetXY(26.5, 118);
+                $pdf->Write(0.1, "X");
+                break;
+            case 3:
+                $pdf->SetXY(26.5, 127);
+                $pdf->Write(0.1, "X");
+                break;
+            case 4:
+                $pdf->SetXY(26.5, 136.5);
+                $pdf->Write(0.1, "X");
+                break;
+            case 5:
+                $pdf->SetXY(26.5, 145.5);
+                $pdf->Write(0.1, "X");
+                break;
+            case 6:
+                $pdf->SetXY(111, 109);
+                $pdf->Write(0.1, "X");
+                break;
+            case 7:
+                $pdf->SetXY(111, 118);
+                $pdf->Write(0.1, "X");
+                break;
+
+            case 8:
+                $pdf->SetXY(111, 127);
+                $pdf->Write(0.1, "X");
+                break;
+
+            case 9:
+                $pdf->SetXY(111,  136.5);
+                $pdf->Write(0.1, "X");
+                break;
+            case 10:
+                $pdf->SetXY(111, 145.5);
+                $pdf->Write(0.1, "X");
+                break;
+        }
+
+
+
+
+
+        $pdf->SetXY(60, 203.5);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Write(0.1, 'NOMBRE ALUMNOS');
+        $pdf->SetXY(177, 203.5);
+        $pdf->Write(0.1, $registro->clave_unica);
+        $pdf->SetXY(140, 208.9);
+        $pdf->Write(0.1, $this->dataAlumno[0]['ultima_materia']);
+        $pdf->SetXY(88, 213.5);
+        $pdf->Write(0.1, $this->dataAlumno[0]['promedio_ap']);
+        $pdf->SetXY(180, 213.5);
+        $pdf->Write(0.1, $this->dataAlumno[0]['ingreso']);
+
+
+
+        //$pdf->SetXY(60, 213);
+        //$pdf->Write(0.1,"2023-2024/I");
+        // Preview PDF
+        //$pdf->Output('I', "Demotest.pdf");
+
+        // Download PDF
+        //Download use D 
+        $pdf->Output('D', 'OpcionTitulacion.pdf');
+
+        // Save PDF to Particular path or project path
+
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
+    }
 }
