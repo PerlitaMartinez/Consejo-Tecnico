@@ -196,7 +196,7 @@ Route::get('/tutorados', function () {
 })->name('tutorados');
 Route::resource('users', 'App\Http\Controllers\UserController');
 Route::post("/agregar_us",[UserController::class, "create"])->name("user.create");
-
+Route::post("/modificar_us",[UserController::class, "update"])->name("user.update");
 
 Route::get('/jefe_area', function () {
     return view('jefe_area'); //vista de tutor
