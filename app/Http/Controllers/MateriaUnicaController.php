@@ -515,7 +515,7 @@ class MateriaUnicaController extends Controller
 
         $pdf->SetXY(60, 183);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1,  'NOMBRE ALUMNO');
+        $pdf->Write(0.1,  'ALEJANDRO ESCAMILLA AMADOR');
         $pdf->SetXY(75, 193);
         $pdf->Write(0.1,  $tupla->clave_unica);
         $pdf->SetXY(60, 203);

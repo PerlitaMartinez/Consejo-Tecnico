@@ -507,7 +507,7 @@ class OpcionTitulacionController extends Controller
 
         $pdf->SetXY(60, 203.5);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1, 'NOMBRE ALUMNOS');
+        $pdf->Write(0.1, 'ALEJANDRO ESCAMILLA AMADOR');
         $pdf->SetXY(177, 203.5);
         $pdf->Write(0.1, $registro->clave_unica);
         $pdf->SetXY(140, 208.9);

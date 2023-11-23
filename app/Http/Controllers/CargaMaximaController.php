@@ -399,7 +399,7 @@ class CargaMaximaController extends Controller
         }
         $pdf->SetXY(47, 201);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1, 'NOMBRE ALUMNO');
+        $pdf->Write(0.1, 'ALEJANDRO ESCAMILLA AMADOR');
         $pdf->SetXY(47, 206);
         $pdf->Write(0.1, $registro->clave_unica);
         $pdf->SetXY(47, 210);
