@@ -39,12 +39,12 @@ class AuthController extends Controller
         // $contrasena = $request->input('contrasena');
         $webService = new WebService();
         $dataSet = $webService->valida_alumno($request->input('clave_unica'), $request->input('contrasena'));
-<<<<<<< Updated upstream
+
 
         $respuesta = $dataSet[0]['validacion'];
         $clave = $dataSet[0]['clave_unica'];
 
-=======
+
         $mensaje ="Clave o contraseña incorrectas.";
         $respuesta = $dataSet[0]['validacion'];
         $clave = $dataSet[0]['clave_unica'];
@@ -61,10 +61,6 @@ class AuthController extends Controller
 
         return redirect()->route('login.show',$rol)->with('success', $mensaje);
 
-     
-        
->>>>>>> Stashed changes
-
-        return redirect()->route('inicio.index', ['dataSet' => $dataSet]);
+       
     }
 }
