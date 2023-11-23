@@ -31,6 +31,7 @@
                         <td>{{ $item->semestre }}</td>
                         <td>{{ $item->estado_solicitud }}</td>
 
+                        @if($item->estado_solicitud != 'CANCELADA')
                         <td>
                             <form action="{{ route('autorizarCM', $item->id_solicitud_cm) }}" method="POST">
                                 @csrf
@@ -40,6 +41,10 @@
                                 </button>
                             </form>
                         </td>
+                        @else
+                            <td></td>
+                        @endif
+
                         <td>
                             <a href="{{ route('detallesCM', $item->id_solicitud_cm) }}" class="btn btn-info" style="text-decoration: none; color:white;">
                                 <i class="fas fa-circle-info"></i>
@@ -50,15 +55,20 @@
                                 <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                             </a>
                         </td>
-                        <td>
-                            <form action="{{ route('cancelarCM', $item->id_solicitud_cm)}}" method="POST">
-                                @csrf
-                                <!-- Botón de Cancelar con modal -->
-                                <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelarCM" data-modal="confirmModalCancelarCM" data-action="{{ route('cancelarCM', $item->id_solicitud_cm) }}">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </form>
-                        </td>
+                        @if($item->estado_solicitud != 'CANCELADA')
+                            <td>
+                                <form action="{{ route('cancelarCM', $item->id_solicitud_cm)}}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Cancelar con modal -->
+                                    <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelarCM" data-modal="confirmModalCancelarCM" data-action="{{ route('cancelarCM', $item->id_solicitud_cm) }}">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        @else
+                            <td></td>
+                        @endif
+
                     </tr>
                 @endforeach
             @endif

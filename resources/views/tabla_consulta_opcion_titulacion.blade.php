@@ -27,6 +27,7 @@
                         <td>{{ $item->semestre }}</td>
                         <td>{{ $item->estado_solicitud }}</td>
 
+                        @if($item->estado_solicitud != 'CANCELADA')
                         <td>
                             <form action="{{ route('autorizarOT', $item->id_solicitud_OT) }}" method="POST">
                                 @csrf
@@ -36,6 +37,10 @@
                                 </button>
                             </form>
                         </td>
+                        @else
+                            <td></td>
+                        @endif
+
                         <td>
                             <a href="{{ route('detallesOT', $item->id_solicitud_OT) }}" class="btn btn-info" style="text-decoration: none; color:white;">
                                 <i class="fas fa-circle-info"></i>
@@ -61,6 +66,7 @@
                                 </a>    
                             @endif
                         </td>
+                        @if($item->estado_solicitud != 'CANCELADA')
                         <td>
                             <form action="{{ route('cancelarOT', $item->id_solicitud_OT) }}" method="POST">
                                 @csrf
@@ -70,6 +76,9 @@
                                 </button>
                             </form>
                         </td>
+                        @else
+                            <td></td>
+                        @endif
                     </tr>
                 @endforeach
             @endif

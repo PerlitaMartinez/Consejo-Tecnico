@@ -24,7 +24,9 @@
                     <td>{{$item['clave_unica']}}</td>
                     <td>{{ $item['materia'] }}</td>
                     <td>{{ $item['semestre'] }}</td>   
-                    <td>{{ $item['estado_solicitud'] }}</td>                    
+                    <td>{{ $item['estado_solicitud'] }}</td>      
+                    
+                    @if($item['estado_solicitud'] != 'CANCELADA')
                     <td>
                         <form action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}" method="POST">
                         @csrf
@@ -34,6 +36,10 @@
                             </button>                       
                         </form>
                     </td>
+                    @else
+                        <td></td>
+                    @endif
+
                     <td>
                         <a href="{{ route('detallesMU', ['id' => $item['id_solicitud_mu']]) }}" class="btn btn-info" style="text-decoration: none; color:white;">
                             <i class="fas fa-circle-info"></i>
@@ -44,6 +50,7 @@
                             <i class="fas fa-file-arrow-down" style="color: white;"></i> </i>
                         </a>
                     </td>
+                    @if($item['estado_solicitud'] != 'CANCELADA')
                     <td>
                         <form action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}" method="POST">
                         @csrf
@@ -53,6 +60,9 @@
                             </button>                        
                         </form>
                     </td>
+                    @else
+                        <td></td>
+                    @endif
                 </tr>
             @endforeach
             @endif
