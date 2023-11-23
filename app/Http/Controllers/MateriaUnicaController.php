@@ -72,7 +72,7 @@ class MateriaUnicaController extends Controller
         if ($materiasNoReg == "registered") { //Todas las materias están registradas en base de datos
             return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' => "all", 'registered' => $registered]);
         }
-        return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' =>  $materiasNoReg, 'registered' => $registered]); //Hay algunas materias registradas en base de datos     
+        return view('materiaUnica', ['dataSet' =>  $dataSet, 'materias' =>  $materiasNoReg, 'registered' => $registered]); //Hay algunas materias registradas en base de datos
     }
 
     public function storeMateriaUnica(Request $request)
@@ -250,7 +250,7 @@ class MateriaUnicaController extends Controller
 
         $registro = MateriaUnicaModel::find($id);
 
-        
+
 
         if (!$registro) {
             // Si no se encuentra el registro, se envía un mensaje de error
@@ -330,7 +330,7 @@ class MateriaUnicaController extends Controller
         $materias[0]['materia'] = $materia;
         return redirect()->route('materiaUnicaPDF.show', ['dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
     }
-    
+
     // función para mostrar los detalles desde la base de datos de la tabla de carga maxima
     public static function SacaDatosMateriaUnica()
     {
@@ -341,28 +341,63 @@ class MateriaUnicaController extends Controller
 
 
     //Regresa todos los registros de un alumno enviando la clave única
-    public function fetchMateriaUnicaClave($idOrRequest = null, $origenVista)
+    public function fetchMateriaUnicaClave(Request $request, $origenVista = null)
     {
-        if ($idOrRequest instanceof Request) {
-            $clave_unica = $idOrRequest->input("clave_unica");
-        }else{
-            $clave_unica = $idOrRequest;
+        $clave_unica = $request->input('clave_unica');
+        $solicitud = $request->input('solicitud');
+        $hctc = $request->input('hctc');
+        $registros = [];
+        if($clave_unica) {
+            if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
+                $registros = $this->fetchMateriaUnica($clave_unica);
+                return  $registros;
+            }//Este método se llama desde la vista de Usuarios con RPE para consulta de solicitudes
+            $registros = $this->fetchMateriaUnica($clave_unica, $solicitud, $hctc);
         }
-        if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
-            $registros = $this->fetchMateriaUnica($clave_unica);
-            return  $registros;
-        }//Este método se llama desde la vista de Usuarios con RPE para consulta de solicitudes
-        $registros = $this->fetchMateriaUnica($clave_unica);
+        //if ($idOrRequest instanceof Request) {
+        //    $clave_unica = $idOrRequest->input("clave_unica");
+        //}else{
+        //    $clave_unica = $idOrRequest;
+        //}
+        //if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
+        //    $registros = $this->fetchMateriaUnica($clave_unica);
+        //    return  $registros;
+        //}//Este método se llama desde la vista de Usuarios con RPE para consulta de solicitudes
+        //$registros = $this->fetchMateriaUnica($clave_unica);
         $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
-
-    private function fetchMateriaUnica($clave_Unica)
+    private function fetchMateriaUnica($clave_Unica, $solicitud = null, $hctc = null)
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud', 'fecha_solicitud')
-            ->where('clave_unica', $clave_Unica)
-            ->get();
+        $materias = [];
+        if($solicitud != null || $hctc != null) {
+            $consulta = MateriaUnicaModel::query();
+
+            if ($hctc) {
+                $fechaInicio = Carbon::parse($hctc);
+                $fechaInicio = $fechaInicio->format('Y-m-d'); // Use format directly
+                $fechaFinal = Carbon::parse($fechaInicio)->addDays(30);
+                $fechaFinal = $fechaFinal->format('Y-m-d');
+                $consulta->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFinal]);
+            }
+
+            if($solicitud) {
+                $consulta->where('estado_solicitud', $solicitud);
+            }
+
+            if($clave_Unica) {
+                $consulta->where('clave_unica', $clave_Unica);
+            }
+
+            $materias = $consulta->get();
+        }
+        else
+        {
+            $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud', 'fecha_solicitud')
+                ->where('clave_unica', $clave_Unica)
+                ->get();
+        }
 
         if ($materias->isEmpty()) { //El alumno no tiene ninguna materia única registrada
             return null;
@@ -377,7 +412,7 @@ class MateriaUnicaController extends Controller
     {
 
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
-
+        $dataSet = [];
         foreach ($dataMaterias as $data) {
             $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [
@@ -385,9 +420,9 @@ class MateriaUnicaController extends Controller
                 'materia' => $this->fetchNombreMateria($data->clave_materia),
                 'semestre' => $data->semestre,
                 'clave_unica' => $data->clave_unica,
-                'estado_solicitud' => $data->estado_solicitud,  
+                'estado_solicitud' => $data->estado_solicitud,
                 'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
-                
+
 
             ];
             $dataSet[] = $fila;
@@ -413,19 +448,39 @@ class MateriaUnicaController extends Controller
     }
 
 
-    public function fetchMateriaUnicaAllRegisters()
+    public function fetchMateriaUnicaAllRegisters(Request $request)
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')->get();
-        if ($materias->isEmpty()) { //No hay solicitudes registradas de Materia Única
-            return null;
+        //$materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')->get();
+        //if ($materias->isEmpty()) { //No hay solicitudes registradas de Materia Única
+        //    return null;
+        //}
+
+        $solicitud = $request->input('solicitud');
+        $hctc = $request->input('hctc');
+
+        $consulta = MateriaUnicaModel::query();
+
+        if ($hctc) {
+            $fechaInicio = Carbon::parse($hctc);
+            $fechaInicio = $fechaInicio->format('Y-m-d'); // Use format directly
+            $fechaFinal = Carbon::parse($fechaInicio)->addDays(30);
+            $fechaFinal = $fechaFinal->format('Y-m-d');
+            $consulta->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFinal]);
         }
+
+        if($solicitud) {
+            $consulta->where('estado_solicitud', $solicitud);
+        }
+
+        $materias = $consulta->get();
+
         $registros = $this->procesaInfo($materias);
 
         $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json'=> $registros]);
     }
 
-    
+
     public function updateCancelar($id){
         $d=MateriaUnicaModel::find($id);
         // dd($d);

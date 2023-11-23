@@ -213,7 +213,7 @@ class OpcionTitulacionController extends Controller
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D 
+        //Download use D
         $pdf->Output('D', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
@@ -302,18 +302,43 @@ class OpcionTitulacionController extends Controller
     }
 
 
-    public function fetchOpcionTitulacion($idOrRequest = null, $origenVista)
+    public function fetchOpcionTitulacion(Request $request, $origenVista = null)
     {
-        if ($idOrRequest instanceof Request) {
-            $clave_unica = $idOrRequest->input("clave_unica");
-        } else {
-            $clave_unica = $idOrRequest;
-        }
-        $registros = DB::table('solicitud_opcion_titulacion as OT')
+        //if ($idOrRequest instanceof Request) {
+        //    $clave_unica = $idOrRequest->input("clave_unica");
+        //} else {
+        //    $clave_unica = $idOrRequest;
+        //}
+        //$registros = DB::table('solicitud_opcion_titulacion as OT')
+        //    ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
+        //    ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
+        //   ->where('OT.clave_unica',  $clave_unica)
+        //    ->get();
+
+        $clave_unica = $request->input('clave_unica');
+        $solicitud = $request->input('solicitud');
+        $hctc = $request->input('hctc');
+
+        $consulta = DB::table('solicitud_opcion_titulacion as OT')
             ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
-            ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
-            ->where('OT.clave_unica',  $clave_unica)
-            ->get();
+            ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion');
+
+        if ($hctc) {
+            $fechaInicio = Carbon::parse($hctc);
+            $fechaInicio = $fechaInicio->format('Y-m-d'); // Use format directly
+            $fechaFinal = Carbon::parse($fechaInicio)->addDays(30);
+            $fechaFinal = $fechaFinal->format('Y-m-d');
+            $consulta->whereBetween('OT.fecha_solicitud', [$fechaInicio, $fechaFinal]);
+        }
+
+        if($solicitud) {
+            $consulta->where('OT.estado_solicitud', $solicitud);
+        }
+
+        if($clave_unica) {
+            $consulta->where('OT.clave_unica', $clave_unica);
+        }
+        $registros = $consulta->get();
 
         $reg = $this->procesaInfo($registros);
         //dd($resultados);
@@ -321,11 +346,11 @@ class OpcionTitulacionController extends Controller
 
             return  $reg;
         }
-        if ($registros->isEmpty()) {
-            return null;
-        }
+        // if ($registros->isEmpty()) {
+        //     return null;
+        // }
         $html = view('tabla_consulta_opcion_titulacion', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
     private function procesaInfo($dataMaterias)
@@ -340,9 +365,9 @@ class OpcionTitulacionController extends Controller
                 'opcion_titulacion' => $data->opcion_titulacion,
                 'semestre' => $data->semestre,
                 'clave_unica' => $data->clave_unica,
-                'estado_solicitud' => $data->estado_solicitud,  
+                'estado_solicitud' => $data->estado_solicitud,
                 'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
-                
+
 
             ];
             $dataSet[] = $fila;
@@ -366,7 +391,7 @@ class OpcionTitulacionController extends Controller
         }
         //dd($registros);
         $html = view('tabla_consulta_opcion_titulacion', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
 
@@ -525,7 +550,7 @@ class OpcionTitulacionController extends Controller
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D 
+        //Download use D
         $pdf->Output('D', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
