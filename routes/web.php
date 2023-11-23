@@ -10,6 +10,7 @@ use App\Http\Controllers\OpcionTitulacionController;
 use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\SeguimientoSolicitudController;
 use App\Http\Controllers\TramitesController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebServiceController;
 use App\Http\Middleware\CheckFormCargaMaximaCompletion;
 use App\Http\Middleware\CheckFormMateriaUnicaCompletion;
@@ -183,6 +184,9 @@ Route::get('/tutor', function () {
 Route::get('/tutorados', function () {
     return view('tutorados'); //vista de tutor
 })->name('tutorados');
+Route::resource('users', 'App\Http\Controllers\UserController');
+Route::post("/agregar_us",[UserController::class, "create"])->name("user.create");
+
 
 Route::get('/jefe_area', function () {
     return view('jefe_area'); //vista de tutor
