@@ -213,7 +213,7 @@ class OpcionTitulacionController extends Controller
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D 
+        //Download use D
         $pdf->Output('D', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
@@ -302,18 +302,43 @@ class OpcionTitulacionController extends Controller
     }
 
 
-    public function fetchOpcionTitulacion($idOrRequest = null, $origenVista)
+    public function fetchOpcionTitulacion(Request $request, $origenVista = null)
     {
-        if ($idOrRequest instanceof Request) {
-            $clave_unica = $idOrRequest->input("clave_unica");
-        } else {
-            $clave_unica = $idOrRequest;
-        }
-        $registros = DB::table('solicitud_opcion_titulacion as OT')
+        //if ($idOrRequest instanceof Request) {
+        //    $clave_unica = $idOrRequest->input("clave_unica");
+        //} else {
+        //    $clave_unica = $idOrRequest;
+        //}
+        //$registros = DB::table('solicitud_opcion_titulacion as OT')
+        //    ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
+        //    ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
+        //   ->where('OT.clave_unica',  $clave_unica)
+        //    ->get();
+
+        $clave_unica = $request->input('clave_unica');
+        $solicitud = $request->input('solicitud');
+        $hctc = $request->input('hctc');
+
+        $consulta = DB::table('solicitud_opcion_titulacion as OT')
             ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
-            ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
-            ->where('OT.clave_unica',  $clave_unica)
-            ->get();
+            ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion');
+
+        if ($hctc) {
+            $fechaInicio = Carbon::parse($hctc);
+            $fechaInicio = $fechaInicio->format('Y-m-d'); // Use format directly
+            $fechaFinal = Carbon::parse($fechaInicio)->addDays(30);
+            $fechaFinal = $fechaFinal->format('Y-m-d');
+            $consulta->whereBetween('OT.fecha_solicitud', [$fechaInicio, $fechaFinal]);
+        }
+
+        if($solicitud) {
+            $consulta->where('OT.estado_solicitud', $solicitud);
+        }
+
+        if($clave_unica) {
+            $consulta->where('OT.clave_unica', $clave_unica);
+        }
+        $registros = $consulta->get();
 
         $reg = $this->procesaInfo($registros);
         //dd($resultados);
@@ -321,11 +346,11 @@ class OpcionTitulacionController extends Controller
 
             return  $reg;
         }
-        if ($registros->isEmpty()) {
-            return null;
-        }
+        // if ($registros->isEmpty()) {
+        //     return null;
+        // }
         $html = view('tabla_consulta_opcion_titulacion', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
     private function procesaInfo($dataMaterias)
@@ -340,9 +365,9 @@ class OpcionTitulacionController extends Controller
                 'opcion_titulacion' => $data->opcion_titulacion,
                 'semestre' => $data->semestre,
                 'clave_unica' => $data->clave_unica,
-                'estado_solicitud' => $data->estado_solicitud,  
+                'estado_solicitud' => $data->estado_solicitud,
                 'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
-                
+
 
             ];
             $dataSet[] = $fila;
@@ -366,7 +391,7 @@ class OpcionTitulacionController extends Controller
         }
         //dd($registros);
         $html = view('tabla_consulta_opcion_titulacion', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
 
@@ -393,5 +418,143 @@ class OpcionTitulacionController extends Controller
         $data = OpcionTitulacionModel::find($id);
         // dd($data);
         return view('/detallesOT', compact('data'));
+    }
+
+    public function opTitulacionPDFshowPROVISIONAL(Request $request,$id)
+    {
+
+        // $vistaAdmin = $request->input('vistaAdmin');
+        // $dataSet = $request->input('dataSet');
+        // if (gettype($dataSet) === 'string') {
+        //     $dataSet = json_decode($request->input('dataSet'), true);
+        // } else {
+        //     $dataSet = $request->input('dataSet');
+        // }
+        //Se obtiene la información de la base de datos.
+        // $id = $request->input('id');
+        $registro = OpcionTitulacionModel::find($id);
+
+        //verificamos que exista el registro
+        if (!$registro) {
+            return back()->with('error', 'Solicitud no registrada.');
+        }
+
+
+
+        //Procesamos la fecha para colocarla en el pdf
+        $fechaSolicitud =  $registro->fecha_solicitud;
+        $carbonFecha = \Carbon\Carbon::parse($fechaSolicitud);
+
+        //Registramos la fecha de impresión
+        $registro->fecha_impresion = now();
+        $registro->save();
+
+
+        $pdf = new Fpdi('P', 'mm', 'A4');
+
+
+        // add a page
+        $pdf->AddPage('P', 'A4');
+        $pdf->SetFont('Arial', 'B', 10);
+
+        // set the source file
+        $path = public_path("FormaCTTL01.pdf");
+
+        $pdf->setSourceFile($path);
+
+        // import page 1
+        $tplId = $pdf->importPage(1);
+
+
+
+        // use the imported page and place it at point 10,10 with a width of 100 mm
+        $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+        $pdf->SetXY(161, 55);
+        $pdf->Write(0.1, $carbonFecha->day);
+        $pdf->SetXY(175, 55);
+        $pdf->Write(0.1, $carbonFecha->month);
+        $pdf->SetXY(189, 55);
+        $pdf->Write(0.1, $carbonFecha->year);
+        $pdf->SetXY(90, 96);
+        $pdf->Write(0.1, "EN COMPUTACION"); //<--Cambiar cuandoi tenga el servicio web
+
+        //Dependiendo de la opción seleccionada se coloca la selección dentro del formato
+        switch ($registro->id_opcion_titulacion) {
+
+            case 1:
+                $pdf->SetXY(26.5, 109);
+                $pdf->Write(0.1, "X");
+                break;
+            case 2:
+                $pdf->SetXY(26.5, 118);
+                $pdf->Write(0.1, "X");
+                break;
+            case 3:
+                $pdf->SetXY(26.5, 127);
+                $pdf->Write(0.1, "X");
+                break;
+            case 4:
+                $pdf->SetXY(26.5, 136.5);
+                $pdf->Write(0.1, "X");
+                break;
+            case 5:
+                $pdf->SetXY(26.5, 145.5);
+                $pdf->Write(0.1, "X");
+                break;
+            case 6:
+                $pdf->SetXY(111, 109);
+                $pdf->Write(0.1, "X");
+                break;
+            case 7:
+                $pdf->SetXY(111, 118);
+                $pdf->Write(0.1, "X");
+                break;
+
+            case 8:
+                $pdf->SetXY(111, 127);
+                $pdf->Write(0.1, "X");
+                break;
+
+            case 9:
+                $pdf->SetXY(111,  136.5);
+                $pdf->Write(0.1, "X");
+                break;
+            case 10:
+                $pdf->SetXY(111, 145.5);
+                $pdf->Write(0.1, "X");
+                break;
+        }
+
+
+
+
+
+        $pdf->SetXY(60, 203.5);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Write(0.1, 'ALEJANDRO ESCAMILLA AMADOR');
+        $pdf->SetXY(177, 203.5);
+        $pdf->Write(0.1, $registro->clave_unica);
+        $pdf->SetXY(140, 208.9);
+        $pdf->Write(0.1, $this->dataAlumno[0]['ultima_materia']);
+        $pdf->SetXY(88, 213.5);
+        $pdf->Write(0.1, $this->dataAlumno[0]['promedio_ap']);
+        $pdf->SetXY(180, 213.5);
+        $pdf->Write(0.1, $this->dataAlumno[0]['ingreso']);
+
+
+
+        //$pdf->SetXY(60, 213);
+        //$pdf->Write(0.1,"2023-2024/I");
+        // Preview PDF
+        //$pdf->Output('I', "Demotest.pdf");
+
+        // Download PDF
+        //Download use D
+        $pdf->Output('D', 'OpcionTitulacion.pdf');
+
+        // Save PDF to Particular path or project path
+
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
     }
 }
