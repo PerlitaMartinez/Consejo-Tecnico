@@ -245,11 +245,19 @@ class CargaMaximaController extends Controller
 
 
 
-    public function fetchCargaMaxima(Request $request, $origenVista = null)
+    public function fetchCargaMaxima($requestOrClave, $origenVista = null)
     {
-        $clave_unica = $request->input('clave_unica');
-        $solicitud = $request->input('solicitud');
-        $hctc = $request->input('hctc');
+        $clave_unica = null;
+        $solicitud = null;
+        $hctc = null;
+        if($requestOrClave instanceof Request) {
+            $clave_unica = $requestOrClave->input('clave_unica');
+            $solicitud = $requestOrClave->input('solicitud');
+            $hctc = $requestOrClave->input('hctc');
+        }
+        else {
+            $clave_unica = $requestOrClave;
+        }
 
         $consulta = CargaMaximaModel::query();
 
@@ -264,6 +272,8 @@ class CargaMaximaController extends Controller
         if($solicitud) {
             $consulta->where('estado_solicitud', $solicitud);
         }
+
+        $aux = $consulta;
 
         if($clave_unica) {
             $consulta->where('clave_unica', $clave_unica);
@@ -300,7 +310,7 @@ class CargaMaximaController extends Controller
     {
 
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
-
+        $dataSet = null;
         foreach ($dataMaterias as $data) {
             $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [

@@ -302,7 +302,7 @@ class OpcionTitulacionController extends Controller
     }
 
 
-    public function fetchOpcionTitulacion(Request $request, $origenVista = null)
+    public function fetchOpcionTitulacion($requestOrClave, $origenVista = null)
     {
         //if ($idOrRequest instanceof Request) {
         //    $clave_unica = $idOrRequest->input("clave_unica");
@@ -314,10 +314,19 @@ class OpcionTitulacionController extends Controller
         //    ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
         //   ->where('OT.clave_unica',  $clave_unica)
         //    ->get();
+        $clave_unica = null;
+        $solicitud = null;
+        $hctc = null;
 
-        $clave_unica = $request->input('clave_unica');
-        $solicitud = $request->input('solicitud');
-        $hctc = $request->input('hctc');
+
+        if($requestOrClave instanceof Request) {
+            $clave_unica = $requestOrClave->input('clave_unica');
+            $solicitud = $requestOrClave->input('solicitud');
+            $hctc = $requestOrClave->input('hctc');
+        }
+        else {
+            $clave_unica = $requestOrClave;
+        }
 
         $consulta = DB::table('solicitud_opcion_titulacion as OT')
             ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
@@ -357,7 +366,6 @@ class OpcionTitulacionController extends Controller
     {
 
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
-
         foreach ($dataMaterias as $data) {
             $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [
@@ -367,7 +375,6 @@ class OpcionTitulacionController extends Controller
                 'clave_unica' => $data->clave_unica,
                 'estado_solicitud' => $data->estado_solicitud,
                 'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
-
 
             ];
             $dataSet[] = $fila;

@@ -341,11 +341,17 @@ class MateriaUnicaController extends Controller
 
 
     //Regresa todos los registros de un alumno enviando la clave única
-    public function fetchMateriaUnicaClave(Request $request, $origenVista = null)
+    public function fetchMateriaUnicaClave($requestOrClave, $origenVista = null)
     {
-        $clave_unica = $request->input('clave_unica');
-        $solicitud = $request->input('solicitud');
-        $hctc = $request->input('hctc');
+        if($requestOrClave instanceof Request) {
+            $clave_unica = $requestOrClave->input('clave_unica');
+            $solicitud = $requestOrClave->input('solicitud');
+            $hctc = $requestOrClave->input('hctc');
+        }
+        else {
+            $clave_unica = $requestOrClave;
+        }
+
         $registros = [];
         if($clave_unica) {
             if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
@@ -410,9 +416,8 @@ class MateriaUnicaController extends Controller
 
     private function procesaInfo($dataMaterias)
     {
-
+        $dataSet = null;
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
-        $dataSet = [];
         foreach ($dataMaterias as $data) {
             $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [
