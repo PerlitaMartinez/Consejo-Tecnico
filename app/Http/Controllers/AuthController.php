@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use SoapClient;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -48,6 +49,14 @@ class AuthController extends Controller
         $mensaje ="Clave o contraseña incorrectas.";
         $respuesta = $dataSet[0]['validacion'];
         $clave = $dataSet[0]['clave_unica'];
+        $tipo ="";
+        $roles = DB::select('select idrol from roles_usuarios where id_usuario =?',[
+             $clave,
+        ]);
+        foreach($roles as $per)
+        {
+            $tipo = $per->idrol;
+        }
 
         if($respuesta === "USUARIO-VALIDO" && $rol == "ALUMNOS")
         {
@@ -55,8 +64,11 @@ class AuthController extends Controller
         
         }
         if($rol == "ACADEMICOS" && $respuesta === "USUARIO-VALIDO"){
-
-            return redirect()->route('rol');
+            if($tipo == 1)
+            {
+                return redirect()->route('rol',['roles'=>$roles]);
+            }
+           
         }
 
         return redirect()->route('login.show',$rol)->with('success', $mensaje);

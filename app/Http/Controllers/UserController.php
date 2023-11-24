@@ -61,10 +61,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         try{
-            $usuario=DB::update("update user_c_s set rpe=?,nombre=? where rpe=?",[
+            $usuario=DB::update("update user_c_s set rpe=?,nombre_usuario=? where rpe=?",[
                 $request->txtrpe,
                 $request->txtnombre,
                 $request->txtrpe

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coasesor;
+use App\Models\Temario_autorizacion;
 use Illuminate\Http\Request;
 use App\Models\OpcionTitulacionModel;
 use Illuminate\Support\Facades\DB;
@@ -24,10 +25,11 @@ class MemoriasController extends Controller
     public function create(request $request)
     {
         $id = $request->input('id');
-        $temario =DB::insert("insert into temario_autorizacion(id_seccion,nombre_seccion,id_solicitud_OT)values(?,?,?)",[
-            $request->txtorden,
-            $request->txttitulo,
-            $id
+       
+        $temario = DB::insert('insert into temario (id_seccion,nombre_seccion,id_solicitud_OT) values (?, ?,?)',[
+              $request->txtorden,
+              $request->txttitulo,
+              $id
 
         ]);
         if($temario == true)
@@ -46,7 +48,7 @@ class MemoriasController extends Controller
         $exists = 0;
         $id = $request->input('id');
         $registro = OpcionTitulacionModel::find($id);
-         $temarios = DB::select('select * from temario_autorizacion where id_solicitud_OT =?',[
+         $temarios = DB::select('select * from temario where id_solicitud_OT =?',[
             $id,
          ]);
          $tema = DB::select("select * from solicitud_registro_tema where id_solicitud_OT=$id");
@@ -199,7 +201,13 @@ class MemoriasController extends Controller
     public function memoriasPdf(Request $request)
     {
         $dataSet = $request->input('dataSet');
-        $calle = $request->txtcalle;
+        $calle = "";
+        $colonia ="";
+        $num_in ="";
+        $num_ext ="";
+        $cp = "";
+        $telefono ="";
+        $tema="";
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
         }else{
@@ -207,8 +215,20 @@ class MemoriasController extends Controller
         }
         $id = $request->input('id');
         $datosA = DB::select("select * from datos_personales_alumno where id_solicitud_OT=$id");
-        
-
+        foreach($datosA as $datos)
+        {
+            $calle = $datos->calle_alumno;
+        $colonia = $datos->colonia_alumno;
+        $num_in = $datos->num_interior_alumno;
+        $num_ext = $datos->num_exterior_alumno;
+        $cp =  $datos->cp_alumno;
+        $telefono = $datos->telefono_alumno;
+            
+        }
+        $temas = DB::select("select * from solicitud_registro_tema where id_solicitud_OT=$id");
+        foreach($temas as $tem){
+            $tema = $tem->tema;
+        }
 
         
 
@@ -251,15 +271,15 @@ class MemoriasController extends Controller
         
         $pdf->SetXY(46, 102);
         $pdf->Write(0.1, $calle);
-        $pdf->SetXY(60, 102);
-        $pdf->Write(0.1, 'Progreso');
-        $pdf->SetXY(80, 102);
-        $pdf->Write(0.1, 'No.Ext 375,Int 1');
+        $pdf->SetXY(70, 102);
+        $pdf->Write(0.1, $colonia);
+        $pdf->SetXY(100, 102);
+        $pdf->Write(0.1, $num_ext);
         $pdf->SetXY(120, 102);
-        $pdf->Write(0.1, '78370');
+        $pdf->Write(0.1, $cp);
 
         $pdf->SetXY(50, 111);
-        $pdf->Write(0.1, '4445553812');
+        $pdf->Write(0.1, $telefono);
 
 
         $pdf->SetXY(60, 121);
@@ -269,12 +289,22 @@ class MemoriasController extends Controller
         $pdf->Write(0.1, "INGENIERIA EN COMPUTACION"); //<--Cambiar cuandoi tenga el servicio web
 
         $pdf->SetXY(60, 142);
-        $pdf->Write(0.1, 'Ejemplo tema');
+        $pdf->Write(0.1, $tema);
 
-        $pdf->SetXY(60, 160);
-        $pdf->Write(0.1, '1.-Ejemplo temario');
-        $pdf->SetXY(60, 164);
-        $pdf->Write(0.1, '2.-Ejemplo temario2');
+        $temarios = DB::select("select * from temario_autorizacion where id_solicitud_OT=$id");
+        $seccion ="";
+        $con ="";
+        foreach($temarios as $temario)
+        {
+            $seccion = $temario->id_seccion;
+            $con = $temario->nombre_seccion;
+            $pdf->SetXY(60, 160+3);
+            $pdf->Write(0.1, $seccion,$con);
+          
+           
+
+        }
+        
 
 
 
@@ -292,15 +322,42 @@ class MemoriasController extends Controller
     public function memoriasPdf2(Request $request)
     {
         $dataSet = $request->input('dataSet');
+        $calle = "";
+        $colonia ="";
+        $num_in ="";
+        $num_ext ="";
+        $cp = "";
+        $telefono ="";
+        $nombre ="";
         if (gettype($dataSet) === 'string') {
             $dataSet = json_decode($request->input('dataSet'), true);
         }else{
             $dataSet = $request->input('dataSet');
         }
         $id = $request->input('id');
-        $calle = DB::select('select * from datos_personales_alumno where id_solicitud_OT=?',[
-            $id,
-         ]);
+        $datosE = DB::select("select * from datos_empresa where id_solicitud_OT=$id");
+        foreach($datosE as $datose)
+        {
+            $calle = $datose->calle_empresa;
+        $colonia = $datose->colonia_empresa;
+        $num_in = $datose->num_interior_empresa;
+        $num_ext = $datose->num_exterior_empresa;
+        $cp =  $datose->cp_empresa;
+        $telefono = $datose->telefono_empresa;
+            $nombre = $datose->nombre_empresa;
+        }
+
+        $datosA = DB::select("select * from datos_personales_alumno where id_solicitud_OT=$id");
+        foreach($datosA as $datos)
+        {
+            $calleA = $datos->calle_alumno;
+        $coloniaA = $datos->colonia_alumno;
+        $num_inA = $datos->num_interior_alumno;
+        $num_extA = $datos->num_exterior_alumno;
+        $cpA =  $datos->cp_alumno;
+        $telefonoA = $datos->telefono_alumno;
+            
+        }
         
 
         $fechaSolicitud = now()->format('Y-m-d'); 
@@ -347,33 +404,33 @@ class MemoriasController extends Controller
         $pdf->SetXY(55, 111);
         $pdf->Write(0.1, 'INGENIERIA EN COMPUTACION');
         $pdf->SetXY(80, 126);
-        $pdf->Write(0.1, 'Kepler');
+        $pdf->Write(0.1, $calleA);
         $pdf->SetXY(98, 126);
-        $pdf->Write(0.1, 'Col. Progreso');
+        $pdf->Write(0.1, $coloniaA);
         $pdf->SetXY(130, 126);
-        $pdf->Write(0.1, 'No. ext. 375');
+        $pdf->Write(0.1, $num_extA);
         $pdf->SetXY(170, 126);
-        $pdf->Write(0.1, '78370');
+        $pdf->Write(0.1, $cpA);
 
         $pdf->SetXY(80, 136);
-        $pdf->Write(0.1, '4445553812');
+        $pdf->Write(0.1, $telefonoA);
 
         $pdf->SetXY(80, 148);
-        $pdf->Write(0.1, 'Continental');
+        $pdf->Write(0.1, $nombre);
 
         $pdf->SetXY(55, 160);
-        $pdf->Write(0.1, 'Carretera 57');
+        $pdf->Write(0.1, $calle);
 
         
 
         $pdf->SetXY(100, 160);
-        $pdf->Write(0.1, 'Col. Prados');
+        $pdf->Write(0.1,$colonia );
 
         $pdf->SetXY(150, 160);
-        $pdf->Write(0.1, 'No. ext 576');
+        $pdf->Write(0.1, $num_ext);
 
         $pdf->SetXY(58, 170);
-        $pdf->Write(0.1, '8156789');
+        $pdf->Write(0.1, $telefono);
         $pdf->SetXY(160, 170);
         $pdf->Write(0.1, '5');
 
