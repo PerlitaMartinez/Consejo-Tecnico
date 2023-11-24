@@ -91,4 +91,18 @@ class WebService
 
         return $materias;
     }
+
+
+    public function carga_maxima($clave_unica){
+        $carga_maxima = [
+            [
+                "clave_unica" => 295969,
+                "duracion_y_media_semestre" => '2022-2023/II',
+                "materias_reprobadas_semestre" => null,
+                "semestre" => '2023-2024/I',
+            ],
+        ];
+
+        return $carga_maxima[0];
+    }
 }

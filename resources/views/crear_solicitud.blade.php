@@ -1,42 +1,45 @@
 @extends('layouts.header')
 
 @section('content')
-    <!-- Agrega el enlace al archivo de estilo de Bootstrap si aún no está incluido -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    @include('rpe_datos')
+
+    @include('rpe_cinta')
 
     <script>
+        var claveActual;
+        var registrada = false;
         document.addEventListener('DOMContentLoaded', function() {
             // Obtén referencias a los elementos que deseas mostrar/ocultar
-            var materiaUnicaContainer = document.getElementById('cs-materia-unica');
+            var materiaUnicaContainer = document.getElementById('materia-unica-view');
             var cargaMaximaContainer = document.getElementById('cs-carga-maxima');
             var opcionTitulacionContainer = document.getElementById('cs-opcion-titulacion');
 
-        // Agrega un evento de cambio a los radio buttons
-        var cargaMaximaCheckbox = document.getElementById('cargaMaximaCheckbox');
-        var materiaUnicaCheckbox = document.getElementById('materiaUnicaCheckbox');
-        var opcionTitulacionCheckbox = document.getElementById('opcionTitulacionCheckbox');
+            // Agrega un evento de cambio a los radio buttons
+            var cargaMaximaCheckbox = document.getElementById('cargaMaximaCheckbox');
+            var materiaUnicaCheckbox = document.getElementById('materiaUnicaCheckbox');
+            var opcionTitulacionCheckbox = document.getElementById('opcionTitulacionCheckbox');
 
-        cargaMaximaCheckbox.addEventListener('change', function() {
-            // Oculta los elementos que no deben mostrarse
-            materiaUnicaContainer.style.display = 'none';
-            opcionTitulacionContainer.style.display = 'none';
-            cargaMaximaContainer.style.display = 'block';
-        });
+            cargaMaximaCheckbox.addEventListener('change', function() {
+                // Oculta los elementos que no deben mostrarse
+                materiaUnicaContainer.style.display = 'none';
+                opcionTitulacionContainer.style.display = 'none';
+                cargaMaximaContainer.style.display = 'block';
+            });
 
-        materiaUnicaCheckbox.addEventListener('change', function() {
-            // Oculta los elementos que no deben mostrarse
-            cargaMaximaContainer.style.display = 'none';
-            opcionTitulacionContainer.style.display = 'none';
-            materiaUnicaContainer.style.display = 'block';
-        });
+            materiaUnicaCheckbox.addEventListener('change', function() {
+                // Oculta los elementos que no deben mostrarse
+                cargaMaximaContainer.style.display = 'none';
+                opcionTitulacionContainer.style.display = 'none';
+                materiaUnicaContainer.style.display = 'block';
+            });
 
-        opcionTitulacionCheckbox.addEventListener('change', function() {
-            // Oculta ambos elementos en el caso de que estén visibles
-            cargaMaximaContainer.style.display = 'none';
-            materiaUnicaContainer.style.display = 'none';
-            opcionTitulacionContainer.style.display = 'block';
-        });
-            
+            opcionTitulacionCheckbox.addEventListener('change', function() {
+                // Oculta ambos elementos en el caso de que estén visibles
+                cargaMaximaContainer.style.display = 'none';
+                materiaUnicaContainer.style.display = 'none';
+                opcionTitulacionContainer.style.display = 'block';
+            });
+
             // Verifica si hay un rol almacenado en la sesión
             var rolAlmacenado = sessionStorage.getItem('rolActual');
             var claveUnicaValor;
@@ -67,53 +70,80 @@
                     return; // Detén la ejecución si el campo está vacío
                 }
                 //----------------Aqui se debería mandar llamar al servicio web Para consultar si la clave única Existe o no.
-                var solicitud
-                if (materiaUnicaCheckbox.checked) {
-                     solicitud = "mu";
-                }
-                $.ajax({
-                    url: '{{ route('AlumnoGet') }}',
-                    method: 'GET',
-                    data: {
-                        "clave_unica": claveUnicaValor,
-                        "solicitud": solicitud
-                    },
-                    success: function(data) {
-
-
-                        // Actualizar el contenido del contenedor div con el HTML recibido
-                        $('#infoAlumno').html(data.infoAlumno);
-                        $('#infoAlumno').show();
-                        if(solicitud == "mu"){
-                            $('#cs-materia-unica').html(data.infoAlumnoMU);
-                            $('#cs-materia-unica').show();
-                        }
-                        //tablaMateriaUnica.style.display = 'block';
-                        return;
-                    },
-                    error: function(error) {
-                        var alertaClaveUnicaVacia = document.createElement('div');
-                        alertaClaveUnicaVacia.classList.add('alert', 'alert-danger', 'mt-3');
-                        alertaClaveUnicaVacia.innerText =
-                            'Clave única inválida';
-                        document.getElementById('mensajeContainer').appendChild(
-                            alertaClaveUnicaVacia);
-
-                        // Después de 3 segundos (3000 milisegundos), elimina la alerta
-                        setTimeout(function() {
-                            alertaClaveUnicaVacia.remove();
-                        }, 3000);
-
-                        return;
-                    }
-                });
-
 
             });
 
 
-
         });
+
+        $(document).ready(function() {
+            var consultaEnProceso = false;
+
+            $('#consultarBtn').click(function() {
+          
+                    consultaEnProceso = true;
+
+                    var claveUnicaValor = $('#claveUnicaInput').val().trim();
+                    var materiaUnicaCheckbox = $('#materiaUnicaCheckbox');
+                    var opcionTitulacionCheckbox = $('#opcionTitulacionCheckbox');
+                    var cargaMaximaCheckbox = $('#cargaMaximaCheckbox');
+                    var solicitud;
+                    var vista1;
+                    var vista2;
+
+                    if (claveUnicaValor == claveActual)
+                        return;
+                    else
+                        claveActual = claveUnicaValor;
+
+
+                    if (materiaUnicaCheckbox.prop('checked')) {
+                        solicitud = "mu";
+                        fetchDatosAlumnoAjax(claveUnicaValor, solicitud, false);
+                        registrada = false;
+
+                    }else if(opcionTitulacionCheckbox.prop('checked')){
+                        solicitud = "ot";
+                        fetchDatosAlumnoAjax(claveUnicaValor, solicitud, false);
+                        registrada = false;
+                    }else if(cargaMaximaCheckbox.prop('checked')){
+                        solicitud = "cm";
+                        fetchDatosAlumnoAjax(claveUnicaValor, solicitud, false);
+                        registrada = false;
+                    }
+      
+            });
+        });
+
+        var dataSet;
+
+        function fetchDatosAlumnoAjax(claveUnicaValor, solicitud, pdf) {
+
+            $.get('{{ route('AlumnoGet') }}', {
+                clave_unica: claveUnicaValor,
+                solicitud: solicitud
+            }, function(data) {
+                vista = data.infoAlumno;
+                vista2 = data.infoAlumnoTramite;
+                dataSet = data.dataSet;
+
+                $('#infoAlumno').html(vista);
+                $('#infoAlumno').show();
+                if (solicitud == "mu") {
+                    $('#materia-unica-view').html(vista2);
+                    $('#materia-unica-view').show();
+
+                }else if(solicitud == "ot"){
+  
+                    $('#cs-opcion-titulacion').html(vista2);
+                    $('#cs-opcion-titulacion').show();
+                }else if(solicitud == "cm"){
+                    $('#cs-carga-maxima').html(vista2);
+                    $('#cs-carga-maxima').show();
+                }
+            }, 'json');
+
+        }
     </script>
 
 
@@ -130,9 +160,7 @@
         }
     </script>
 
-    @include('rpe_datos')
 
-    @include('rpe_cinta')
 
     <div class="custom-container mt-4">
         <h2>Crear Solicitud</h2>
@@ -157,7 +185,9 @@
 
         <!-- CUADRO CON LOS DATOS DEL ALUMNO -->
 
-        <div id="infoAlumno">@include('alumnos_tabla_datos')</div>
+        <div id="infoAlumno">
+            {{-- @include('alumnos_tabla_datos') --}}
+        </div>
 
 
         <!-- Nuevos radio buttons -->
@@ -192,20 +222,20 @@
         <hr style="border: 0px solid #DCDCDC; margin: 50px 0;">
 
 
-        <div id="cs-carga-maxima">
+        <div id="cs-carga-maxima" style="display: none;">
             <!-- Contenido de Carga Máxima aquí -->
-            @include('cs_carga_maxima')
+            {{-- @include('cs_carga_maxima') --}}
         </div>
 
 
-        <div id="cs-materia-unica" style="display: none;">
+        <div id="materia-unica-view">
             <!-- Contenido de Materia Única aquí -->
-            @include('cs_materia_unica')
+            {{-- @include('cs_materia_unica') --}}
         </div>
 
         <div id="cs-opcion-titulacion" style="display: none;">
             <!-- Contenido de Materia Única aquí -->
-            @include('cs_opcion_titulacion')
+            {{-- @include('cs_opcion_titulacion') --}}
         </div>
 
 
@@ -213,42 +243,66 @@
             <!-- Botones "Registrar Solicitud" y "Descargar Formato" -->
             <div class="row mt-4 justify-content-start">
                 <div class="col-md-5">
-                    <button type="button" class="btn btn-primary" style="width: 100%">Registrar Solicitud</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="registrar-solicitud"
+                        data-bs-target="#exampleModal" style="width: 100%">Registrar Solicitud</button>
                 </div>
-                <div class="col-md-5">
+                {{-- <div class="col-md-5">
                     <button type="button" class="btn btn-success" style="width: 100%">Descargar Formato</button>
-                </div>
+                </div> --}}
             </div>
         </div>
 
         <!-- Separador -->
         <hr style="border: 0px solid #DCDCDC; margin: 50px 0;">
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" data-backdrop="false" data-dismiss="modal" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Solicitud Materia Única
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro(a) que deseas registrar la solicitud?
+                        <input type="hidden" id="selectedId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id= "saveChangesButton" type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
+
+    <style>
+        /* Agrega un estilo personalizado para el contenedor */
+        .custom-container {
+            max-width: 70%;
+            /* Ajusta el valor según tus necesidades */
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .row {
+            max-width: 95%;
+            /* Ajusta el valor según tus necesidades */
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .contenedor-btns {
+            max-width: 75%;
+            /* Ajusta el ancho máximo según tus necesidades */
+            margin: 0 auto;
+            /* Centra el contenedor horizontalmente */
+            /* Otros estilos que desees aplicar */
+        }
+    </style>
 @endsection
-
-<style>
-    /* Agrega un estilo personalizado para el contenedor */
-    .custom-container {
-        max-width: 70%;
-        /* Ajusta el valor según tus necesidades */
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    .row {
-        max-width: 95%;
-        /* Ajusta el valor según tus necesidades */
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    .contenedor-btns {
-        max-width: 75%;
-        /* Ajusta el ancho máximo según tus necesidades */
-        margin: 0 auto;
-        /* Centra el contenedor horizontalmente */
-        /* Otros estilos que desees aplicar */
-    }
-</style>

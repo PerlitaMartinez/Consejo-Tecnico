@@ -216,7 +216,7 @@
                 $('#materia ').on('change', function() {
                     var materias = @json($materias);
 
-                    var materiaSeleccionada = $('#materia option:selected').text()
+                    var materiaSeleccionada = $('#materia option:selected').text();
 
                     $('#semestre').empty();
 

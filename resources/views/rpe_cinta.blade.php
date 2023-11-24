@@ -1,11 +1,7 @@
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<!-- Bootstrap JS (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 
 <!-- Separador -->
 <hr style="border: 0px solid #DCDCDC; margin: 10px 0;">
@@ -31,7 +27,7 @@
 
 <!-- Botones para el rol Administrador -->
             <li class="nav-item mr-5" id="btnUsuarios" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Usuarios</a>
+                <a class="nav-link btn btn-primary rounded" href='/users' onclick="#">Usuarios</a>
             </li>
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
@@ -49,7 +45,7 @@
             
             <!-- Boton para salir -->
             <li class="nav-item mr-5" id="btnSalir" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
+                <a class="nav-link btn btn-primary rounded" href="login/ACADEMICOS"> <i class="fas fa-sign-out-alt"
                         id="icono_salir"></i> Salir</a>
             </li>
 

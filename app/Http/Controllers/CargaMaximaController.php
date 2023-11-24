@@ -13,7 +13,7 @@ class CargaMaximaController extends Controller
     protected $cargaMaximaRegister = [
         [
             "clave_unica" => 39999, //<-----Usar la clave única del servicio web
-            "materias_reprobadas_semestre" => "SI",
+            "materias_reprobadas_semestre" => "NO",
             "duracion_y_media_semestre" => "SI",
             "semestre" => "2023-2024/I",
         ],
@@ -52,19 +52,27 @@ class CargaMaximaController extends Controller
     //Controlador para gaurdar en base de datos
     public function cargaMaximaStore(Request $request)
     {
-        $dataSet = $request->input('dataSet');
-        //verificamos que no haya una solicitud activa en la base de datos
-        $resultado = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica'])
-            ->where(function ($query) {
-                $query->where('estado_solicitud', '!=', 'RESPUESTA')
-                    ->Where('estado_solicitud', '!=', 'CANCELADA');
-            })
-            ->get();
-       
+        $dataSet = $request->has('dataSet') ? $request->input('dataSet') : null;
+        $rol = $request->input('rol');
+        if ($dataSet !== null && count($dataSet) > 0)
+            $clave_unica = $dataSet[0]['clave_unica'];
+        else {
+            $clave_unica = 295969;
+        }
+        if ($rol != 'RPE') {
+            //verificamos que no haya una solicitud activa en la base de datos
+            $resultado = CargaMaximaModel::where('clave_unica', $dataSet[0]['clave_unica'])
+                ->where(function ($query) {
+                    $query->where('estado_solicitud', '!=', 'RESPUESTA')
+                        ->Where('estado_solicitud', '!=', 'CANCELADA');
+                })
+                ->get();
 
 
-        if ($resultado != null && $resultado->count() > 0) {
-            return back()->with('error', 'No tienes permitido hacer esta solicitud');
+
+            if ($resultado != null && $resultado->count() > 0) {
+                return back()->with('error', 'No tienes permitido hacer esta solicitud');
+            }
         }
 
         //Al alummo no tiene una solicitud activa y puede guardar en base de datos
@@ -74,8 +82,13 @@ class CargaMaximaController extends Controller
         $cargaMaxima->materias_reprobadas = ($this->cargaMaximaRegister[0]['materias_reprobadas_semestre'] == "SI") ? true : false; //<----Cambiar con datos del servicio web
         $cargaMaxima->duracion_y_media = ($this->cargaMaximaRegister[0]['duracion_y_media_semestre'] == "SI") ? true : false; //<----Cambiar con datos del servicio web
         $cargaMaxima->estado_solicitud = "ALTA";
-        $cargaMaxima->clave_unica = $dataSet[0]['clave_unica']; //<--Cambiar con servicio web
+        $cargaMaxima->clave_unica = $clave_unica; //<--Cambiar con servicio web
         $cargaMaxima->save();
+
+        if ($rol == 'RPE') {
+            return response()->json(['id' => $cargaMaxima->id_solicitud_cm], 200);
+        }
+
         $newId = $cargaMaxima->id_solicitud_cm;
         //dd($newId);
         $mensaje = "Solicitud registrada con éxito.";
@@ -95,6 +108,13 @@ class CargaMaximaController extends Controller
             $dataSet = $request->input('dataSet');
         }
         $id = $request->input('id');
+
+        $nombre = 'MARTINEZ LOPEZ IVAN';
+        $clave = '295969';
+        if (isset($dataSet) || $dataSet != null) {
+            $nombre =  $dataSet[0]['nombre_alumno'];
+            $clave = $dataSet[0]['clave_unica'];
+        }
 
         //Se obtiene la información de la base de datos.
         $registro = CargaMaximaModel::find($id);
@@ -149,9 +169,9 @@ class CargaMaximaController extends Controller
         }
         $pdf->SetXY(47, 201);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1, $dataSet[0]['nombre_alumno']);
+        $pdf->Write(0.1,  $nombre);
         $pdf->SetXY(47, 206);
-        $pdf->Write(0.1, $dataSet[0]['clave_unica']);
+        $pdf->Write(0.1, $clave);
         $pdf->SetXY(47, 210);
         $pdf->Write(0.1, "ING. EN COMPUTACION"); //Cambiar cuando se tenga el servicio web
         $pdf->SetXY(62, 214.55);
@@ -161,11 +181,11 @@ class CargaMaximaController extends Controller
 
         // Download PDF
         //Download use D 
-        $pdf->Output('D', "carga-maxima.pdf");
+        $pdf->Output('I', "carga-maxima.pdf");
 
         // Save PDF to Particular path or project path
 
-        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");      
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
 
     }
 
@@ -245,23 +265,57 @@ class CargaMaximaController extends Controller
 
 
 
-    public function fetchCargaMaxima($idOrRequest = null, $origenVista)
+    public function fetchCargaMaxima($requestOrClave, $origenVista = null)
     {
-        if ($idOrRequest instanceof Request) {
-            $clave_unica = $idOrRequest->input("clave_unica");
-        } else {
-            $clave_unica = $idOrRequest;
+        $clave_unica = null;
+        $solicitud = null;
+        $hctc = null;
+        if($requestOrClave instanceof Request) {
+            $clave_unica = $requestOrClave->input('clave_unica');
+            $solicitud = $requestOrClave->input('solicitud');
+            $hctc = $requestOrClave->input('hctc');
         }
-        
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud', 'fecha_solicitud')
-            ->where('clave_unica', $clave_unica)
-            ->get();
-
-
-
-        if ($registros->isEmpty()) { //El alumno no tiene niguna solicitud de carga máxima registrada.
-            return null;
+        else {
+            $clave_unica = $requestOrClave;
         }
+
+        $consulta = CargaMaximaModel::query();
+
+        if ($hctc) {
+            $fechaInicio = Carbon::parse($hctc);
+            $fechaInicio = $fechaInicio->format('Y-m-d'); // Use format directly
+            $fechaFinal = Carbon::parse($fechaInicio)->addDays(30);
+            $fechaFinal = $fechaFinal->format('Y-m-d');
+            $consulta->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFinal]);
+        }
+
+        if($solicitud) {
+            $consulta->where('estado_solicitud', $solicitud);
+        }
+
+        $aux = $consulta;
+
+        if($clave_unica) {
+            $consulta->where('clave_unica', $clave_unica);
+        }
+
+        $registros = $consulta->get();
+
+        //if ($idOrRequest instanceof Request) {
+        //    $clave_unica = $idOrRequest->input("clave_unica");
+        //} else {
+        //    $clave_unica = $idOrRequest;
+        //}
+
+        //$registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud', 'fecha_solicitud')
+        //    ->where('clave_unica', $clave_unica)
+        //    ->get();
+
+
+
+        //if ($registros->isEmpty()) { //El alumno no tiene niguna solicitud de carga máxima registrada.
+        //    return null;
+        //}
         $reg = $this->procesaInfo($registros);
         if ($origenVista == 'ALUMNOS') { //Éste metodo se llama desde la vista de alumnos
             return  $reg;
@@ -269,14 +323,14 @@ class CargaMaximaController extends Controller
 
 
         $html = view('tabla_consulta_carga_maxima', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
     private function procesaInfo($dataMaterias)
     {
 
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
-
+        $dataSet = null;
         foreach ($dataMaterias as $data) {
             $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [
@@ -295,16 +349,40 @@ class CargaMaximaController extends Controller
     }
 
 
-    public function fetchAllCargaMaxima()
+    public function fetchAllCargaMaxima(Request $request)
     {
-        $registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud')
-            ->get();
+        //$registros = CargaMaximaModel::select('id_solicitud_cm', 'materias_reprobadas', 'duracion_y_media', 'semestre', 'clave_unica', 'estado_solicitud')
+        //    ->get();
 
-        if ($registros->isEmpty()) { //No hay solicitudes registradas
-            return null;
+        //if ($registros->isEmpty()) { //No hay solicitudes registradas
+        //    return null;
+        //}
+
+        $clave_unica = $request->input('clave_unica');
+        $solicitud = $request->input('solicitud');
+        $hctc = $request->input('hctc');
+
+        $consulta = CargaMaximaModel::query();
+
+        if ($hctc) {
+            $fechaInicio = Carbon::parse($hctc);
+            $fechaInicio = $fechaInicio->format('Y-m-d'); // Use format directly
+            $fechaFinal = Carbon::parse($fechaInicio)->addDays(30);
+            $fechaFinal = $fechaFinal->format('Y-m-d');
+            $consulta->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFinal]);
         }
+
+        if($solicitud) {
+            $consulta->where('estado_solicitud', $solicitud);
+        }
+
+        if($clave_unica) {
+            $consulta->where('clave_unica', $clave_unica);
+        }
+
+        $registros = $consulta->get();
         $html = view('tabla_consulta_carga_maxima', ['registros' => $registros])->render();
-        return response()->json(['html' => $html]);
+        return response()->json(['html' => $html, 'json' => $registros]);
     }
 
     public function updateCancelar($id)
@@ -330,5 +408,92 @@ class CargaMaximaController extends Controller
         $data = CargaMaximaModel::find($id);
         // dd($data);
         return view('/detallesCM', compact('data'));
+    }
+
+
+
+    // funcion provisional para descargar pdf, con el servicio web se sacan los datos faltantes correctos
+    public function cargaMaximaPDFshowPROVISIONAL(Request $request,$id)
+    {
+
+        // $dataSet = $request->input('dataSet');
+        // if (gettype($dataSet) === 'string') {
+        //     $dataSet = json_decode($request->input('dataSet'), true);
+        // } else {
+        //     $dataSet = $request->input('dataSet');
+        // }
+        // $id = $request->input('id');
+
+        //Se obtiene la información de la base de datos.
+        $registro = CargaMaximaModel::find($id);
+
+        //verificamos que exista el registro
+        if (!$registro) {
+            return back()->with('error', 'Solicitud no registrada.');
+        }
+
+
+
+        //Procesamos la fecha para colocarla en el pdf
+        $fechaSolicitud =  $registro->fecha_solicitud;
+        $carbonFecha = \Carbon\Carbon::parse($fechaSolicitud);
+
+        //Registramos la fecha de impresión
+        $registro->fecha_impresion = now();
+        $registro->save();
+
+        $pdf = new Fpdi('P', 'mm', 'A4');
+
+        // add a page
+        $pdf->AddPage('P', 'A4');
+        $pdf->SetFont('Arial', 'B', 10);
+
+        // set the source file
+        $path = public_path("FormaSGCM01.pdf");
+
+        $pdf->setSourceFile($path);
+
+        // import page 1
+        $tplId = $pdf->importPage(1);
+
+
+
+        // use the imported page and place it at point 10,10 with a width of 100 mm
+        $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+        $pdf->SetXY(169, 52);
+        $pdf->Write(0.1, $carbonFecha->day);
+        $pdf->SetXY(183, 52);
+        $pdf->Write(0.1, $carbonFecha->month);
+        $pdf->SetXY(196, 52);
+        $pdf->Write(0.1, $carbonFecha->year);
+        if ($registro->materias_reprobadas) {
+            $pdf->SetXY(146, 112);
+            $pdf->Write(0.1, "X");
+        }
+        if ($registro->duracion_y_media) {
+            $pdf->SetXY(146, 116.5);
+            $pdf->Write(0.1, "X");
+        }
+        $pdf->SetXY(47, 201);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Write(0.1, 'ALEJANDRO ESCAMILLA AMADOR');
+        $pdf->SetXY(47, 206);
+        $pdf->Write(0.1, $registro->clave_unica);
+        $pdf->SetXY(47, 210);
+        $pdf->Write(0.1, "ING. EN COMPUTACION"); //Cambiar cuando se tenga el servicio web
+        $pdf->SetXY(62, 214.55);
+        $pdf->Write(0.1, $registro->semestre); //Cambiar cuando se tenga el servicio web
+        // Preview PDF
+        //$pdf->Output('I', "Demotest.pdf");
+
+        // Download PDF
+        //Download use D
+        $pdf->Output('D', "carga-maxima.pdf");
+
+        // Save PDF to Particular path or project path
+
+        //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
+
     }
 }

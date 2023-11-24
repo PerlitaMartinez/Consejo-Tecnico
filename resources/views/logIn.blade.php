@@ -11,9 +11,14 @@
 
 @section('content')
 <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {!! nl2br(session('success')) !!}
+            </div>
+        @endif
     <div class="wrapper">
       <div class="title"><span>{{$rol}}</span></div>
-      <form method="POST"  action="{{route('login.sumbit')}}">
+      <form method="POST"  action={{route('login.sumbit', ['clave'=> $clave, 'rol' =>$rol]) }}>
         @csrf
         <div class="row">
         <p>{{$clave}}:</p>

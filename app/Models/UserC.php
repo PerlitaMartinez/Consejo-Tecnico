@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserC extends Model
 {
+    
     use HasFactory;
 }
