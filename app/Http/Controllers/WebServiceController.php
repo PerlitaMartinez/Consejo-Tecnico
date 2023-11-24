@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\WebService;
+use App\Models\CatOpcionTitulacionModel;
 use Illuminate\Http\Request;
 
 class WebServiceController extends Controller
@@ -41,14 +42,22 @@ class WebServiceController extends Controller
                 if($infoAlumnoMU == null){//El alumno no tiene niguna materia registrada en base de datos
                     $ws = new WebService();
                     $infoAlumnoMU = $ws->materia_unica($clave);
+                    for($i = 0; $i < count($infoAlumnoMU); $i++){
+                        $infoAlumnoMU[$i]['clave_unica'] = $clave;
+                    }
 
                 }
-                $htmlMU = view('cs_materia_unica', ['infoAlumno' => $infoAlumnoMU])->render();
-                return response()->json(['infoAlumno' => $html, 'infoAlumnoMU' => $htmlMU]);
+                $htmlMU = view('cs_materia_unica', ['infoAlumnoMU' => $infoAlumnoMU])->render();
+                return response()->json(['infoAlumno' => $html, 'infoAlumnoTramite' => $htmlMU, 'dataSet' =>  $infoAlumno]);
             }else if($solicitud == "cm"){
-                return response()->json(['infoAlumno' => $html]);
+                $ws = new WebService();
+                $infoAlumnoCM = $ws->carga_maxima(295969);
+                $htmlCM = view('cs_carga_maxima', ['infoAlumnoCM' => $infoAlumnoCM])->render();
+                return response()->json(['infoAlumno' => $html, 'infoAlumnoTramite' => $htmlCM]);
             }else if($solicitud == "ot"){
-                return response()->json(['infoAlumno' => $html]);
+                $opt = CatOpcionTitulacionModel::all();
+                $htmlOT = view('cs_opcion_titulacion', ['materias' => $opt])->render();
+                return response()->json(['infoAlumno' => $html, 'infoAlumnoTramite'=> $htmlOT]);
             }
             return response()->json(['infoAlumno' => $html]);
             
@@ -59,8 +68,8 @@ class WebServiceController extends Controller
 
 
 
-    //Función temporal para simular la respuesta del seervicio web
-    private function buscaAlumno($clave_unica)
+    //Función temporal para simular la respuesta del servicio web
+    public function buscaAlumno($clave_unica)
     {
         $ejemploAlumno = [
             [

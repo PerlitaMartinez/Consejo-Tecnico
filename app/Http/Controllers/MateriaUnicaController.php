@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MateriaUnicaModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use setasign\Fpdi\Fpdi;
 
 
@@ -77,11 +78,17 @@ class MateriaUnicaController extends Controller
 
     public function storeMateriaUnica(Request $request)
     {
+
+        //Las materias se consultan aquí y no se envian desde el formulario
         $materia = $request->input('materia');
         $semestre = $request->input('semestre');
         $dataSet = $request->input('dataSet');
+        if (gettype($dataSet) === 'string') {
+            $dataSet = json_decode($request->input('dataSet'), true);
+        }
+        //dd($dataSet);
         $registered = $request->input('registered');
-
+        $rol = $request->input('rol');
         //Buscamos la materia y el semestre en el dataSet del Servicio Web
         $encontrado = false;
         for ($i = 0; $i < count($this->materias) && !$encontrado; $i++) {
@@ -101,6 +108,12 @@ class MateriaUnicaController extends Controller
         $materiaUnica->clave_materia = $fila[0]['cve_materia'];
 
         $materiaUnica->save();
+        //Si se ha registrado la solicitud desde la pantalla de staff, colocaque la solicitud fue registrda con éxito
+        if ($rol == 'RPE') {
+            return response()->json(['id' => $materiaUnica->id_solicitud_mu], 200);
+        }
+
+
         $nuevoID = $materiaUnica->id_solicitud_mu;
 
         $materias = [
@@ -126,6 +139,11 @@ class MateriaUnicaController extends Controller
             $dataSet = json_decode($request->input('dataSet'), true);
         } else {
             $dataSet = $request->input('dataSet');
+        }
+        if ($dataSet == null) {
+            $claveUnica = $request->input('clave_unica');
+            $ws = new WebServiceController();
+            $dataSet = $ws->buscaAlumno($claveUnica);
         }
         $id = $request->input('id');
         //Verificamos en la base de datos que esté el registro
@@ -179,11 +197,21 @@ class MateriaUnicaController extends Controller
             $pdf->Write(0.1, 'CALCULO A');
         }
 
+        $name = 'MARTINEZ LOPEZ IVAN';
+
+        if (isset($dataSet))
+            $name = $dataSet[0]['nombre_alumno'];
+
+        $cu = '295969';
+        if (isset($dataSet))
+            $cu = $dataSet[0]['clave_unica'];
+
+
         $pdf->SetXY(60, 183);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1,  $dataSet[0]['nombre_alumno']);
+        $pdf->Write(0.1, $name);
         $pdf->SetXY(75, 193);
-        $pdf->Write(0.1,  $dataSet[0]['clave_unica']);
+        $pdf->Write(0.1,  $cu);
         $pdf->SetXY(60, 203);
         $pdf->Write(0.1, "ING. EN COMPUTACION"); //<-----Cambiar cuando se tenga el servicio web
         //$pdf->SetXY(60, 213);
@@ -196,15 +224,7 @@ class MateriaUnicaController extends Controller
 
         // Save PDF to Particular path or project path
 
-        $pdf->Output('D', 'materia-Unica.pdf');
-
-
-        if ($vistaAdmin == 1) {
-            $mensaje = "Solicitud Registrada con éxito.";
-
-
-            return redirect()->route('materiaUnicaAdmin.show')->with('success', $mensaje);
-        }
+        $pdf->Output('I', 'materia-Unica.pdf');
     }
 
 
@@ -218,12 +238,13 @@ class MateriaUnicaController extends Controller
             for ($i = 0; $i < count($this->materias); $i++) {
                 $encontrada = false;
                 foreach ($materiasRegistradas as $mat) {
-                    if ($this->materias[$i]['cve_materia'] == $mat->clave_materia && ($mat->estado_solicitud == 'ALTA' || $mat->estado_solicitud == 'AUTORIZADA')  ) {
+                    if ($this->materias[$i]['cve_materia'] == $mat->clave_materia && ($mat->estado_solicitud == 'ALTA' || $mat->estado_solicitud == 'AUTORIZADA')) {
                         $encontrada = true;
                     }
                 }
                 if (!$encontrada) {
                     $fila = [
+                        "clave_unica" => $clave_unica,
                         "nombre_materia" => $this->materias[$i]['nombre_materia'],
                         "semestre" => $this->materias[$i]["semestre"],
                     ];
@@ -250,7 +271,7 @@ class MateriaUnicaController extends Controller
 
         $registro = MateriaUnicaModel::find($id);
 
-        
+
 
         if (!$registro) {
             // Si no se encuentra el registro, se envía un mensaje de error
@@ -330,7 +351,7 @@ class MateriaUnicaController extends Controller
         $materias[0]['materia'] = $materia;
         return redirect()->route('materiaUnicaPDF.show', ['dataSet' => $materias, 'id' => $nuevoID, 'vistaAdmin' => true]);
     }
-    
+
     // función para mostrar los detalles desde la base de datos de la tabla de materia única
     public static function SacaDatosMateriaUnica()
     {
@@ -345,13 +366,13 @@ class MateriaUnicaController extends Controller
     {
         if ($idOrRequest instanceof Request) {
             $clave_unica = $idOrRequest->input("clave_unica");
-        }else{
+        } else {
             $clave_unica = $idOrRequest;
         }
-        if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
+        if ($origenVista == 'ALUMNOS') { //Éste metodo se llama desde la vista de alumnos
             $registros = $this->fetchMateriaUnica($clave_unica);
             return  $registros;
-        }//Este método se llama desde la vista de Usuarios con RPE para consulta de solicitudes
+        } //Este método se llama desde la vista de Usuarios con RPE para consulta de solicitudes
         $registros = $this->fetchMateriaUnica($clave_unica);
         $html = view('tabla_consulta_materia_unica', ['registros' => $registros])->render();
         return response()->json(['html' => $html]);
@@ -361,7 +382,7 @@ class MateriaUnicaController extends Controller
     //Trae los registros de materia única segun la clave única
     private function fetchMateriaUnica($clave_Unica)
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud', 'fecha_solicitud')
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica', 'estado_solicitud', 'fecha_solicitud')
             ->where('clave_unica', $clave_Unica)
             ->get();
 
@@ -386,9 +407,9 @@ class MateriaUnicaController extends Controller
                 'materia' => $this->fetchNombreMateria($data->clave_materia),
                 'semestre' => $data->semestre,
                 'clave_unica' => $data->clave_unica,
-                'estado_solicitud' => $data->estado_solicitud,  
+                'estado_solicitud' => $data->estado_solicitud,
                 'fecha_solicitud' => $carbonFecha->day . '-' . $carbonFecha->month . '-' . $carbonFecha->year,
-                
+
 
             ];
             $dataSet[] = $fila;
@@ -412,7 +433,7 @@ class MateriaUnicaController extends Controller
 
     public function fetchMateriaUnicaAllRegisters()
     {
-        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica','estado_solicitud')->get();
+        $materias = MateriaUnicaModel::select('id_solicitud_mu', 'clave_materia', 'semestre', 'clave_unica', 'estado_solicitud')->get();
         if ($materias->isEmpty()) { //No hay solicitudes registradas de Materia Única
             return null;
         }
@@ -422,25 +443,28 @@ class MateriaUnicaController extends Controller
         return response()->json(['html' => $html]);
     }
 
-    
-    public function updateCancelar($id){
-        $d=MateriaUnicaModel::find($id);
+
+    public function updateCancelar($id)
+    {
+        $d = MateriaUnicaModel::find($id);
         // dd($d);
-        $d->estado_solicitud='CANCELADA';
+        $d->estado_solicitud = 'CANCELADA';
         $d->save();
         return redirect('/consultar');
     }
 
-    public function updateAutorizar($id){
-        $d=MateriaUnicaModel::find($id);
+    public function updateAutorizar($id)
+    {
+        $d = MateriaUnicaModel::find($id);
         // dd($d);
-        $d->estado_solicitud='AUTORIZADA';
+        $d->estado_solicitud = 'AUTORIZADA';
         $d->save();
         return redirect('/consultar');
     }
 
-    public function mostrarDetallesMU($id){
-        $data=MateriaUnicaModel::find($id);
+    public function mostrarDetallesMU($id)
+    {
+        $data = MateriaUnicaModel::find($id);
         // dd($data);
         return view('/detallesMU', compact('data'));
     }
