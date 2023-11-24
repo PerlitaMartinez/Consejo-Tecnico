@@ -75,7 +75,7 @@
                     href={{ route('seguimiento.show', ['dataSet' => $dataSet]) }}>Seguimiento de Solicitudes</a>
             </li>
             <li class="nav-item mr-5">
-                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
+                <a class="nav-link btn btn-primary rounded" href="login/Alumnos"> <i class="fas fa-sign-out-alt"
                         id="icono_salir"></i> Salir</a>
             </li>
         </ul>

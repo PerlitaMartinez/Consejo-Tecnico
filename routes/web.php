@@ -10,6 +10,7 @@ use App\Http\Controllers\OpcionTitulacionController;
 use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\SeguimientoSolicitudController;
 use App\Http\Controllers\TramitesController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebServiceController;
 use App\Http\Middleware\CheckFormCargaMaximaCompletion;
 use App\Http\Middleware\CheckFormMateriaUnicaCompletion;
@@ -55,6 +56,9 @@ Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetch
 Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
 Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');
 Route::get('/detallesMU/{id}', [MateriaUnicaController::class,'mostrarDetallesMU'])->name('detallesMU');
+Route::get('materiaUnicaPDF-PROVISIONAL/{datos}', [MateriaUnicaController::class,'materiaUnicaPDFshowPROVISIONAL'])->name('materiaUnicaPdfPROVISIONAL.show'); // pdf provisional para cuando se descarga formato en roles
+
+
 
 Route::get('cargaMaxima', [CargaMaximaController::class, 'showCargaMaximaForm'])->name('cargaMaxima.show');
 Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
@@ -66,7 +70,10 @@ Route::get('cargaMaxima-getRegistros/{clave}/{rol?}', [CargaMaximaController::cl
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
 Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
-Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');
+Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
+Route::get('cargaMaximaPDF-PROVISIONAL/{datos}', [CargaMaximaController::class,'cargaMaximaPDFshowPROVISIONAL'])->name('cargaMaximaPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
+
+
 
 
 Route::get('titulacion', [OpcionTitulacionController::class, 'showTitulacionForm'])->name('titulacion.show');
@@ -80,6 +87,10 @@ Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'f
 Route::post('/cancelarOT/{id}', [OpcionTitulacionController::class, 'updateCancelar'])->name('cancelarOT');
 Route::post('/autorizarOT/{id}', [OpcionTitulacionController::class, 'updateAutorizar'])->name('autorizarOT');
 Route::get('/detallesOT/{id}', [OpcionTitulacionController::class,'mostrarDetallesOT'])->name('detallesOT');
+Route::get('opTitulacionPDF-PROVISIONAL/{datos}', [OpcionTitulacionController::class,'opTitulacionPDFshowPROVISIONAL'])->name('opTitulacionPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
+
+
+
 
 Route::get('seguimiento', [SeguimientoSolicitudController::class, 'SeguimientoShow'])->name('seguimiento.show');
 Route::get('agregarSolicitud', [AgregarSolicitudController::class,'agregarSolicitudShow'])->name('agregarSolicitud.show');
@@ -183,6 +194,9 @@ Route::get('/tutor', function () {
 Route::get('/tutorados', function () {
     return view('tutorados'); //vista de tutor
 })->name('tutorados');
+Route::resource('users', 'App\Http\Controllers\UserController');
+Route::post("/agregar_us",[UserController::class, "create"])->name("user.create");
+Route::post("/modificar_us",[UserController::class, "update"])->name("user.update");
 
 Route::get('/jefe_area', function () {
     return view('jefe_area'); //vista de tutor

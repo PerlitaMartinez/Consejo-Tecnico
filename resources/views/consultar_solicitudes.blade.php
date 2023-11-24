@@ -4,6 +4,7 @@
 
     <!-- Agrega el enlace al archivo de estilo de Bootstrap si aún no está incluido -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -21,6 +22,98 @@
             comboBox.addEventListener('change', function() {
                 // Habilita o deshabilita el cuadro de texto según la opción seleccionada
                 claveUnicaInput.disabled = (comboBox.value !== 'clave_unica');
+            });
+
+            var datos =
+                {
+                    'MateriaUnica': null,
+                    'CargaMaxima': null,
+                    'OpcionTitulacion': null,
+                };
+
+            var tabs = {
+                'materia_unica': 'none',
+                'carga_maxima': 'block',
+                'titulacion': 'none',
+                'active': 'cargaMaximaCheckbox'
+            };
+
+            function exportarAExcel(datos, label) {
+                /* generate worksheet and workbook */
+                const worksheet = XLSX.utils.json_to_sheet(datos);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, label);
+
+                // /* fix headers */
+                // XLSX.utils.sheet_add_aoa(worksheet, [["Name", "Birthday"]], { origin: "A1" });
+
+                /* calculate column width */
+                // const max_width = datos.reduce((w, r) => Math.max(w, r.name.length), 10);
+                // worksheet["!cols"] = [ { wch: max_width } ];
+
+                XLSX.writeFile(workbook, label + ".xlsx", { compression: true });
+            }
+
+            function ShowExportButton() {
+                var botonExportar = document.getElementById('exportar');
+                botonExportar.style.display = 'none';
+
+                showButtonForCheckbox('materiaUnicaCheckbox', datos.MateriaUnica, 'MateriaUnica');
+                showButtonForCheckbox('cargaMaximaCheckbox', datos.CargaMaxima, 'CargaMaxima');
+                showButtonForCheckbox('opcionTitulacionCheckbox', datos.OpcionTitulacion, 'OpcionTitulacion');
+            }
+
+            function showButtonForCheckbox(checkboxId, data, label) {
+                var active = tabs.active == checkboxId;
+                console.log(tabs.active);
+                if (active && data != null && data.length > 0) {
+                    var botonExportar = document.getElementById('exportar');
+
+                    // Crea un nuevo manejador de eventos
+                    var handleExportClick = function (event) {
+                        exportarAExcel(data, label);
+                    };
+
+                    // Remueve el manejador de eventos anterior si existe
+                    botonExportar.removeEventListener('click', handleExportClick);
+
+                    // Agrega el nuevo manejador de eventos
+                    botonExportar.style.display = 'block';
+                    botonExportar.addEventListener('click', handleExportClick);
+                }
+            }
+
+            ShowExportButton();
+
+            var filtros = document.getElementById('filtros');
+            var checkboxContainer = document.getElementById('checkboxContainer');
+            // filtros.style.display = 'none';
+            checkboxContainer.addEventListener('change', function (event) {
+                // Verifica si el evento se originó desde un checkbox
+                if (event.target.type === 'radio') {
+                    var tablaContainer = document.getElementById('tablaContainer');
+                    tablaContainer.innerHTML = ''; // Limpia el contenido actual
+
+                    // Oculta todas las tablas antes de mostrar la seleccionada
+                    tablaMateriaUnica.style.display = 'none';
+                    tablaCargaMaxima.style.display = 'none';
+                    tablaOpcionTitulacion.style.display = 'none';
+                    if (document.getElementById('cargaMaximaCheckbox').checked) {
+                        tabs.active = 'cargaMaximaCheckbox';
+                        tablaCargaMaxima.style.display = 'block';
+                    } else if (document.getElementById('materiaUnicaCheckbox').checked) {
+                        tablaMateriaUnica.style.display = 'block';
+                        tabs.active = 'materiaUnicaCheckbox';
+
+                    } else if (document.getElementById('opcionTitulacionCheckbox').checked) {
+                        tablaOpcionTitulacion.style.display = 'block';
+                        tabs.active = 'opcionTitulacionCheckbox';
+
+                    }
+
+                    console.log('en container: ' + tabs.active);
+                    ShowExportButton();
+                }
             });
 
             // Obtén una referencia al botón de consultar
@@ -66,7 +159,7 @@
                         return; // Detén la ejecución si el campo está vacío
                     }
                     //----------------Aqui se debería mandar llamar al servicio web Para consultar si la clave única Existe o no.
-                    
+
                 }
 
                 // Muestra la tabla correspondiente según la opción del radio seleccionada
@@ -81,8 +174,10 @@
                 tablaMateriaUnica.style.display = 'none';
                 tablaCargaMaxima.style.display = 'none';
                 tablaOpcionTitulacion.style.display = 'none';
-
+                var estadoSolicitud = document.getElementById('estadoSolicitud');
+                var hctc = document.getElementById('hctc');
                 if (document.getElementById('cargaMaximaCheckbox').checked) {
+                    tabs.active = 'cargaMaximaCheckbox';
 
                     if (criterioSeleccionado === 'clave_unica') {
                         $.ajax({
@@ -90,16 +185,19 @@
                             method: 'GET',
                             data: {
                                 "clave": claveUnicaValor,
-                                "origenVista": "RPE"
-                                
+                                "origenVista": "RPE",
+                                "solicitud": estadoSolicitud.value,
+                                "hctc": hctc.value
                             },
                             success: function(data) {
-
-
+                                datos.CargaMaxima = data.json ?? null;
+                                console.log(datos.CargaMaxima, data.json);
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaCargaMaxima').html(data.html);
                                 $('#tablaCargaMaxima').show();
                                 //tablaMateriaUnica.style.display = 'block';
+                                ShowExportButton();
+
                             },
                             error: function(error) {
                                 // Manejar cualquier error si es necesario
@@ -109,14 +207,20 @@
                         $.ajax({
                             url: '{{ route('cargaMaximaRegAll') }}',
                             method: 'GET',
-                            data: {},
+                            data: {
+                                "solicitud": estadoSolicitud.value,
+                                "hctc": hctc.value
+                            },
                             success: function(data) {
 
+                                datos.CargaMaxima = data.json ?? null;
 
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaCargaMaxima').html(data.html);
                                 $('#tablaCargaMaxima').show();
                                 //tablaMateriaUnica.style.display = 'block';
+                                ShowExportButton();
+
                             },
                             error: function(error) {
                                 // Manejar cualquier error si es necesario
@@ -125,39 +229,51 @@
                     }
 
                 } else if (document.getElementById('materiaUnicaCheckbox').checked) {
+                    tabs.active = 'materiaUnicaCheckbox';
+
                     if (criterioSeleccionado === 'clave_unica') {
+
                         $.ajax({
                             url: '/materiaUnica-getRegistros/' + claveUnicaValor + '/RPE',
                             method: 'GET',
                             data: {
-    
+                                "clave_unica": claveUnicaValor,
+                                "solicitud": estadoSolicitud.value,
+                                "hctc": hctc.value
                             },
                             success: function(data) {
-
+                                datos.MateriaUnica = data.json ?? null;
 
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaMateriaUnica').html(data.html);
                                 $('#tablaMateriaUnica').show();;
                                 //tablaMateriaUnica.style.display = 'block';
+                                ShowExportButton();
+
                             },
                             error: function(error) {
                                 // Manejar cualquier error si es necesario
                             }
                         });
                     } else if (criterioSeleccionado === 'todos') {
+
                         $.ajax({
                             url: '{{ route('materiaUnicaAllReg') }}',
                             method: 'GET',
                             data: {
-
+                                "solicitud": estadoSolicitud.value,
+                                "hctc": hctc.value
                             },
                             success: function(data) {
 
+                                console.log(data.html, data.json);
+                                datos.MateriaUnica = data.json ?? null;
 
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaMateriaUnica').html(data.html);
                                 $('#tablaMateriaUnica').show();;
                                 //tablaMateriaUnica.style.display = 'block';
+                                ShowExportButton();
                             },
                             error: function(error) {
                                 // Manejar cualquier error si es necesario
@@ -167,20 +283,26 @@
 
                     //console.log("materia unica");
                 } else if (document.getElementById('opcionTitulacionCheckbox').checked) {
+                    tabs.active = 'opcionTitulacionCheckbox';
+
                     if (criterioSeleccionado === 'clave_unica') {
                         $.ajax({
                             url: '/opTitulacion-getRegistros/' + claveUnicaValor + '/RPE',
                             method: 'GET',
                             data: {
-     
+                                "clave_unica": claveUnicaValor,
+                                "solicitud": estadoSolicitud.value,
+                                "hctc": hctc.value
                             },
                             success: function(data) {
-
+                                datos.OpcionTitulacion = data.json ?? null;
 
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaOpcionTitulacion').html(data.html);
                                 $('#tablaOpcionTitulacion').show();
                                 //tablaMateriaUnica.style.display = 'block';
+                                ShowExportButton();
+
                             },
                             error: function(error) {
                                 // Manejar cualquier error si es necesario
@@ -190,12 +312,17 @@
                         $.ajax({
                             url: '{{ route('opcionTitulacionAllReg') }}',
                             method: 'GET',
-                            data: {},
+                            data: {
+                                "solicitud": estadoSolicitud.value,
+                                "hctc": hctc.value
+                            },
                             success: function(data) {
+                                datos.OpcionTitulacion = data.json ?? null;
 
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaOpcionTitulacion').html(data.html);
-                                $('#tablaOpcionTitulacion').show();
+                                $('#tablaOpcionTitulacion').show();;
+                                ShowExportButton();
                                 //tablaMateriaUnica.style.display = 'block';
                             },
                             error: function(error) {
@@ -204,6 +331,10 @@
                         });
                     }
                 }
+                console.log('datos: ' +
+                    'titulacion: '+ datos.OpcionTitulacion +
+                    'unica: ' +  datos.MateriaUnica +
+                    'cargamaxima: ' + datos.CargaMaxima);
             });
         });
     </script>
@@ -247,8 +378,36 @@
             </div>
         </div>
 
+        <div class="row mt-4 justify-content-center align-items-end">
+            <div id="filtros" style="display: flex;">
+                <div class="col-md-6">
+                    <!-- style="width: 100%" -->
+                    <h6> Estado Solictud </h6>
+                    <select class="form-select btn btn-primary"  name="estadoSolicitud" id="estadoSolicitud">
+                        <option value="" disabled selected hidden>Seleccione...</option>
+                        <option >ALTA</option>
+                        <option >ENTREGADO</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <h6> Sesion HCTC </h6>
+                    <select class="form-select btn btn-primary" name="hctc" id="hctc">
+                        <option value="" disabled selected hidden>Seleccione...</option>
+                        <option >11/03/2023</option>
+                        <option >10/12/2023</option>
+                        <option >01/03/2021</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <a href="#" class="btn btn-success" id="exportar">
+                    Exportar a Excel
+                </a>
+            </div>
+        </div>
+
         <!-- Nuevos radio buttons -->
-        <div class="row mt-4 justify-content-center">
+        <div class="row mt-4 justify-content-center" id="checkboxContainer">
             <div class="col-md-3">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="opciones" id="cargaMaximaCheckbox" checked>

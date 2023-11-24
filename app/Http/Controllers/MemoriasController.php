@@ -79,6 +79,14 @@ class MemoriasController extends Controller
                 'registro',
             ));
          }
+         return view('registro_tema_temario_memorias',compact(
+            'dataSet',
+            'id',
+            'exists',
+            'temarios',
+        ));
+
+
 
 
         

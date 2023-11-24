@@ -27,7 +27,7 @@
 
 <!-- Botones para el rol Administrador -->
             <li class="nav-item mr-5" id="btnUsuarios" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#" onclick="#">Usuarios</a>
+                <a class="nav-link btn btn-primary rounded" href='/users' onclick="#">Usuarios</a>
             </li>
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
                 <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
@@ -40,12 +40,12 @@
                 <a class="nav-link btn btn-primary rounded" href='{{ route("crear_solicitud") }}'>Crear Solicitud</a>
             </li>
             <li class="nav-item mr-5" id="btnSesionesHCTC" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}' onclick="#">Sesiones HCTC</a>
+                <a class="nav-link btn btn-primary rounded" href='{{ route("admin_sesiones_hctc") }}'>Sesiones HCTC</a>
             </li>
             
             <!-- Boton para salir -->
             <li class="nav-item mr-5" id="btnSalir" style="display: none;">
-                <a class="nav-link btn btn-primary rounded" href="#"> <i class="fas fa-sign-out-alt"
+                <a class="nav-link btn btn-primary rounded" href="login/ACADEMICOS"> <i class="fas fa-sign-out-alt"
                         id="icono_salir"></i> Salir</a>
             </li>
 
@@ -100,7 +100,7 @@
                     'Jefe de Área': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
                     'Administrador': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btnUsuarios', 'btnSesionesHCTC'],
                     'Director y secretario': ['btnInicio', 'btnSalir', 'btnSolicitudes'],
-                    'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btncrearSolictud'],
+                    'Staff': ['btnInicio', 'btnSalir', 'btnSolicitudes', 'btncrearSolictud', 'btnSesionesHCTC'],
                 };
 
                 // Muestra u oculta elementos específicos usando css()

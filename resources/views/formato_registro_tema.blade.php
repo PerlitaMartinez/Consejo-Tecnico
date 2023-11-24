@@ -69,8 +69,8 @@
                     <button class="btn btn-success" id="descargar-formato">Descargar Formato</button>
                     </form>
                 </div>
-            
-       
+
+
 
     </div>
 
@@ -79,7 +79,7 @@
     .container {
         margin-top: 35px;
         max-width: 60%;
-        
+
     }
 
     .form-group {

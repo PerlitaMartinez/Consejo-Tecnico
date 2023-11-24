@@ -11,7 +11,7 @@
 
 
 <div class="custom-container mt-4">
-    <h1>Consultar Solicitud Materia Única</h1>
+    <h1>Consultar Solicitud Opción Titulación</h1>
     
     <!-- tabla de datos del alumno -->
     <hr style="border: 0px solid #DCDCDC; margin: 10px 0;">

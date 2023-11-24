@@ -20,9 +20,10 @@ class AuthController extends Controller
         $clave = "";
         if ($rol == "ACADEMICOS") {
             $clave = "RPE";
-            $rol = "ACADÉMICOS";
+            $rol = "ACADEMICOS";
         } elseif ($rol == "ALUMNOS") {
             $clave = "Clave Única";
+            $rol = "ALUMNOS";
         } else {
             abort(404);
         }
@@ -33,15 +34,33 @@ class AuthController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
-        // $claveUnica = $request->input('clave_unica');
+        $clave = $request->input('clave');
+        $rol = $request->input('rol');
         // $contrasena = $request->input('contrasena');
         $webService = new WebService();
         $dataSet = $webService->valida_alumno($request->input('clave_unica'), $request->input('contrasena'));
+
 
         $respuesta = $dataSet[0]['validacion'];
         $clave = $dataSet[0]['clave_unica'];
 
 
-        return redirect()->route('inicio.index', ['dataSet' => $dataSet]);
+        $mensaje ="Clave o contraseña incorrectas.";
+        $respuesta = $dataSet[0]['validacion'];
+        $clave = $dataSet[0]['clave_unica'];
+
+        if($respuesta === "USUARIO-VALIDO" && $rol == "ALUMNOS")
+        {
+            return redirect()->route('inicio.index', ['dataSet' => $dataSet]);
+        
+        }
+        if($rol == "ACADEMICOS" && $respuesta === "USUARIO-VALIDO"){
+
+            return redirect()->route('rol');
+        }
+
+        return redirect()->route('login.show',$rol)->with('success', $mensaje);
+
+       
     }
 }
