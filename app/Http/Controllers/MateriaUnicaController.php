@@ -612,12 +612,5 @@ class MateriaUnicaController extends Controller
 
         $pdf->Output('D', 'materia-Unica.pdf');
 
-
-        if ($vistaAdmin == 1) {
-            $mensaje = "Solicitud Registrada con éxito.";
-
-
-            return redirect()->route('materiaUnicaAdmin.show')->with('success', $mensaje);
-        }
     }
 }
