@@ -46,7 +46,7 @@ Route::post('post-login', [AuthController::class, 'login'])->name('login.sumbit'
 Route::get('inicio', [HomeController::class, 'index'])->name('inicio.index');
 
 Route::get('materiaUnica', [MateriaUnicaController::class, 'showMateriaUnicaForm'])->name('materiaUnica.show');
-Route::post('materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnica'])->name('materiaUnica.store');
+Route::POST('materiaUnica-post', [MateriaUnicaController::class, 'storeMateriaUnica'])->name('materiaUnica.store');
 Route::get('materiaUnicaPDF', [MateriaUnicaController::class,'materiaUnicaPDFshow'])->name('materiaUnicaPDF.show');
 Route::post('materiaUnica-cancel', [MateriaUnicaController::class,'materiaUnicaCancel'])->name('materiaUnica.delete');
 Route::get('administrador/materiaUnica', [MateriaUnicaController::class, 'materiaUnicaShowAdministrador'])->name('materiaUnicaAdmin.show');

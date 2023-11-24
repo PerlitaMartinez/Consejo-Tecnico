@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CatOpcionTitulacionModel;
 use App\Models\OpcionTitulacionModel;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Fpdi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OpcionTitulacionController extends Controller
 {
@@ -16,7 +19,7 @@ class OpcionTitulacionController extends Controller
             "ultima_materia" => "23/10/2023",
             "promedio_ap" => "8.0",
             "semestre" => "2023-2024/I",
-            "ingreso" => "2018",
+            "ingreso" => "2023-2024/I",
         ],
 
     ];
@@ -38,31 +41,40 @@ class OpcionTitulacionController extends Controller
 
     public function opcionTitulacionStore(Request $request)
     {
-        $dataSet = $request->input('dataSet');
+
+        $dataSet = $request->has('dataSet') ? $request->input('dataSet') : null;
         $opcionTitulacionSeleccionada = $request->input('opcion_titulacion');
-
-
-
+        $rol = $request->input('rol');
+        if ($dataSet !== null && count($dataSet) > 0)
+            $clave_unica = $dataSet[0]['clave_unica'];
+        else {
+            $clave_unica = 295969;
+        }
+       
         //verificamos que no haya una solicitud activa en la base de datos
-        $resultado = OpcionTitulacionModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
+        $resultado = OpcionTitulacionModel::where('clave_unica', $clave_unica) //<--- Cambiar por datos del servicio web
             ->where(function ($query) {
                 $query->where('estado_solicitud', 'ALTA')
                     ->orWhere('estado_solicitud', 'AUTORIZADA');
             })
             ->get();
-
-        if ($resultado != null && $resultado->count() > 0) {
-            return back()->with('error', 'No tienes permitido hacer esta solicitud');
+        if ($dataSet !== null) {
+            if ($resultado != null && $resultado->count() > 0) {
+                return back()->with('error', 'No tienes permitido hacer esta solicitud');
+            }
         }
-
         //El alumno no tiene ninguna solicitud registrada
         $opcionTitulacion = new OpcionTitulacionModel();
         $opcionTitulacion->fecha_solicitud = now()->format('Y-m-d');
         $opcionTitulacion->semestre = $this->dataAlumno[0]['semestre']; //<----Cambiar cuando se tenga el servicio web
         $opcionTitulacion->estado_solicitud = "ALTA";
-        $opcionTitulacion->clave_unica = $dataSet[0]['clave_unica'];
+        $opcionTitulacion->clave_unica =  $clave_unica;
         $opcionTitulacion->id_opcion_titulacion = $opcionTitulacionSeleccionada;
         $opcionTitulacion->save();
+
+        if ($rol == 'RPE') {
+            return response()->json(['id' => $opcionTitulacion->id_solicitud_OT], 200);
+        }
         $newId = $opcionTitulacion->id_solicitud_OT;
         $mensaje = "Solicitud registrada con éxito.";
         return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId])->with('success', $mensaje);
@@ -92,6 +104,13 @@ class OpcionTitulacionController extends Controller
             $dataSet = json_decode($request->input('dataSet'), true);
         } else {
             $dataSet = $request->input('dataSet');
+        }
+
+        $nombre = 'MARTINEZ LOPEZ IVAN';
+        $clave = '295969';
+        if (isset($dataSet) || $dataSet != null) {
+            $nombre =  $dataSet[0]['nombre_alumno'];
+            $clave = $dataSet[0]['clave_unica'];
         }
         //Se obtiene la información de la base de datos.
         $id = $request->input('id');
@@ -195,9 +214,9 @@ class OpcionTitulacionController extends Controller
 
         $pdf->SetXY(60, 203.5);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Write(0.1, $dataSet[0]['nombre_alumno']);
+        $pdf->Write(0.1, $nombre);
         $pdf->SetXY(177, 203.5);
-        $pdf->Write(0.1, $dataSet[0]['clave_unica']);
+        $pdf->Write(0.1, $clave);
         $pdf->SetXY(140, 208.9);
         $pdf->Write(0.1, $this->dataAlumno[0]['ultima_materia']);
         $pdf->SetXY(88, 213.5);
@@ -213,8 +232,8 @@ class OpcionTitulacionController extends Controller
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D
-        $pdf->Output('D', 'OpcionTitulacion.pdf');
+        //Download use D 
+        $pdf->Output('I', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
 
@@ -245,7 +264,6 @@ class OpcionTitulacionController extends Controller
         //dd($registro);
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
-
     }
     public function showTitulacionFormAdmin()
     {
@@ -302,7 +320,7 @@ class OpcionTitulacionController extends Controller
     }
 
 
-    public function fetchOpcionTitulacion(Request $request, $origenVista = null)
+    public function fetchOpcionTitulacion($requestOrClave, $origenVista = null)
     {
         //if ($idOrRequest instanceof Request) {
         //    $clave_unica = $idOrRequest->input("clave_unica");
@@ -314,10 +332,19 @@ class OpcionTitulacionController extends Controller
         //    ->join('cat_opcion_titulacion as COT', 'OT.id_opcion_titulacion', '=', 'COT.id_opcion_titulacion')
         //   ->where('OT.clave_unica',  $clave_unica)
         //    ->get();
+        $clave_unica = null;
+        $solicitud = null;
+        $hctc = null;
 
-        $clave_unica = $request->input('clave_unica');
-        $solicitud = $request->input('solicitud');
-        $hctc = $request->input('hctc');
+
+        if($requestOrClave instanceof Request) {
+            $clave_unica = $requestOrClave->input('clave_unica');
+            $solicitud = $requestOrClave->input('solicitud');
+            $hctc = $requestOrClave->input('hctc');
+        }
+        else {
+            $clave_unica = $requestOrClave;
+        }
 
         $consulta = DB::table('solicitud_opcion_titulacion as OT')
             ->select('OT.id_solicitud_OT', 'COT.opcion_titulacion', 'OT.semestre', 'OT.clave_unica', 'OT.estado_solicitud', 'OT.fecha_solicitud')
@@ -342,7 +369,7 @@ class OpcionTitulacionController extends Controller
 
         $reg = $this->procesaInfo($registros);
         //dd($resultados);
-        if($origenVista == 'ALUMNOS'){//Éste metodo se llama desde la vista de alumnos
+        if ($origenVista == 'ALUMNOS') { //Éste metodo se llama desde la vista de alumnos
 
             return  $reg;
         }
@@ -357,7 +384,6 @@ class OpcionTitulacionController extends Controller
     {
 
         //----Cuando se tenga disponible, se manda llamar al servicio web.---------
-
         foreach ($dataMaterias as $data) {
             $carbonFecha = \Carbon\Carbon::parse($data->fecha_solicitud);
             $fila = [
@@ -372,7 +398,7 @@ class OpcionTitulacionController extends Controller
             ];
             $dataSet[] = $fila;
         }
-        if(isset($dataSet))
+        if (isset($dataSet))
             return $dataSet;
         else
             return null;

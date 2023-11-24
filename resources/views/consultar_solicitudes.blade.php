@@ -299,7 +299,7 @@
 
                                 // Actualizar el contenido del contenedor div con el HTML recibido
                                 $('#tablaOpcionTitulacion').html(data.html);
-                                $('#tablaOpcionTitulacion').show();;
+                                $('#tablaOpcionTitulacion').show();
                                 //tablaMateriaUnica.style.display = 'block';
                                 ShowExportButton();
 
