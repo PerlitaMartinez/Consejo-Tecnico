@@ -27,6 +27,7 @@ class OpcionTitulacionController extends Controller
     {
         $dataSet = $request->input('dataSet');
         $id = $request->input('id');
+        $veri = $request->input('veri');
         //Se obtienen todas las opciones de titulación
         $opciones = CatOpcionTitulacionModel::all();
 
@@ -35,7 +36,7 @@ class OpcionTitulacionController extends Controller
 
 
 
-        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id]); //<----Cambiar por servicio web
+        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id,'veri'=> $veri]); //<----Cambiar por servicio web
     }
 
 
@@ -44,6 +45,11 @@ class OpcionTitulacionController extends Controller
 
         $dataSet = $request->has('dataSet') ? $request->input('dataSet') : null;
         $opcionTitulacionSeleccionada = $request->input('opcion_titulacion');
+        $veri = 0;
+        if($opcionTitulacionSeleccionada == '7')
+        {
+            $veri = 1;
+        }
         $rol = $request->input('rol');
         if ($dataSet !== null && count($dataSet) > 0)
             $clave_unica = $dataSet[0]['clave_unica'];
@@ -77,7 +83,7 @@ class OpcionTitulacionController extends Controller
         }
         $newId = $opcionTitulacion->id_solicitud_OT;
         $mensaje = "Solicitud registrada con éxito.";
-        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId])->with('success', $mensaje);
+        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId,'veri'=> $veri])->with('success', $mensaje);
     }
 
 
