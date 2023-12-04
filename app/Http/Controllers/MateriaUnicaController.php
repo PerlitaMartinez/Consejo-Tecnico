@@ -34,6 +34,7 @@ class MateriaUnicaController extends Controller
 
     ];
 
+    
 
     public function showMateriaUnicaForm(Request $request)
     {

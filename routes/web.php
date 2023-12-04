@@ -147,6 +147,7 @@ Route::get('/sesionesEditar/{sesion}/edit', [SesionesController::class, 'edit'])
 Route::patch('/sesiones{sesion}', [SesionesController::class, 'update'])->name('sesion.update');
 
 
+
 Route::get('/consultar', function () {
     return view('consultar_solicitudes');
 })->name('consultar_solicitudes');

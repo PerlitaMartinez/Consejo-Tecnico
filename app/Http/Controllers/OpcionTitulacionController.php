@@ -23,6 +23,9 @@ class OpcionTitulacionController extends Controller
         ],
 
     ];
+
+
+
     public function showTitulacionForm(Request $request)
     {
         $dataSet = $request->input('dataSet');

@@ -7,21 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SesionesController extends Controller{
-    /*public function crearSesion(Request $request)
-    {
-        //Validar los datos del formulario si es necesario
-        $request->validate([
-            'id_sesion_hctc' => 'required|integer',
-            'fecha_sesion' => 'required|string',
-            'tipo_sesion' => 'required|string',
-        ]);
-
-        $sesion = sesion_hctc::create([
-            'id_sesion_hctc' => $request->input('integer'),
-            'fecha_sesion'=> $request->input('string'),
-            'tipo_sesion' => $request->input('string'),
-        ]);
-    }*/
+   
 
 
     public function index(){
@@ -47,7 +33,7 @@ class SesionesController extends Controller{
 
         $sesion->delete();
         return back()->with('mensaje', 'SESION ELIMINADA CORRECTAMENTE');
-
+ 
     }
 
     public function edit(SesionHctcModel $sesion){

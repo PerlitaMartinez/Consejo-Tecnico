@@ -51,7 +51,9 @@
             <div class="form-group d-flex">
                 <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Fecha Solicitud:</label>
                 <span id="clave_unica" name="clave_unica" class="form-control">{{$data->fecha_solicitud}}</span>
+                
             </div>
+                                    
         </div>
     </div>
     <div class="row">
