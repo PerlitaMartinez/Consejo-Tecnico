@@ -70,6 +70,7 @@ Route::get('cargaMaxima-getRegistros/{clave}/{rol?}', [CargaMaximaController::cl
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
 Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
+Route::post('/entregar/{id}', [CargaMaximaController::class, 'updateEntregar'])->name('entregarCM');
 Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
 Route::get('cargaMaximaPDF-PROVISIONAL/{datos}', [CargaMaximaController::class,'cargaMaximaPDFshowPROVISIONAL'])->name('cargaMaximaPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
 

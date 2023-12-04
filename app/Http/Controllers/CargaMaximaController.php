@@ -403,6 +403,15 @@ class CargaMaximaController extends Controller
         return redirect('/consultar');
     }
 
+    public function updateEntregar($id)
+    {
+        $d = CargaMaximaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud = 'ENTREGADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
     public function mostrarDetallesCM($id)
     {
         $data = CargaMaximaModel::find($id);
