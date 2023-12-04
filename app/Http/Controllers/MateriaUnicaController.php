@@ -521,6 +521,15 @@ class MateriaUnicaController extends Controller
         return redirect('/consultar');
     }
 
+    public function updateEntregar($id)
+    {
+        $d = MateriaUnicaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud = 'ENTREGADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
     public function mostrarDetallesMU($id)
     {
         $data = MateriaUnicaModel::find($id);

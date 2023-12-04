@@ -445,6 +445,15 @@ class OpcionTitulacionController extends Controller
         return redirect('/consultar');
     }
 
+    public function updateEntregar($id)
+    {
+        $d = OpcionTitulacionModel::find($id);
+        // dd($d);
+        $d->estado_solicitud = 'ENTREGADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
     public function mostrarDetallesOT($id)
     {
         $data = OpcionTitulacionModel::find($id);

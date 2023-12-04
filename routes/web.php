@@ -55,6 +55,7 @@ Route::get('materiaUnica-getRegistros/{clave}/{rol?}', [MateriaUnicaController::
 Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
 Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
 Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');
+Route::post('/entregarMU/{id}', [MateriaUnicaController::class, 'updateEntregar'])->name('entregarMU');
 Route::get('/detallesMU/{id}', [MateriaUnicaController::class,'mostrarDetallesMU'])->name('detallesMU');
 Route::get('materiaUnicaPDF-PROVISIONAL/{datos}', [MateriaUnicaController::class,'materiaUnicaPDFshowPROVISIONAL'])->name('materiaUnicaPdfPROVISIONAL.show'); // pdf provisional para cuando se descarga formato en roles
 
@@ -70,7 +71,7 @@ Route::get('cargaMaxima-getRegistros/{clave}/{rol?}', [CargaMaximaController::cl
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
 Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
-Route::post('/entregar/{id}', [CargaMaximaController::class, 'updateEntregar'])->name('entregarCM');
+Route::post('/entregarCM/{id}', [CargaMaximaController::class, 'updateEntregar'])->name('entregarCM');
 Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
 Route::get('cargaMaximaPDF-PROVISIONAL/{datos}', [CargaMaximaController::class,'cargaMaximaPDFshowPROVISIONAL'])->name('cargaMaximaPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
 
@@ -87,6 +88,7 @@ Route::get('opTitulacion-getRegistros/{clave}/{rol?}', [OpcionTitulacionControll
 Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'fetchAllOpcionTitulacion'])->name('opcionTitulacionAllReg');
 Route::post('/cancelarOT/{id}', [OpcionTitulacionController::class, 'updateCancelar'])->name('cancelarOT');
 Route::post('/autorizarOT/{id}', [OpcionTitulacionController::class, 'updateAutorizar'])->name('autorizarOT');
+Route::post('/entregarOT/{id}', [OpcionTitulacionController::class, 'updateEntregar'])->name('entregarOT');
 Route::get('/detallesOT/{id}', [OpcionTitulacionController::class,'mostrarDetallesOT'])->name('detallesOT');
 Route::get('opTitulacionPDF-PROVISIONAL/{datos}', [OpcionTitulacionController::class,'opTitulacionPDFshowPROVISIONAL'])->name('opTitulacionPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
 
