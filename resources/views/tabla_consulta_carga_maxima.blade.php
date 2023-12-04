@@ -9,6 +9,7 @@
                 <th>Semestre</th>
                 <th>Estado</th>
                 <th>Aprobar</th>
+                <th>Entregar</th>
                 <th>Detalles</th>
                 <th>Formato</th>
                 <th>Cancelar</th>
@@ -32,17 +33,47 @@
                         <td>{{ $item->estado_solicitud }}</td>
 
                         @if($item->estado_solicitud != 'CANCELADA')
-                        <td>
-                            <form action="{{ route('autorizarCM', $item->id_solicitud_cm) }}" method="POST">
-                                @csrf
-                                <!-- Botón de Autorizar con modal -->
-                                <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizarCM" data-modal="confirmModalAutorizarCM" data-action="{{ route('autorizarCM', $item->id_solicitud_cm) }}">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            </form>
-                        </td>
+                            <td>
+                                <form action="{{ route('autorizarCM', $item->id_solicitud_cm) }}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Autorizar con modal -->
+                                    <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizarCM" data-modal="confirmModalAutorizarCM" data-action="{{ route('autorizarCM', $item->id_solicitud_cm) }}">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </td>
                         @else
-                            <td></td>
+                            <td>
+                                <form action="{{ route('autorizarCM', $item->id_solicitud_cm) }}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Autorizar con modal -->
+                                    <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizarCM" data-modal="confirmModalAutorizarCM" data-action="{{ route('autorizarCM', $item->id_solicitud_cm) }}" disabled>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        @endif
+
+                        @if($item->estado_solicitud != 'CANCELADA')
+                            <td>
+                                <form action="{{ route('entregarCM', $item->id_solicitud_cm) }}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Autorizar con modal -->
+                                    <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalEntregarCM" data-modal="confirmModalEntregarCM" data-action="{{ route('entregarCM', $item->id_solicitud_cm) }}">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        @else
+                            <td>
+                                <form action="{{ route('entregarCM', $item->id_solicitud_cm) }}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Autorizar con modal -->
+                                    <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalEntregarCM" data-modal="confirmModalEntregarCM" data-action="{{ route('entregarCM', $item->id_solicitud_cm) }}" disabled>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </td>
                         @endif
 
                         <td>
@@ -66,7 +97,15 @@
                                 </form>
                             </td>
                         @else
-                            <td></td>
+                            <td>
+                                <form action="{{ route('cancelarCM', $item->id_solicitud_cm)}}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Cancelar con modal -->
+                                    <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelarCM" data-modal="confirmModalCancelarCM" data-action="{{ route('cancelarCM', $item->id_solicitud_cm) }}" disabled>
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </td>
                         @endif
 
                     </tr>
@@ -91,6 +130,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" id="confirmActionAutorizarCM">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para entregar CM -->
+    <div class="modal fade" id="confirmModalEntregarCM" tabindex="-1" role="dialog" aria-labelledby="confirmModalEntregarCMLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalEntregarCMLabel">Confirmación de Entrega</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que quieres ENTREGAR la solicitud de Carga Máxima?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmActionEntregarCM">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -149,6 +209,24 @@
         });
 
         $('#confirmActionAutorizarCM').click(function () {
+            // Agregar la lógica de autorización aquí si es necesario
+            var action = $(this).data('action');
+
+            // Crear un formulario dinámicamente
+            var form = $('<form method="POST" action="' + action + '"></form>');
+            $('body').append(form);
+
+            // Agregar el token CSRF al formulario (si es necesario)
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            if (csrfToken) {
+                form.append('<input type="hidden" name="_token" value="' + csrfToken + '">');
+            }
+
+            // Enviar el formulario
+            form.submit();
+        });
+
+        $('#confirmActionEntregarCM').click(function () {
             // Agregar la lógica de autorización aquí si es necesario
             var action = $(this).data('action');
 

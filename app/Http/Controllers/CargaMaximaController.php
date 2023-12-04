@@ -180,7 +180,7 @@ class CargaMaximaController extends Controller
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D 
+        //Download use D
         $pdf->Output('I', "carga-maxima.pdf");
 
         // Save PDF to Particular path or project path
@@ -403,13 +403,31 @@ class CargaMaximaController extends Controller
         return redirect('/consultar');
     }
 
+    public function updateEntregar($id)
+    {
+        $d = CargaMaximaModel::find($id);
+        // dd($d);
+        $d->estado_solicitud = 'ENTREGADA';
+        $d->save();
+        return redirect('/consultar');
+    }
+
     public function mostrarDetallesCM($id)
     {
         $data = CargaMaximaModel::find($id);
         // dd($data);
-        return view('/detallesCM', compact('data'));
+        return view('/detallesCM', compact('data', 'id'));
     }
+    public function updateFechaCM(Request $request)
+    {
+        $id = $request->input('id');
+        //dd($id);
+        $solicitud = CargaMaximaModel::findOrFail($id);
+        $solicitud->fecha_solicitud = $request->input('fecha_solicitud');
+        $solicitud->save();
 
+        return redirect()->back()->with('success', 'Fecha de solicitud actualizada con éxito.');
+    }
 
 
     // funcion provisional para descargar pdf, con el servicio web se sacan los datos faltantes correctos

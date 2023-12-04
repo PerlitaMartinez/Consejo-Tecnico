@@ -35,13 +35,13 @@
                             <div class="mb-3">
                                 <label for="orden" class="form-label">Orden</label>
                                 <input type="text" class="form-control" id="txtorden" aria-describedby="emailHelp"
-                                    name="txtorden">
+                                    name="txtorden" required>
 
                             </div>
                             <div class="mb-3">
                                 <label for="titulo" class="form-label">Titulo</label>
                                 <input type="text" class="form-control" id="txttitulo" aria-describedby="emailHelp"
-                                    name="txttitulo">
+                                    name="txttitulo" required>
 
                             </div>
                             <div class="modal-footer">
@@ -64,6 +64,7 @@
                 @if (session('correcto'))
                     <div class="alert alert-success">{{ session('correcto') }}</div>
                 @endif
+                
                 @if ($exists == 1)
                     <div class="row">
                         <div class="col-md-10">
@@ -304,7 +305,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <label>*Agregar el temario primero </label>
 
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -333,14 +334,14 @@
                                 <div class="form-group d-flex">
                                     <label for="asesor" class="mr-2" style="">Asesor:</label>
                                     <input type="text" id="Asesor" class="form-control"
-                                        placeholder="Nombre Asesor">
+                                        placeholder="Nombre Asesor" required >
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="coasesor" class="mr-2" style="">Coasesor:</label>
                                     <input type="text" id="Coasesor" class="form-control"
-                                        placeholder="Nombre CoAsesor" name="txtcoasesor">
+                                        placeholder="Nombre CoAsesor" name="txtcoasesor" required>
                                 </div>
                             </div>
                         </div>
@@ -351,49 +352,49 @@
                                 <div class="form-group d-flex">
                                     <label for="calleA" class="mr-2" style="">Calle:</label>
                                     <input type="text" id="calleA" class="form-control"
-                                        placeholder="Nombre de la calle" name="txtcalle">
+                                        placeholder="Nombre de la calle" name="txtcalle" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="coloniaA" class="mr-2" style="">Colonia:</label>
                                     <input type="text" id="coloniaA" class="form-control"
-                                        placeholder="Nombre de la colonia" name="txtcolonia">
+                                        placeholder="Nombre de la colonia" name="txtcolonia" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="noEA" class="mr-2" style="">No. Ext:</label>
                                     <input type="text" id="noEA" class="form-control"
-                                        placeholder="Numero de exterior" name="txtNo">
+                                        placeholder="Numero de exterior" name="txtNo" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="noIA" class="mr-2" style="">No. Int:</label>
                                     <input type="text" id="noIA" class="form-control"
-                                        placeholder="Numero Interior" name="txtNi">
+                                        placeholder="Numero Interior" name="txtNi" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="cp" class="mr-2" style="">C.P:</label>
                                     <input type="text" id="cp" class="form-control"
-                                        placeholder="Codigo Postal" name="txtcp">
+                                        placeholder="Codigo Postal" name="txtcp" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="telefono" class="mr-2" style="">Telefono:</label>
                                     <input type="text" id="Telefono" class="form-control" placeholder="Telefono" ,
-                                        name="txttelefono">
+                                        name="txttelefono" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="coasesor" class="mr-2" style="">Email:</label>
                                     <input type="text" id="email" class="form-control"
-                                        placeholder="Correo Electronico" name="txtemail">
+                                        placeholder="Correo Electronico" name="txtemail" required>
                                 </div>
                             </div>
 
@@ -404,7 +405,7 @@
                             <div class="col-md-10">
                                 <div class="form-group d-flex">
                                     <label for="tema" class="mr-2" style="">Tema:</label>
-                                    <input type="text" class="form-control" name="txtTema"></input>
+                                    <input type="text" class="form-control" name="txtTema" required></input>
                                 </div>
                             </div>
 
@@ -453,56 +454,56 @@
                                 <div class="form-group d-flex">
                                     <label for="nombre" class="mr-2" style="">Nombre:</label>
                                     <input type="text" id="nombre" class="form-control" name="txtnombreE"
-                                        placeholder="Nombre de la empresa">
+                                        placeholder="Nombre de la empresa" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="calle" class="mr-2" style="">Calle:</label>
                                     <input type="text" id="calle" class="form-control" name="txtcalleE"
-                                        placeholder="Nombre de la calle">
+                                        placeholder="Nombre de la calle" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="colonia" class="mr-2" style="">Colonia:</label>
                                     <input type="text" id="colonia" class="form-control" name="txtcoloE"
-                                        placeholder="Nombre de la colonia">
+                                        placeholder="Nombre de la colonia" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="noE" class="mr-2" style="">No. Ext:</label>
                                     <input type="text" id="noE" class="form-control" name="txtnEE"
-                                        placeholder="Numero de exterior">
+                                        placeholder="Numero de exterior" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="noI" class="mr-2" style="">No. Int:</label>
                                     <input type="text" id="noI" class="form-control" name="txtnIE"
-                                        placeholder="Numero Interior">
+                                        placeholder="Numero Interior" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="cp" class="mr-2" style="">C.P:</label>
                                     <input type="text" id="cp" class="form-control" name="txtcpE"
-                                        placeholder="Codigo Postal">
+                                        placeholder="Codigo Postal" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="email" class="mr-2" style="">Email:</label>
                                     <input type="text" id="email" class="form-control" name="txtemailEm"
-                                        placeholder="Correo Electronico empresa">
+                                        placeholder="Correo Electronico empresa" required>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group d-flex">
                                     <label for="telefono" class="mr-2" style="">Telefono:</label>
                                     <input type="text" id="telefono" class="form-control" name="txtteleE"
-                                        placeholder="Telefono de la empresa">
+                                        placeholder="Telefono de la empresa" required>
                                 </div>
                             </div>
                         </div>

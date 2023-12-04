@@ -146,7 +146,9 @@
             <div class="form-group">
                 @if (isset($exists) && $exists)
                     <a class="btn btn-success" id="descargar-formato">Descargar Formato</a>
+                    @if($veri == 1)
                     <a class="btn btn-primary mr-2" id="siguiente" >Siguiente Formato</a>
+                    @endif
                 @else
                     <button class="btn btn-primary mr-2" id="registrar-solicitud">Registrar Solicitud</button>
                 @endif

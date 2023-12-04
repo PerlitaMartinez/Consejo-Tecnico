@@ -10,7 +10,8 @@
                 <th>Materia</th>
                 <th>Semestre</th>
                 <th>Estado</th>
-                <th>Aprobar</th>
+                <th>Aprobar</th>                
+                <th>Entregar</th>
                 <th>Detalles</th>
                 <th>Formato</th>
                 <th>Cancelar</th>
@@ -27,17 +28,47 @@
                     <td>{{ $item['estado_solicitud'] }}</td>      
                     
                     @if($item['estado_solicitud'] != 'CANCELADA')
-                    <td>
-                        <form action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}" method="POST">
-                        @csrf
-                        <!-- Botón de Autorizar -->
-                            <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizar" data-modal="confirmModalAutorizar" data-action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}">
-                                <i class="fas fa-check"></i>
-                            </button>                       
-                        </form>
-                    </td>
+                        <td>
+                            <form action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}" method="POST">
+                            @csrf
+                            <!-- Botón de Autorizar -->
+                                <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizar" data-modal="confirmModalAutorizar" data-action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}">
+                                    <i class="fas fa-check"></i>
+                                </button>                       
+                            </form>
+                        </td>
                     @else
-                        <td></td>
+                        <td>
+                            <form action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}" method="POST">
+                            @csrf
+                            <!-- Botón de Autorizar -->
+                                <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizar" data-modal="confirmModalAutorizar" data-action="{{ route('autorizarMU', $item['id_solicitud_mu']) }}" disabled>
+                                    <i class="fas fa-check"></i>
+                                </button>                       
+                            </form>
+                        </td>
+                    @endif
+
+                    @if($item['estado_solicitud'] != 'CANCELADA')
+                        <td>
+                            <form action="{{ route('entregarMU',$item['id_solicitud_mu']) }}" method="POST">
+                                @csrf
+                                <!-- Botón de Autorizar con modal -->
+                                <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalEntregarMU" data-modal="confirmModalEntregarMU" data-action="{{ route('entregarMU', $item['id_solicitud_mu']) }}">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                        </td>
+                    @else
+                        <td>
+                            <form action="{{ route('entregarMU', $item['id_solicitud_mu']) }}" method="POST">
+                                @csrf
+                                <!-- Botón de Autorizar con modal -->
+                                <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalEntregarMU" data-modal="confirmModalEntregarMU" data-action="{{ route('entregarMU',$item['id_solicitud_mu']) }}" disabled>
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                        </td>
                     @endif
 
                     <td>
@@ -51,17 +82,25 @@
                         </a>
                     </td>
                     @if($item['estado_solicitud'] != 'CANCELADA')
-                    <td>
-                        <form action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}" method="POST">
-                        @csrf
-                            <!-- Botón de Cancelar -->
-                            <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelar" data-modal="confirmModalCancelar" data-action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}">
-                                <i class="fas fa-times"></i>
-                            </button>                        
-                        </form>
-                    </td>
+                        <td>
+                            <form action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}" method="POST">
+                            @csrf
+                                <!-- Botón de Cancelar -->
+                                <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelar" data-modal="confirmModalCancelar" data-action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}">
+                                    <i class="fas fa-times"></i>
+                                </button>                        
+                            </form>
+                        </td>
                     @else
-                        <td></td>
+                        <td>
+                            <form action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}" method="POST">
+                            @csrf
+                                <!-- Botón de Cancelar -->
+                                <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelar" data-modal="confirmModalCancelar" data-action="{{ route('cancelarMU', $item['id_solicitud_mu']) }}" disabled>
+                                    <i class="fas fa-times"></i>
+                                </button>                        
+                            </form>
+                        </td>
                     @endif
                 </tr>
             @endforeach
@@ -85,6 +124,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" id="confirmActionAutorizar">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para entregar MU -->
+    <div class="modal fade" id="confirmModalEntregarMU" tabindex="-1" role="dialog" aria-labelledby="confirmModalEntregarMULabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalEntregarMULabel">Confirmación de Entrega</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que quieres ENTREGAR la solicitud de Materia Única?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmActionEntregarMU">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -161,9 +221,22 @@
             form.submit();
         });
 
+        $('#confirmActionEntregar').click(function () {
+            // Agregar la lógica de autorización aquí si es necesario
+            var action = $(this).data('action');
 
+            // Crear un formulario dinámicamente
+            var form = $('<form method="POST" action="' + action + '"></form>');
+            $('body').append(form);
 
-    
+            // Agregar el token CSRF al formulario (si es necesario)
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            if (csrfToken) {
+                form.append('<input type="hidden" name="_token" value="' + csrfToken + '">');
+            }
 
-    
+            // Enviar el formulario
+            form.submit();
+        });
+    });
 </script>

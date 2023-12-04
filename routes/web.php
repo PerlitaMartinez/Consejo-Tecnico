@@ -55,7 +55,9 @@ Route::get('materiaUnica-getRegistros/{clave}/{rol?}', [MateriaUnicaController::
 Route::get('materiaUnica-getAllRegistros', [MateriaUnicaController::class,'fetchMateriaUnicaAllRegisters'])->name('materiaUnicaAllReg');
 Route::post('/cancelarMU/{id}', [MateriaUnicaController::class, 'updateCancelar'])->name('cancelarMU');
 Route::post('/autorizarMU/{id}', [MateriaUnicaController::class, 'updateAutorizar'])->name('autorizarMU');
+Route::post('/entregarMU/{id}', [MateriaUnicaController::class, 'updateEntregar'])->name('entregarMU');
 Route::get('/detallesMU/{id}', [MateriaUnicaController::class,'mostrarDetallesMU'])->name('detallesMU');
+Route::post('/solicitudUpdateMU', [MateriaUnicaController::class, 'updateFechaMU'])->name('solicitudUpdateMU');
 Route::get('materiaUnicaPDF-PROVISIONAL/{datos}', [MateriaUnicaController::class,'materiaUnicaPDFshowPROVISIONAL'])->name('materiaUnicaPdfPROVISIONAL.show'); // pdf provisional para cuando se descarga formato en roles
 
 
@@ -70,7 +72,9 @@ Route::get('cargaMaxima-getRegistros/{clave}/{rol?}', [CargaMaximaController::cl
 Route::get('cargaMaxima-getAllRegistros', [CargaMaximaController::class, 'fetchAllCargaMaxima'])->name('cargaMaximaRegAll');
 Route::post('/cancelarCM/{id}', [CargaMaximaController::class, 'updateCancelar'])->name('cancelarCM');
 Route::post('/autorizarCM/{id}', [CargaMaximaController::class, 'updateAutorizar'])->name('autorizarCM');
+Route::post('/entregarCM/{id}', [CargaMaximaController::class, 'updateEntregar'])->name('entregarCM');
 Route::get('/detallesCM/{id}', [CargaMaximaController::class,'mostrarDetallesCM'])->name('detallesCM');Route::post('cargaMaxima-post', [CargaMaximaController::class, 'cargaMaximaStore'])->name('cargaMaxima.store');
+Route::post('/solicitudUpdateCM', [CargaMaximaController::class, 'updateFechaCM'])->name('solicitudUpdateCM');
 Route::get('cargaMaximaPDF-PROVISIONAL/{datos}', [CargaMaximaController::class,'cargaMaximaPDFshowPROVISIONAL'])->name('cargaMaximaPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
 
 
@@ -86,7 +90,9 @@ Route::get('opTitulacion-getRegistros/{clave}/{rol?}', [OpcionTitulacionControll
 Route::get('opTitulacion-getAllRegistros', [OpcionTitulacionController::class,'fetchAllOpcionTitulacion'])->name('opcionTitulacionAllReg');
 Route::post('/cancelarOT/{id}', [OpcionTitulacionController::class, 'updateCancelar'])->name('cancelarOT');
 Route::post('/autorizarOT/{id}', [OpcionTitulacionController::class, 'updateAutorizar'])->name('autorizarOT');
+Route::post('/entregarOT/{id}', [OpcionTitulacionController::class, 'updateEntregar'])->name('entregarOT');
 Route::get('/detallesOT/{id}', [OpcionTitulacionController::class,'mostrarDetallesOT'])->name('detallesOT');
+Route::post('/solicitudUpdateOT', [OpcionTitulacionController::class, 'updateFechaOT'])->name('solicitudUpdateOT');
 Route::get('opTitulacionPDF-PROVISIONAL/{datos}', [OpcionTitulacionController::class,'opTitulacionPDFshowPROVISIONAL'])->name('opTitulacionPdfPROVISIONAL.show');// pdf provisional para cuando se descarga formato en roles
 
 
@@ -127,11 +133,11 @@ Route::get('/hctc/rol', function(){
 
 //ruta para el boton de administrador de la pantalla de roles
 Route::get('/administrador', function () {
-    return view('administrador'); 
+    return view('administrador');
 })->name('administrador');
 
 Route::get('/staff', function () {
-    return view('staff'); // Reemplaza 'staff' 
+    return view('staff'); // Reemplaza 'staff'
 })->name('staff');
 
 //ruta para el boton de director y secretario de la pantalla de roles
@@ -142,7 +148,7 @@ Route::get('/director%secretario', function () {
 //CONTROLADOR DE SESIONES
 Route::get('/sesiones', [SesionesController::class,'index'])->name('admin_sesiones_hctc');
 Route::post('/sesionesCreate', [SesionesController::class,'crear'])->name('admin_sesiones_crear');
-Route::delete('/sesionesDelete/{sesion}', [SesionesController::class, 'destroy'])->name('admin_sesiones_delete');  
+Route::delete('/sesionesDelete/{sesion}', [SesionesController::class, 'destroy'])->name('admin_sesiones_delete');
 Route::get('/sesionesEditar/{sesion}/edit', [SesionesController::class, 'edit'])->name('admin_sesiones_edit');
 Route::patch('/sesiones{sesion}', [SesionesController::class, 'update'])->name('sesion.update');
 
@@ -153,35 +159,35 @@ Route::get('/consultar', function () {
 })->name('consultar_solicitudes');
 
 Route::get('/consulta_materia_unica_reporte', function () {
-    return view('consultar_solicitud_materiaUnica_reporte'); 
+    return view('consultar_solicitud_materiaUnica_reporte');
 })->name('consultar_solicitud_materiaUnica_reporte');
 
 Route::get('/crear/solictud/carga/maxima', function () {
-    return view('crear_solicitud_carga_maxima'); 
+    return view('crear_solicitud_carga_maxima');
 })->name('crear_solicitud_carga_maxima');
 
 Route::get('/crear/solictud/materia/unica', function () {
-    return view('crear_solicitud_materia_unica'); 
+    return view('crear_solicitud_materia_unica');
 })->name('crear_solicitud_materia_unica');
 
 Route::get('/consultarSolicitudMateriaUnica', function () {
-    return view('consultar_materia_unica_Staff'); 
+    return view('consultar_materia_unica_Staff');
 })->name('consultar_materia_unica_Staff');
 
 Route::get('/crear/Solicitud/opcion/titulacion', function () {
-    return view('crear_solicitud_opcion_titulacion'); 
+    return view('crear_solicitud_opcion_titulacion');
 })->name('crear_solicitud_opcion_titulacion');
 
 Route::get('/consultar_carga_maxima_reporte', function () {
-    return view('consultar_carga_maxima_reporte'); 
+    return view('consultar_carga_maxima_reporte');
 })->name('consultar_carga_maxima_reporte');
 
 Route::get('/consultar_opcion_titulacion_tesis_reporte', function () {
-    return view('consultar_opcion_titulacion_tesis_reporte'); 
+    return view('consultar_opcion_titulacion_tesis_reporte');
 })->name('consultar_opcion_titulacion_tesis_reporte');
 
 Route::get('/consultar_opcion_titulacion_reporte', function () {
-    return view('consultar_opcion_titulacion_reporte'); 
+    return view('consultar_opcion_titulacion_reporte');
 })->name('consultar_opcion_titulacion_reporte');
 
 Route::get('/CrearSolicitud', function(){

@@ -11,6 +11,7 @@
                 <th>Semestre</th>
                 <th>Estado</th>
                 <th>Aprobar</th>
+                <th>Entregar</th>
                 <th>Detalles</th>
                 <th>Formato</th>
                 <th>Cancelar</th>
@@ -38,7 +39,37 @@
                             </form>
                         </td>
                         @else
-                            <td></td>
+                        <td>
+                            <form action="{{ route('autorizarOT', $item->id_solicitud_OT) }}" method="POST">
+                                @csrf
+                                <!-- Botón de Autorizar con modal -->
+                                <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalAutorizarOT" data-modal="confirmModalAutorizarOT" data-action="{{ route('autorizarOT', $item->id_solicitud_OT) }}" disabled>
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                        </td>
+                        @endif
+
+                        @if($item->estado_solicitud != 'CANCELADA')
+                            <td>
+                                <form action="{{ route('entregarOT', $item->id_solicitud_OT) }}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Autorizar con modal -->
+                                    <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalEntregarOT" data-modal="confirmModalEntregarOT" data-action="{{ route('entregarOT', $item->id_solicitud_OT) }}">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        @else
+                            <td>
+                                <form action="{{ route('entregarOT', $item->id_solicitud_OT) }}" method="POST">
+                                    @csrf
+                                    <!-- Botón de Autorizar con modal -->
+                                    <button type="button" class="btn btn-success confirm-action" data-toggle="modal" data-target="#confirmModalEntregarOT" data-modal="confirmModalEntregarOT" data-action="{{ route('entregarOT', $item->id_solicitud_OT) }}" disabled>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </td>
                         @endif
 
                         <td>
@@ -77,7 +108,15 @@
                             </form>
                         </td>
                         @else
-                            <td></td>
+                        <td>
+                            <form action="{{ route('cancelarOT', $item->id_solicitud_OT) }}" method="POST">
+                                @csrf
+                                <!-- Botón de Cancelar con modal -->
+                                <button type="button" class="btn btn-danger confirm-action" data-toggle="modal" data-target="#confirmModalCancelarOT" data-modal="confirmModalCancelarOT" data-action="{{ route('cancelarOT', $item->id_solicitud_OT) }}" disabled>
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </form>
+                        </td>
                         @endif
                     </tr>
                 @endforeach
@@ -101,6 +140,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" id="confirmActionAutorizarOT">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para entregar OT -->
+    <div class="modal fade" id="confirmModalEntregarOT" tabindex="-1" role="dialog" aria-labelledby="confirmModalEntregarOTLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalEntregarOTLabel">Confirmación de Entrega</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que quieres ENTREGAR la solicitud de Opción de Titulación?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmActionEntregarOT">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -159,6 +219,24 @@
         });
 
         $('#confirmActionAutorizarOT').click(function () {
+            // Agregar la lógica de autorización aquí si es necesario
+            var action = $(this).data('action');
+
+            // Crear un formulario dinámicamente
+            var form = $('<form method="POST" action="' + action + '"></form>');
+            $('body').append(form);
+
+            // Agregar el token CSRF al formulario (si es necesario)
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            if (csrfToken) {
+                form.append('<input type="hidden" name="_token" value="' + csrfToken + '">');
+            }
+
+            // Enviar el formulario
+            form.submit();
+        });
+
+        $('#confirmActionEntregarOT').click(function () {
             // Agregar la lógica de autorización aquí si es necesario
             var action = $(this).data('action');
 

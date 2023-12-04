@@ -12,7 +12,7 @@
 
 <div class="custom-container mt-4">
     <h1>Consultar Solicitud Opción Titulación</h1>
-    
+
     <!-- tabla de datos del alumno -->
     <hr style="border: 0px solid #DCDCDC; margin: 10px 0;">
 
@@ -39,22 +39,8 @@
 
 <!-- detalles de la solicitud -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group d-flex">
-                <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Folio:</label>
-                <span id="clave_unica" name="clave_unica" class="form-control">{{$data->id_solicitud_OT}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group d-flex">
-                <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Fecha Solicitud:</label>
-                <span id="clave_unica" name="clave_unica" class="form-control">{{$data->fecha_solicitud}}</span>
-                
-            </div>
-                                    
-        </div>
+        
+   
     </div>
     <div class="row">
         <div class="col-md-6">
