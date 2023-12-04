@@ -534,7 +534,17 @@ class MateriaUnicaController extends Controller
     {
         $data = MateriaUnicaModel::find($id);
         // dd($data);
-        return view('/detallesMU', compact('data'));
+        return view('/detallesMU', compact('data', 'id'));
+    }
+
+    public function updateFechaMU(Request $request)
+    {
+        $id = $request->input('id');
+        $solicitud = MateriaUnicaModel::findOrFail($id);
+        $solicitud->fecha_solicitud = $request->input('fecha_solicitud');
+        $solicitud->save();
+
+        return redirect()->back()->with('success', 'Fecha de solicitud actualizada con éxito.');
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CargaMaximaModel;
 use App\Models\CatOpcionTitulacionModel;
 use App\Models\OpcionTitulacionModel;
 use Carbon\Carbon;
@@ -23,6 +24,7 @@ class OpcionTitulacionController extends Controller
         ],
 
     ];
+
     public function showTitulacionForm(Request $request)
     {
         $dataSet = $request->input('dataSet');
@@ -35,8 +37,7 @@ class OpcionTitulacionController extends Controller
         $exists = $this->opTitulacionRegister($dataSet);
 
 
-
-        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id,'veri'=> $veri]); //<----Cambiar por servicio web
+        return view('formato_opcion_titulacion', ['dataSet' => $dataSet, 'dataAlumno' => $this->dataAlumno, 'exists' => $exists, 'opciones' => $opciones, 'id' => $id, 'veri' => $veri]); //<----Cambiar por servicio web
     }
 
 
@@ -46,8 +47,7 @@ class OpcionTitulacionController extends Controller
         $dataSet = $request->has('dataSet') ? $request->input('dataSet') : null;
         $opcionTitulacionSeleccionada = $request->input('opcion_titulacion');
         $veri = 0;
-        if($opcionTitulacionSeleccionada == '7')
-        {
+        if ($opcionTitulacionSeleccionada == '7') {
             $veri = 1;
         }
         $rol = $request->input('rol');
@@ -56,13 +56,13 @@ class OpcionTitulacionController extends Controller
         else {
             $clave_unica = 295969;
         }
-       
+
         //verificamos que no haya una solicitud activa en la base de datos
         $resultado = OpcionTitulacionModel::where('clave_unica', $clave_unica) //<--- Cambiar por datos del servicio web
-            ->where(function ($query) {
-                $query->where('estado_solicitud', 'ALTA')
-                    ->orWhere('estado_solicitud', 'AUTORIZADA');
-            })
+        ->where(function ($query) {
+            $query->where('estado_solicitud', 'ALTA')
+                ->orWhere('estado_solicitud', 'AUTORIZADA');
+        })
             ->get();
         if ($dataSet !== null) {
             if ($resultado != null && $resultado->count() > 0) {
@@ -74,7 +74,7 @@ class OpcionTitulacionController extends Controller
         $opcionTitulacion->fecha_solicitud = now()->format('Y-m-d');
         $opcionTitulacion->semestre = $this->dataAlumno[0]['semestre']; //<----Cambiar cuando se tenga el servicio web
         $opcionTitulacion->estado_solicitud = "ALTA";
-        $opcionTitulacion->clave_unica =  $clave_unica;
+        $opcionTitulacion->clave_unica = $clave_unica;
         $opcionTitulacion->id_opcion_titulacion = $opcionTitulacionSeleccionada;
         $opcionTitulacion->save();
 
@@ -83,19 +83,18 @@ class OpcionTitulacionController extends Controller
         }
         $newId = $opcionTitulacion->id_solicitud_OT;
         $mensaje = "Solicitud registrada con éxito.";
-        return redirect()->route('titulacion.show', ['dataSet' =>  $dataSet, 'id' => $newId,'veri'=> $veri])->with('success', $mensaje);
+        return redirect()->route('titulacion.show', ['dataSet' => $dataSet, 'id' => $newId, 'veri' => $veri])->with('success', $mensaje);
     }
-
 
 
     protected function opTitulacionRegister($dataSet)
     {
 
         $registro = OpcionTitulacionModel::where('clave_unica', $dataSet[0]['clave_unica']) //<--- Cambiar por datos del servicio web
-            ->where(function ($query) {
-                $query->where('estado_solicitud', 'ALTA')
-                    ->orWhere('estado_solicitud', 'AUTORIZADA');
-            })
+        ->where(function ($query) {
+            $query->where('estado_solicitud', 'ALTA')
+                ->orWhere('estado_solicitud', 'AUTORIZADA');
+        })
             ->first();
         return $registro;
     }
@@ -115,7 +114,7 @@ class OpcionTitulacionController extends Controller
         $nombre = 'MARTINEZ LOPEZ IVAN';
         $clave = '295969';
         if (isset($dataSet) || $dataSet != null) {
-            $nombre =  $dataSet[0]['nombre_alumno'];
+            $nombre = $dataSet[0]['nombre_alumno'];
             $clave = $dataSet[0]['clave_unica'];
         }
         //Se obtiene la información de la base de datos.
@@ -128,9 +127,8 @@ class OpcionTitulacionController extends Controller
         }
 
 
-
         //Procesamos la fecha para colocarla en el pdf
-        $fechaSolicitud =  $registro->fecha_solicitud;
+        $fechaSolicitud = $registro->fecha_solicitud;
         $carbonFecha = \Carbon\Carbon::parse($fechaSolicitud);
 
         //Registramos la fecha de impresión
@@ -152,7 +150,6 @@ class OpcionTitulacionController extends Controller
 
         // import page 1
         $tplId = $pdf->importPage(1);
-
 
 
         // use the imported page and place it at point 10,10 with a width of 100 mm
@@ -205,7 +202,7 @@ class OpcionTitulacionController extends Controller
                 break;
 
             case 9:
-                $pdf->SetXY(111,  136.5);
+                $pdf->SetXY(111, 136.5);
                 $pdf->Write(0.1, "X");
                 break;
             case 10:
@@ -213,9 +210,6 @@ class OpcionTitulacionController extends Controller
                 $pdf->Write(0.1, "X");
                 break;
         }
-
-
-
 
 
         $pdf->SetXY(60, 203.5);
@@ -231,22 +225,19 @@ class OpcionTitulacionController extends Controller
         $pdf->Write(0.1, $this->dataAlumno[0]['ingreso']);
 
 
-
         //$pdf->SetXY(60, 213);
         //$pdf->Write(0.1,"2023-2024/I");
         // Preview PDF
         //$pdf->Output('I', "Demotest.pdf");
 
         // Download PDF
-        //Download use D 
+        //Download use D
         $pdf->Output('I', 'OpcionTitulacion.pdf');
 
         // Save PDF to Particular path or project path
 
         //$pdf->Output('F', "/new/yourfoldername/Demotest.pdf");
     }
-
-
 
 
     public function opcionTitulacionCancel(Request $request)
@@ -271,6 +262,7 @@ class OpcionTitulacionController extends Controller
         // El registro se eliminó satisfactoriamente.
         return response()->json(['message' => true]);
     }
+
     public function showTitulacionFormAdmin()
     {
         $opciones = CatOpcionTitulacionModel::all();
@@ -294,8 +286,8 @@ class OpcionTitulacionController extends Controller
         }
 
         $clave_unica = $request->input('clave_unica');
-        $examen =  $request->input('fecha_examen_aprobado');
-        $promedio =  $request->input('promedio');
+        $examen = $request->input('fecha_examen_aprobado');
+        $promedio = $request->input('promedio');
         $ingreso = $request->input('ano_ingreso');
         $opcionTitulacionSeleccionada = $request->input('opcion_titulacion');
 
@@ -343,12 +335,11 @@ class OpcionTitulacionController extends Controller
         $hctc = null;
 
 
-        if($requestOrClave instanceof Request) {
+        if ($requestOrClave instanceof Request) {
             $clave_unica = $requestOrClave->input('clave_unica');
             $solicitud = $requestOrClave->input('solicitud');
             $hctc = $requestOrClave->input('hctc');
-        }
-        else {
+        } else {
             $clave_unica = $requestOrClave;
         }
 
@@ -364,11 +355,11 @@ class OpcionTitulacionController extends Controller
             $consulta->whereBetween('OT.fecha_solicitud', [$fechaInicio, $fechaFinal]);
         }
 
-        if($solicitud) {
+        if ($solicitud) {
             $consulta->where('OT.estado_solicitud', $solicitud);
         }
 
-        if($clave_unica) {
+        if ($clave_unica) {
             $consulta->where('OT.clave_unica', $clave_unica);
         }
         $registros = $consulta->get();
@@ -377,7 +368,7 @@ class OpcionTitulacionController extends Controller
         //dd($resultados);
         if ($origenVista == 'ALUMNOS') { //Éste metodo se llama desde la vista de alumnos
 
-            return  $reg;
+            return $reg;
         }
         // if ($registros->isEmpty()) {
         //     return null;
@@ -458,7 +449,18 @@ class OpcionTitulacionController extends Controller
     {
         $data = OpcionTitulacionModel::find($id);
         // dd($data);
-        return view('/detallesOT', compact('data'));
+        return view('/detallesOT', compact('data', 'id'));
+    }
+
+    public function updateFechaOT(Request $request)
+    {
+        $id = $request->input('id');
+        //dd($id);
+        $solicitud = OpcionTitulacionModel::findOrFail($id);
+        $solicitud->fecha_solicitud = $request->input('fecha_solicitud');
+        $solicitud->save();
+
+        return redirect()->back()->with('success', 'Fecha de solicitud actualizada con éxito.');
     }
 
     public function opTitulacionPDFshowPROVISIONAL(Request $request,$id)

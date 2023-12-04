@@ -12,7 +12,7 @@
 
 <div class="custom-container mt-4">
     <h1>Consultar Solicitud Materia Única</h1>
-    
+
     <!-- tabla de datos del alumno -->
     <hr style="border: 0px solid #DCDCDC; margin: 10px 0;">
 
@@ -37,39 +37,45 @@
         </div>
     </div><br>
 
-<!-- detalles de la solicitud -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group d-flex">
-                <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Folio:</label>
-                <span id="clave_unica" name="clave_unica" class="form-control">{{$data->id_solicitud_mu}}</span>
+    <form action="{{ route('solicitudUpdateMU', ['id' =>$id]) }}" method="POST">
+        @csrf
+        @method('POST')
+        <input type="hidden" name="id" value="{{ $id }}">
+    <!-- detalles de la solicitud -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group d-flex">
+                    <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Folio:</label>
+                    <span id="clave_unica" name="clave_unica" class="form-control">{{$data->id_solicitud_mu}}</span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group d-flex">
-                <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Fecha Solicitud:</label>
-                <span id="clave_unica" name="clave_unica" class="form-control">{{$data->fecha_solicitud}}</span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group d-flex">
+                    <label for="fecha_solicitud" class="mr-2 custom-label" style="margin-left:15px;">Fecha Solicitud:</label>
+                    <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control" value="{{ \Carbon\Carbon::parse($data->fecha_solicitud)->format('Y-m-d') }}">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group d-flex">
-                <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Semestre:</label>
-                <span id="clave_unica" name="clave_unica" class="form-control">{{$data->semestre}}</span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group d-flex">
+                    <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Semestre:</label>
+                    <span id="clave_unica" name="clave_unica" class="form-control">{{$data->semestre}}</span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group d-flex">
-                <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Estado:</label>
-                <span id="clave_unica" name="clave_unica" class="form-control">{{$data->estado_solicitud}}</span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group d-flex">
+                    <label for="claveUnica" class="mr-2 custom-label" style="margin-left:15px;">Estado:</label>
+                    <span id="clave_unica" name="clave_unica" class="form-control">{{$data->estado_solicitud}}</span>
+                </div>
             </div>
         </div>
-    </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
 
 </div>
 <style>
